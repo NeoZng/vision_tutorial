@@ -3610,7 +3610,7 @@ CNN是否具有平移不变性是这几个问题中最具有争议性的一个�
 >
 > [Tracking Translation Invariance in CNNs](https://link.springer.com/chapter/10.1007/978-3-030-66151-9_18)
 >
-> [Why do deep convolutional networks generalize so poorly to small image transformations? ](https://arxiv.org/abs/1805.12177)
+> [Why do deep convolutional networks generalize so poorly to small image transformations? ](https://arxiv.org/abs/1805.12177) 
 >
 > [Quantifying Translation-Invariance in Convolutional Neural Networks ](https://arxiv.org/abs/1801.01450#:~:text=Quantifying Translation-Invariance in Convolutional Neural Networks Eric Kauderer-Abrams,transformations such as translation%2C rotation%2C and small deformations.)
 >
@@ -3622,15 +3622,42 @@ CNN是否具有平移不变性是这几个问题中最具有争议性的一个�
 
 和前面的全局统计特征不同，特征点检测+匹配方法则是另辟蹊径，只会选择那些很有“特点”的区域，然后用一些方法描述这个点，也就对应着**特征点选择**和**建立特征描述子**这两步。不论是global-distrubition还是local-distribution最终生成的都是一个全局描述符，而point-based的方法则是得到数个特征描述符，然后在两帧之间匹配特征点或在输入图像上匹配我们要寻找的物体的特征点。前言不必多，我们会一边介绍特征点检测的方法，一边将它与全局特征描述进行对比。
 
+虽然 *5.5.2* 和 *5.5.3* 出现的算法当下都已经被卷积神经网络或者Transformer替代，但本节介绍的方法仍在CV中占用重要的地位，如**图像拼接**（OpenCV提供了stitching库）、**相机标定**以及**双目相机极线匹配**（OpenCV提供了ccalib3d库）、**稠密3D重建**（OpenCV提供了reconstruction库）、视觉SLAM中的**定位路标**等都大量使用了特征点检测技术。
+
+![]()
+
+> *5.5.4* 将特征点检测算法拆分为三个部分，分别是：
+>
+> 1. 寻找特征点 
+>
+> 2. 对找到的特征点建立特征描述子（特征向量）
+>
+> 3. 根据特征描述子进行匹配
+>
+> 因此，以SIFT算法为例，我们将它按照上述步骤拆分为空间极值检测（1），通过极值点(即上一步检测到的特征点)附近的梯度直方图建立特征描述子和描述子的主方向（2），最后将描述子两两进行主方向配对，通过者再计算特征向量的欧氏距离，取最小者为匹配成功（3）
+
 #### 5.5.4.1. 特征点选取
 
-不像传统的方法直接对全局或在划分的网格内无差别提取特征，point-based的方法首先要选取一些点（区域），以此作为**锚点**进行特征提取。这和基于CNN的目标检测中的anchor非常相似，我们只选取那些**可能出现目标**的区域进行特征提取（如Faster R-CNN只在region proposal上进行ROI Align，然后送入回归分支进行bbox精修），那么对于特征点选取来说也是一样的，这可以帮助我们减小搜索空间，让算法只提取那些“关键”的区域，这也是基于深度学习的point-based方法被称作**key-points detection**的缘由。
+不像传统的方法直接对全局或在划分的网格内**无差别**提取特征，point-based的方法首先要选取一些很特殊的点，并以此作为**参考**进行特征提取（实际上是以点为中心的一小块区域）。这和基于CNN的目标检测中的anchor非常相似，我们只选取那些**可能出现目标**的区域进行特征提取（如Faster R-CNN只在region proposal上进行ROI Align，然后送入回归分支进行bbox精修），那么对于特征点选取来说也是一样的，这可以帮助我们大大减小搜索空间，让算法只提取那些“关键”的区域。
 
-> 虽然这里的特征点和现在常说的人体关键点如17关节、51个面部关键点检测稍有不同，不过两者其实是有一定的相似性的。下面马上会介绍特征点和关键点的差别，以及特征点有何独特之处。
+> 虽然这里的特征点和现在常说的人体关键点如17关节、5个面部关键点检测稍有不同。不过两者其实是有一定的相似性的。下面马上会介绍特征点和关键点的差别，以及特征点有何独特之处。
+>
+> ![]()
 
 通过选取一些很有特点的点，我们就可以避免引入过多的噪声和无用甚至会帮倒忙的背景信息，从而更有效地抽取对于分类/检测来说更有用的特征。
 
 ##### 5.5.4.1.1. Harris角点检测
+
+Harris角点检测作为特征点筛选的一种，旨在选取独特的**角点**为后面的检测和匹配作铺垫。由于常常是数条（两条及以上以不同角度相交）线段的交点，角点一般在多个方向上都有剧烈的梯度变化，这便符合我们所要求的**特殊的**、**能够区别于图像中其他区域**的性质。
+
+ ![]()
+
+- Kitchen-Rosenfeld 角点检测
+- Moravec算子
+- Forstner算子
+- Shi-Tomasi算法
+- KLT角点检测
+- SUSAN角点检测
 
 
 
@@ -3638,7 +3665,11 @@ CNN是否具有平移不变性是这几个问题中最具有争议性的一个�
 
 
 
+
+
 ##### 5.5.4.1.3. 极值检测的改进与积分图
+
+
 
 
 
@@ -3692,11 +3723,15 @@ CNN是否具有平移不变性是这几个问题中最具有争议性的一个�
 
 
 
-#### 5.5.5.3. RANSAC
+#### 5.5.5.3. KNN/Cross/
 
 
 
-#### 5.5.5.4. PROSAC
+#### 5.5.5.4. RANSAC
+
+
+
+#### 5.5.5.5. PROSAC
 
 
 
