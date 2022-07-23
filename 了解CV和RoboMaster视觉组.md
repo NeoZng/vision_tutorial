@@ -1,6 +1,8 @@
 # 了解CV和[RoboMaster](https://www.robomaster.com/zh-CN)视觉组
 
-<h6 style="text-align:right">--NeoZng【neozng1@hnu.edu.cn】</h6>
+<p align='right'>
+    --NeoZng[neozng1@hnu.edu.cn]
+</p>
 
 # *0.Catalogue*
 
@@ -176,7 +178,7 @@
   - Linux的内核和系统比Windows更加精简，故在**运行时占用的各类资源都要小于Windows**。在不打开任何应用的情况下，笔者的电脑在运行Windows10时占用的内存为4.2G，cpu占用率在10-20%左右，而运行Ubuntu20.04LTS的时候，只使用了2.2G的内存，cpu占用率只有10%不到。这样，在运行我们的视觉算法程序时，可以更充分地利用系统资源，最大程度压榨电脑的性能。（甚至可以在测试结束后实际运行时关闭图形界面，只保留终端！这样，系统内核作为唯一需要运行的基础程序，大概能将cpu占用率缩小到1-2%）
   - Linux对于深度学习的支持比Widnows更加友好，经常有sh脚本能够一键配置开发环境。此外Linux对一些设备驱动的支持也更完善，我们可以选择挂载自己需要的驱动和IO，并且精简属于自己的内核。
 
-- 想要安装Ubutnu，可以参阅这篇教程：[Ubutnu的安装-排除各种问题！-NeoZng](https://blog.csdn.net/NeoZng/article/details/122779035)
+- 想要安装Ubutnu，可以参阅这篇教程：[Ubutnu/Windows双系统的安装-排除各种问题！-NeoZng](https://blog.csdn.net/NeoZng/article/details/122779035)
 
 - 提到Linux就不得不提到**命令行的使用**，在Linux上进行开发常会使用到命令行，有些软件甚至只有命令行界面的版本。在一些时候，直接在命令行中用键盘操作可能要比数不清的鼠标点击快得多。你需要学习：
 
@@ -1762,9 +1764,11 @@ CNN在前向传播的时候，计算似乎比全连接网络要复杂，然而�
 
   <center>在Faster R-CNN的RPN中，我们使用9种anchor，在每个格点上生成这样一组anchor</center>
 
+  Faster R-CNN在每个格点上采用了三组不同尺寸的anchor，每种尺寸又拥有不同的长宽比例，即上图所示的绿色红色蓝色三组。
+
   ![](Image_base/anchoroffasterrcnn.jpg)
 
-  <center>在进入RPN前，由ConvNet得到的feature map为50x38，于是我们对此feature map的每一个点都设置一组9个anchor（注意要映射回原图，既然是ROI提议，那么anchor肯定是设置在原图上的，因此要进行一个比例缩放）</center>
+  <center>在进入RPN前，由ConvNet得到的feature map为50x38，于是我们对此feature map的每一个点都设置三组共9个anchor（注意要映射回原图，既然是ROI提议，那么anchor肯定是设置在原图上的，因此要进行一个比例缩放）</center>
 
   上图中右边密密麻麻的就是生成的anchor了，好家伙算一下总共有17100个ROI！到这里为止，采取的方法看起来仍然是“瞎猜”并且候选位置还是太多；而且即使是使用了这么多的anchor，有些物体还是没办法被很好的框住，有可能没完全框住，也有可能是框太大。下面就进入筛选anchor和修正anchor环节。以下给出RPN的结构：
 
@@ -1783,7 +1787,7 @@ CNN在前向传播的时候，计算似乎比全连接网络要复杂，然而�
   如果要通过变换来使得生成的红色预测框贴近绿色框（GT），最简单的办法是什么？那肯定是先平移到合适的位置，然后再进行一定比例的缩放。如果anchor和gt差距不大，那么这种变换很显然是可以被**近似成线性变换**的，因此我们假设生成的anchor中最接近gt的那个已经和gt框**很相似**了，只需要用一个平移+缩放来进一步贴近它。所以我们会通过第二个分支中的1x1卷积来学习这种变换关系，即对bbox中心的平移$[dx，dy]$和横向纵向的拉伸比例$[kx，ky]$（当然，也可以直接学习ancho的四个角点和GT的四个角点的偏移量$[dx_i,dy_i],i\in\{1,2,3,4\}$即四个角点）。那么经过训练，这部分网络就会学习到一个对anchor进行修正的映射关系了。网络会为每个anchor都输出一个$[dx，dy，kx，ky]$数组（属于是量身定制了）。
 
   ok，两步分支结束，接下来我们就要把对anchor的筛选和对anchor的修正给综合起来，为下一步的bbox四角点位置回归和分类提供候选区域。请看RPN结构中的Proposal层，它大概有如下几个步骤：
-
+  
   1. 根据所有anchor包含物体的概率，对anchor进行筛选，得到概率最大的n个候选框（n还是一个自选数）。
   2. 利用第二个分支得到的[dx，dy，kx，ky]对这些筛选得到的anchor box进行修正。
   3. 对超出图像边界的anchor进行裁切使得它其中一条或两条边变成图像的边界（在生成anchor阶段，处在边缘的格点生成的较大的anchor必然会超出图像边界；同时在进行anchor box的修正时，也有一部分anchor会因为变换而出界）。
@@ -1792,7 +1796,7 @@ CNN在前向传播的时候，计算似乎比全连接网络要复杂，然而�
   6. 从剩余的anchor中随机选取128个作为正样本，再在被筛选调的anchor中选128个作为负样本，把这些anchor作为候选区域，交给Faster R-CNN的下一个部分。至此，RPN网络即候选区域提议的工作结束。
 
   下一步就是和Fast R-CNN一样,通过ROI Pooling提取候选区域对应的feature map上的特征，把特征连接到FC层，再分别投入bbox角点回归网络和分类网络，得到更精确的目标框和目标类别。可以看到，相比于Fast R-CNN变动最大的就是利用RPN替代Selective Search这一步，**利用网络来提取深度特征**（用于生成候选框的特征），大大提高了提议区域的精确度；同时也避免了逐像素、逐区域的合并工作，提高了速度，平均单帧处理速度来到了0.2～0.4S！
-
+  
   Faster R-CNN也首次完成了目标检测任务的“**深度化**”，即整个检测流程都使用神经网络连接完成；在高速的同时成为了当时的state of the art（检测任务竞赛的第一名）；这项工作基本奠定了区域提议+ROI-CNN（区域分类网络）的two-stage检测网络结构，从此全面开启了基于CNN的目标检测。两阶段的网络也让监督信息（设计的loss function和训练数学）能够在不同层次更有针对性地对网络参数的学习进行“指导”。
 
 > Faster R-CNN的成果在当时是振奋人心的，终于让大伙儿看到了基于网络方法的实时检测的希望！不过一秒3、4帧的速度在实时场景还是难堪大用，并且Faster R-CNN也存在一些问题:
@@ -4127,15 +4131,18 @@ Harris角点检测作为特征点筛选的一种，旨在选取独特的**角点
 | [YOLOX-Darknet53](https://github.com/Megvii-BaseDetection/YOLOX/blob/main/exps/default/yolov3.py) | 640  | 47.7            | 48.0             | 11.1            | 63.7       | 185.3     | [github](https://github.com/Megvii-BaseDetection/YOLOX/releases/download/0.1.1rc0/yolox_darknet.pth) |
 
 <center>MegaVision旷视开源-YOLOX的benchmarks</center>
-<center>YOLOX是截至本文完成前Objection Detection领域的state-of-the-art</center>
+<center>YOLOX是截至本文完成前Objection Detection领域anchor-free+one-stage算法的state-of-the-art</center>
+
+这里推荐使用NanoDet进行上手，对新手的友好度非常高，且官方的ROCO数据集（下面马上会介绍到）就使用了COCO标注格式，可以直接进行训练。其他的网络包括YOLOv5、YOLO-Fastest、上述的YOLOX以及百度的PicoDet都是可以尝试的对象。两阶段网络不适合应用在装甲板检测上，大部分模型的推理时间太长无法满足实时性。
+
+
 
 #### 6.1.2.2. 准备数据集
 
-RoboMaster组委会在2019年开源了一组[赛场数据集](https://bbs.robomaster.com/forum.php?mod=viewthread&tid=9678&fromuid=39845)，同时也提供了YOLO-v3利用该数据集的[训练示例](https://github.com/JintuZheng/zisan)。不过官方提供的数据集有一个问题，这些图片都是从赛场直播相机中截取的，大部分是俯视视角（大概比较适合雷达、哨兵和无人机吧），并且亮度都较高。川大&沈航则是搭建了一个[RMCV视觉开源数据站](https://bbs.robomaster.com/forum.php?mod=viewthread&tid=12353) ；云南大学&中国科学院深圳先进技术研究院也建立了自己的数据集并开源：[RM-DATASET](https://github.com/Damon2019/RM-DATASET)。希望最后能有一个统一的数据集平台，提供各种样例与分类的数据供大家选择，也方便大家向此社区贡献自己制作的数据集。
-
-常见的数据集规范有COCO和VOC，也有简单的txt(yolo格式)。打开数据集的标注简单浏览，就会看到类别信息、grond truth的中心坐标和宽高这几个数据，每条数据对应一张图片中的一个对象。有些数据集采用的是绝对坐标，有些采用的是归一化到[0,1]区间的相对坐标，他们各有各的优劣。
-
-官方的数据集还有对机器人的标注如工程车、步兵机器人等，如果我们只是识别装甲板可以把这些多余标注利用一个文本处理脚本去除，通过一些简单的正则表达式知识就可以完成辣。笔者这里有一个写好的脚本，也一起放在文末的链接中了。
+- RoboMaster组委会在2019年开源了一组[赛场数据集](https://bbs.robomaster.com/forum.php?mod=viewthread&tid=9678&fromuid=39845)，同时也提供了YOLO-v3利用该数据集的[训练示例](https://github.com/JintuZheng/zisan)。不过官方提供的数据集有一个问题，这些图片都是从赛场直播相机中截取的，大部分是俯视视角（大概比较适合雷达、哨兵和无人机吧），并且亮度都较高。川大&沈航则是搭建了一个[RMCV视觉开源数据站](https://bbs.robomaster.com/forum.php?mod=viewthread&tid=12353) ；云南大学&中国科学院深圳先进技术研究院也建立了自己的数据集并开源：[RM-DATASET](https://github.com/Damon2019/RM-DATASET)。希望最后能有一个统一的数据集平台，提供各种样例与分类的数据供大家选择，也方便大家向此社区贡献自己制作的数据集。
+- 常见的数据集规范有COCO和VOC，也有简单的txt(yolo格式)。打开数据集的标注简单浏览，就会看到类别信息、grond truth的中心坐标和宽高这几个数据，每条数据对应一张图片中的一个对象。有些数据集采用的是绝对坐标，有些采用的是归一化到[0,1]区间的相对坐标，他们各有各的优劣。
+- 官方的数据集还有对机器人的标注如工程车、步兵机器人等，如果我们只是识别装甲板可以把这些多余标注利用一个文本处理脚本去除，通过一些简单的正则表达式知识就可以完成辣。笔者这里有一个写好的脚本，也一起放在文末的链接中了。
+- 开源社区有大量的目标检测项目，想要白嫖它们就需要掌握一个最关键的技术：**数据集处理**。这需要一些序列化数据处理的知识，和对常见api使用的掌握。实际上是非常简单的，基本上是一个熟能生巧的过程。如COCO使用json来保存标注，VOC使用xml保存标注，YOLO系列则一般用txt文本进行保存。网络上也有大量的不同标注文件转换的脚本。不过为了提高可定制化程度，建议亲手熟悉一下python中的如dom、json和regular等库的使用，跟着处理COCO数据集或VOC数据集的范例脚本一起写，你很快就能学会标签处理了。在学习和实践过程中，你也可以将写好的标注处理和标注转换脚本保存下来，久而久之就形成一个属于你自己的常用标注工具箱，逐渐可以覆盖大部分常用的场景，复用起来非常方便。
 
 
 
@@ -4143,29 +4150,29 @@ RoboMaster组委会在2019年开源了一组[赛场数据集](https://bbs.roboma
 
 - 配置环境
 
-  根据仓库中的readme走就可以了，一般都会提供一个requirements.txt，直接用pip安装所有环境就完事了。也就是：
+  根据仓库中的readme走就可以了，repo一般都会提供一个requirements.txt，直接用pip安装所有环境就完事了。也就是：
 
   ```shell
   pip/pip3 install -r requirements.txt #有可能需要管理员权限,加上sudo即可
   ```
 
-  建议使用anaconda来管理不同repo的环境防止出现各种软件包版本不兼容的情况。
+  建议使用anaconda来管理不同repo的环境防止出现各种软件包版本不兼容的情况。如果没有梯子，可以**更换conda和pip的软件源**（和Ubuntu的apt是一样的道理），可以让安装过程更为迅速。
 
 
 
 - **修改训练配置参数**
 
-  此处以笔者队伍上个赛季使用的Nanodet-m为例，为大家介绍“炼丹”的过程。我们实验室用于训练的电脑是一台安装了1080ti的老电脑（3年前3599，现在能卖4599你敢信...来人吶把挖矿的都给我鲨了！！！~~萨日朗~~），显存12G（训练的显存就是要大！这样才能跑更大的batch并且减少访存次数，频率低慢一点没关系，宁要12G的3060也不要6G的3080）。不过不用担心，有独显的笔记本也可以用来训练，实在没办法就在tb上找服务器租用业务。
+  此处以笔者队伍上个赛季使用的**Nanodet-m**为例，为大家介绍“炼丹”的过程。我们实验室用于训练的电脑是一台安装了1080ti的老电脑（3年前3599，现在能卖4599你敢信...来人吶把挖矿的都给我鲨了！！！~~萨日朗~~），显存12G（训练的显存就是要大！这样才能跑更大的batch并且减少访存次数，频率低慢一点没关系，宁要12G的3060也不要8G的3080）。不过不用担心，有独显的笔记本也可以用来训练，实在没办法就在tb上找服务器租用业务。
 
   > 这部分内容其实是很早就已经写好了，只可惜时过境迁，在发文前nanodet已经更新了plus版本！快去github上点亮🌟吧，我敢保证nanodet是笔者用过的最容易上手部署最简单的检测网络了！这里还有笔者对NanoDet-Plus的完全解析，逐行注释非常详尽：[NanoDet代码逐行精读与修改（零）Architecture_HNU跃鹿战队的博客-CSDN博客](https://blog.csdn.net/NeoZng/article/details/123299419?spm=1001.2014.3001.5501)
   >
-  > 若要继续使用之前的verison，在github页面左上方切换tag回之前的版本即可。***请特别注意，本小节内容仅针对 nanodet v0.4.2***，新版本**不再适用**，需要参考上方的链接。
+  > 若要继续使用之前的verison，在github页面左上方切换tag回之前的版本即可。***请特别注意，本小节内容仅针对 nanodet v0.4.2***，新版本**不再适用**，如有需要请参考上方的链接，内含NanoDet-Plus的训练细节和参数配置。
 
-  Nanodet的作者贴心地提供了config文件配置的[详细说明](https://github.com/RangiLyu/nanodet/blob/main/docs/config_file_detail.md)。***我们在此基础上再详细一点，配合前面所学的知识介绍一下各个参数的配置，使得大家对深度学习的部署能有更直观的理解。***
+  Nanodet的作者贴心地提供了config文件配置的[详细说明](https://github.com/RangiLyu/nanodet/blob/main/docs/config_file_detail.md)。***我们在此基础上再详细一点，配合前面所学的知识介绍一下各个参数的配置，使得大家对深度学习的部署能有更直观的理解。***也建议大家在编写较大型的项目的时候，采用**配置文件**的方法来保存常用的、可能会修改的参数，避免程序中出现一些magic number，提高程序的可维护性和可读性。对于编译型语言，使用读取配置文件获得参数的方法还可以省掉重新编译的环节，提高开发效率。
 
   - saving path
 
-    这个不多说了就是log和模型文件、参数文件的保存地址，不填的话就选用默认缺省值。
+    这个不多说了就是log和模型文件、参数文件的保存地址，不填的话就选用默认值。
 
     
 
@@ -4194,7 +4201,7 @@ RoboMaster组委会在2019年开源了一组[赛场数据集](https://bbs.roboma
       activation: LeakyReLU
     ````
 
-    nanodet提供了其他backbone如GhostNet、MobileNet-V2等轻量化骨干网络，可以直接更换name中的参数。model_size是模型的倍率，可以把他看成网络的“胖瘦”，增大这个值会扩大每一个stage的feature map大小。out_stage则是和之后的FPN联合使用，指明要用于特征提取的输出stage层数（请看下图）
+    nanodet提供了其他backbone如GhostNet、MobileNet-V2等轻量化骨干网络，可以直接更换name中的参数。model_size是模型的倍率，可以把他看成网络的“胖瘦”，增大这个值会扩大每一个stage的feature map大小/增加通道数。out_stage则是和之后的FPN联合使用，指明要用于特征提取的输出stage层数（请看下图），backbone一共四个stage，最上方的是原图的输入，nanodet取后三个stage输入PAN中。左侧的数字是下采样率，即特征图相对于原图的尺寸比例，一般每个stage都减小一半。
 
     ![](Image_base/nanodetstruct.png)
 
@@ -4210,7 +4217,7 @@ RoboMaster组委会在2019年开源了一组[赛场数据集](https://bbs.roboma
 
     
 
-  - FPN
+  - FPN（Neck）
 
     ```yaml
     fpn:
@@ -4221,9 +4228,9 @@ RoboMaster组委会在2019年开源了一组[赛场数据集](https://bbs.roboma
       num_outs: 3
     ```
 
-    NamoDet使用PAN(Pyramid Attention Network)替代了最简单的FPN，不过这个模块的目的都是为了融合不同特征图的信息。你也可以尝试使用其他的FPN来测试他们的效果。
+    NamoDet使用PAN(Pyramid Attention Network)替代了最简单的FPN，不过这个模块的目的也是为了融合不同特征图的信息。你也可以尝试使用其他的FPN来测试他们的效果。这部分在网络设计中一般被称为**Neck**。
 
-    第二个参数设置了从backbone中输入特征图的对应通道数，注意和backbone中的out_stage匹配。
+    第二个参数设置了从backbone中输入特征图的对应通道数，注意维数和通道数要和backbone中的out_stage匹配。
 
     第三个参数设置了输出特征图的通道数。
 
@@ -4260,9 +4267,11 @@ RoboMaster组委会在2019年开源了一组[赛场数据集](https://bbs.roboma
 
     如果把share_cls_reg设为True则表明分类和bbox回归共用conv block，否则会为两个任务分别启用不同的conv block，这就是精度和速度的trade-off了。nanodet原结构是把他们作为两个分支，作为对比，yolov1就是复用了这部分特征。不过根据cnn的可视化研究，似乎回归和分类**利用的是不同特征**，分别训练肯定能得到更好的结果，当然性能必然没有复用ConvNet的快了。
 
-    octave_base_scale应该表示在特征图上的一个像素对应输入图像中的几个像素，或者说（根据比例推算，也许可以看作感受野？如果有你的理解猛戳笔者邮箱！）。
+    octave_base_scale和scales_per_octave这两个参数可以不用管，是为了让配置文件兼容anchor-based的网络。
 
-    scales_per_octave只能设置成1（对于anchor-based的检测方法，此参数代表一个网格内有多少种不同尺寸的anchor，在设置此参数后还需要设置anchor的大小和长宽比例），因为nanodet作为anchor-free模型是不使用锚框的。nanodet使用的FCOS头直接把**对应feature map上的每个位置作为训练样本**，而不是用生成的anchor去计算和ground truth的IOU，只要那个grid落入了任意一个ground truth范围就把他认为是正样本，然后进行回归。
+    > 若你了解两阶段网络中的RPN或anchor-based网络，应该能较好地理解这两个参数。octave_base_scale为特征图每个位置上anchor的**基础尺寸**的数量，如这里为5即每个格点都有边长为5个像素的anchor。对于anchor-free方法，scales_per_octave只能设置成1，因为每个格点只会预测一组输出，nanodet作为anchor-free模型是不使用锚框的，类似于只有一组anchor。对于anchor-based的检测方法，此参数代表一个网格内有多少种**不同尺寸**的anchor，在设置此参数后还需要设置anchor的长宽比例）。nanodet使用的FCOS头直接把**对应feature map上的每个位置作为训练样本**，只要那个grid落入了任意一个ground truth范围就把他认为是正样本然后直接进行回归，而不是用生成的anchor去计算和ground truth的IOU再选取IOU大的几个anchor进行回归。
+    >
+    > 这部分不理解可以回到 *5.2.6.2* 介绍Faster R-CNN中的RPN部分看看。
 
     strides是对特征图进行下采样的时候的步长，还是要和之前的参数设置对应（我们使用了三个经融合后的特征）。
 
@@ -4273,7 +4282,7 @@ RoboMaster组委会在2019年开源了一组[赛场数据集](https://bbs.roboma
     
 
   - DataSet
-
+  
     ```yaml
     data:
       train:
@@ -4296,13 +4305,13 @@ RoboMaster组委会在2019年开源了一组[赛场数据集](https://bbs.roboma
           normalize: [[103.53, 116.28, 123.675], [57.375, 57.12, 58.395]]
     ```
 
-    这里就是训练集、测试集的路径设置了。默认支持coco、voc格式的训练集，也可以使用xml格式。当然你也可以使用其他自定格式的，只需要在nanodet/data/dataset中自己制作一个dataset类并提供```__getitem()__```和```__len__```方法即可。
+    这里就是训练集、测试集的路径设置了。默认支持coco、voc格式的训练集。当然你也可以使用其他自定格式的，只需要在nanodet/data/dataset中自己制作一个dataset类并提供```__getitem()__```和```__len__```方法即可。
 
-    img_path是训练图像的路径，ann_path是图像标签的路径，注意coco格式是以整个.json文件。inputsize设置输入的图片大小，也就是投入网络的分辨率，勾选keep_ratio则会在resize的时候保持图像的比例而不进行拉伸。
+    img_path是训练图像的路径，ann_path是图像标签的路径，注意coco格式是以整个.json文件的形式保存的。inputsize设置输入的图片大小，也就是投入网络的分辨率，勾选keep_ratio则会在resize的时候保持图像的比例而不进行拉伸。
 
     在pipeline中可以选择是否进行预处理和数据增强。
 
-    启动multi_scale的话将会对图像进行多尺度训练（不同程度的缩放，有利于识别**小目标**和特大目标。系数由参数决定，如这里就是0.6-1.4倍的缩放）。stretch则是水平方向或竖直方向的拉伸和收缩，rotation设置旋转的角度，shear设置裁切，translate是平移，flip翻转。最后三个参数分别可以对图像的亮度、对比度进行增强，范围可以自己设置。
+    启动multi_scale的话将会对图像进行多尺度训练（不同程度的缩放，有利于识别**小目标**和特大目标。系数由参数决定，如这里就是0.6-1.4倍的缩放）。stretch则是水平方向或竖直方向的拉伸和收缩，rotation设置旋转的角度，shear设置裁切，translate是平移，flip镜像。最后三个参数分别可以对图像的亮度、对比度进行增强，范围可以自己设置。
 
     normalize则是用于输入归一化的参数，不了解的同学可以参考 *5.2.3* 中的**归一化和标准化**。
 
@@ -4313,7 +4322,7 @@ RoboMaster组委会在2019年开源了一组[赛场数据集](https://bbs.roboma
     
 
   - Device
-
+  
     ```yaml
     device:
       gpu_ids: [0]
@@ -4327,12 +4336,12 @@ RoboMaster组委会在2019年开源了一组[赛场数据集](https://bbs.roboma
 
     第二个参数是每个GPU并行的**dataloader数**，根据显存大小来选，多少G显存就填多大的值。在显存足够的情况下可以让训练速度变得更快，和batchsize不可兼得。
 
-    第三个是每个GPU一个batch运行的数据数，也就是 *5.2* 介绍地mini-batch数量，这可以根据你数据集的大小更改，同时也要注意不能设太大（显存限制，太大了也会影响网络参数收敛）。
+    第三个是每个GPU一个batch运行的数据数，也就是 *5.2* 介绍地mini-batch数量，这可以根据你数据集的大小更改，同时也要注意不能设太大（显存限制，太大了也会影响网络参数收敛）。太小的话训练效率太低，并且由于样本数量少会引起梯度不稳定，BN的统计量太少也不能获得很好的效果甚至适得其反。
 
     
 
   - schedule
-
+  
     ```yaml
     schedule:
     #  resume:
@@ -4354,15 +4363,15 @@ RoboMaster组委会在2019年开源了一组[赛场数据集](https://bbs.roboma
       val_intervals: 10
     ```
 
-    这是用于训练以及对应优化的一些基本选项。
+    这是用于训练过程以及对应优化的一些基本选项。
 
-    第一个参数resume若去除注释则可以继续训练权重文件，写入resume：true即可。
+    第一个参数resume若去除注释则可以继续训练权重文件，冒号后面可以不用加东西。
 
     第二个参数需要和第一个参数配合启用，填入需要继续训练的模型。这两个参数搭配可以让你使用预训练模型（pretrained model）以减少训练开销并获得更好的收敛效果。
 
-     optimizer中的参数是pytorch提供的一个优化器模块。
+     *optimizer中的参数是pytorch提供的一个优化器模块。*
 
-    第三个参数name是选择优化器，nanodet支持所有pytorch提供的优化器。
+    第三个参数name是选择优化器，nanodet支持所有pytorch提供的优化器。SGD即随机梯度下降。
 
     第四个参数是学习率learning rate。
 
@@ -4370,11 +4379,11 @@ RoboMaster组委会在2019年开源了一组[赛场数据集](https://bbs.roboma
 
     第六个是权重衰减率，即**正则化**中的超参数，同样在 *5.2.3* 介绍过。
 
-    warmup的参数分别有warmup的类型如linear、exp、constant，steps是warmup迭代的次数，ratio则是热身的学习率，可以看到要比lr小一些并且是不断衰减的（若使用linear和exp，这可以防止在初期出现振荡）。
+    warmup的参数分别有warmup的类型如linear、exp、constant，steps是warmup迭代的次数，ratio则是热身的学习率，可以看到要比lr小一些并且是不断衰减的（若使用linear和exp，这可以防止在初期出现振荡）。在训练初期以低的学习率进行“热身”可以稳定训练防止梯度出现异常，因为初始化的参数往往在搜索空间中处于Loss较高的位置。
 
-    total_epoaches就是总的训练次数（遍历整个数据集的次数，不是mini-batch），这个数据过大也会导致显存溢出或内存溢出，因为有一些参数在训练过程中是需要一直保存的。
+    total_epoaches就是总的训练次数（遍历整个数据集的次数，不是mini-batch），每个iteration会训练一个minibatch，每个epoch的iteration数为**数据集的样本数➗minibatch大小**。
 
-    lr_schedule可以参照torch的[官方文档](https://pytorch.org/docs/stable/optim.html?highlight=lr_scheduler#torch.optim.lr_scheduler)进行选择。name参数选择优化方法，如MultiStepLR就是选择在某个确定的结点进行学习率衰减，milestones是要选择的epoch时机，一旦到达milestone就按gamma来衰减学习率，前面我们也介绍了可以在学习的后期逐渐降低学习率。
+    lr_schedule可以参照torch的[官方文档](https://pytorch.org/docs/stable/optim.html?highlight=lr_scheduler#torch.optim.lr_scheduler)进行选择。name参数选择优化方法，如MultiStepLR就是选择在某个确定的结点进行学习率衰减，milestones是要选择的衰减时机，一旦到达milestone的那个epoch就按gamma来衰减学习率，前面我们也介绍了可以在学习的后期逐渐降低学习率。
 
     最后一个参数val_intevals则是选择每多少各epoch评估一次当前模型的性能。评估得到的性能会被存储在训练log里。
 
@@ -4383,7 +4392,7 @@ RoboMaster组委会在2019年开源了一组[赛场数据集](https://bbs.roboma
     
 
   - Evaluate
-
+  
     ```yaml
     evaluator:
       name: CocoDetectionEvaluator
@@ -4395,7 +4404,7 @@ RoboMaster组委会在2019年开源了一组[赛场数据集](https://bbs.roboma
     
 
   - class_names
-
+  
     这就不多说了，是用于可视化输出bbox的标签。
 
 
@@ -4427,15 +4436,27 @@ RoboMaster组委会在2019年开源了一组[赛场数据集](https://bbs.roboma
 
 - 不过，如果你不需要距离信息，只希望得到装甲板中心相对相机光心（图像中心）的偏角，那么到这一步也足够了，关于如何进一步处理，也请看 *6.3* 。
 
-- 利用NanoDet进行扩展以实现四点检测
-
-  笔者这里提供一个由nanodet修改的范例以供参考：[扩展NanoDet以实现关键点检测任务]()。整个模型的思想仍是FCOS式的，我们预测四个角点相对于prior中心的偏移量，即预测每个角点对中心的dx和dy。这样就不用考虑anchor，在进行匹配的时候不需要担心生成的凸包（即四个点）出现相互关系和位置异常的情况。
+- 笔者这里提供一个由nanodet修改的范例以供参考：[扩展NanoDet以实现关键点检测任务]()。整个模型的思想仍是FCOS式的，我们预测四个角点相对于prior中心的偏移量，即预测每个角点对中心的dx和dy。这样就不用考虑anchor，在进行匹配的时候不需要担心生成的凸包（即四个点）出现相互关系和位置异常的情况。
 
 - 由于装甲板上的不同数字和图案（哨兵，前哨战，基地）在远处看起来非常相似，这对于广角镜头或需要远距离攻击的兵种可能带来不利影响，若网络出现欠拟合或模型容量不足，很可能出现误识别（特别是场地的一些灯效以及定位标签，在网络看来可是和装甲板非常相似的）。对于这种情况，可以考虑和传统算法一样的two-stage方法：先利用网络定位装甲板，再专门设计一个分类网络对装甲板中的数字进行检测确认是否是真实装甲板并分类。
 
   这样的方法看起来完全是多此一举，然而，只检测一类可以大大提高网络参数的针对性和准确性，原本你让网络根据微小的差异判断不同分类，就相当于在它小小的脑子里塞进了它不该承受的知识。但若先将所有装甲板视为一类，这就大大减轻了它的负担。这也是**小目标检测**、**难例区分**等问题中的常用trick，先把所有小目标当作一个类别检测出来，然后再将ROI送入分类网络进行细分。
 
 > 基于CNN的目标检测方法最显著的特点就是泛化性能好，对于复杂的光线条件能够通过扩充相应数据集的方法来解决，也可以加入负样本防止误识别。其部署也不是什么难事，对于新队伍来说更加友好（直接使用官方训练然后找一个开源的网络）。并且习得特征（训练得到的卷积核和全连接的权重）的表示能力要大大强于人类专家手工设计的特征。在当下的RoboMaster赛场上，神经网络算法已经和传统识别分庭抗礼，之后的事，大家应该也能猜想到结果。
+
+
+
+---
+
+
+
+### 6.1.3. 设计key-point detection方法的装甲板检测
+
+
+
+
+
+
 
   
 
@@ -4850,7 +4871,7 @@ RoboMaster组委会在2019年开源了一组[赛场数据集](https://bbs.roboma
 
 # 7.**视觉组成员需要掌握的知识**
 
-> 在前文当中零散地介绍了一些需要学习的知识。在这个部分，会系统性的列出一张视觉组知识框架供大家参考。当然这只是笔者个人目前接触到的东西，限于个人水平必然有很多欠缺，望读者指正并提供补充建议。
+> 在前文当中零散地介绍了一些需要学习的知识。在这个部分，会系统性的列出一张视觉组知识框架供大家参考。当然这只是笔者个人目前接触到的东西，限于个人水平必然有很多欠缺和错误，望读者指正并提供补充建议。
 
 ## 7.1 硬件相关
 
@@ -4866,7 +4887,7 @@ RoboMaster组委会在2019年开源了一组[赛场数据集](https://bbs.roboma
 
 
 
-### 7.1.3 基本外设和硬件
+### 7.1.3 基本外设和附加硬件
 
 
 
@@ -4902,25 +4923,35 @@ RoboMaster组委会在2019年开源了一组[赛场数据集](https://bbs.roboma
 
 
 
-### 
+
+
+## 7.4 计算机视觉相关
 
 
 
-## 7.4 电控和机械
-
-### 7.4.1 伺服驱动单元
 
 
 
-### 7.4.2 硬件模块
+
+## 7.5 电控和机械
+
+### 7.5.1 伺服驱动单元
 
 
 
-### 7.4.3 控制方法和IMU
+### 7.5.2 硬件模块
 
 
 
-### 7.4.4 悬挂系统
+### 7.5.3 控制方法和IMU
+
+
+
+### 7.5.4 悬挂系统
+
+
+
+
 
 
 
@@ -4973,6 +5004,22 @@ RoboMaster组委会在2019年开源了一组[赛场数据集](https://bbs.roboma
 # 9.**心得体会和给新人的学习建议**
 
 > 终于来到本文的最后一个部分了,这也算是笔者个人向的一些思考和观点。求同存异哦～
+
+
+
+
+
+
+
+
+
+
+
+
+
+# 参考文献和网络资源
+
+
 
 
 
