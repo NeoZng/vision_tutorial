@@ -104,7 +104,7 @@ TODO：
 
   ![](Image_base\activateenergy.gif)
 
-  <center>正在激活能量机关的步兵机器人；图源RoboMaster2021内部交流</center>
+  <center>正在激活能量机关的步兵机器人；图源RoboMaster2021内部技术交流</center>
 
   
 
@@ -124,7 +124,7 @@ TODO：
 
   ![](Image_base\patrolsentry.gif)
 
-  <center>巡逻中的哨兵机器人；图源RoboMaster2021内部交流</center>
+  <center>巡逻中的哨兵机器人；图源RoboMaster2021内部技术交流</center>
 
   
 
@@ -146,7 +146,7 @@ TODO：
 
   ![](Image_base\grabmine.gif)
 
-  <center>正在夹取矿石的工程机器人(哈工大 I HITer战队)；图源RoboMaster2021内部交流</center>
+  <center>正在夹取矿石的工程机器人(哈工大 I HITer战队)；图源RoboMaster2021内部技术交流</center>
 
   
 
@@ -160,10 +160,12 @@ TODO：
 
 - 雷达在将全局数据处理后，还能**通过多机通信功能和己方的自动机器人如哨兵、自动步兵进行通信**，相当于为它们开了一双“天眼”。这无疑是极大地增强了这些自动单位的感知能力和决策能力(我愿称之为云计算!)，通过机间通信使得机器人不再受到边缘计算平台计算能力潺弱的限制，让算法火力全开，~~也让我们离全自动机器人战队又更近了一步。~~
 
-- 可以参考[上海交通大学的雷达站](https://www.bilibili.com/video/BV1FM4y1579H)，基本功能都已经实现，API封装的很好，通信功能也很完善，适合在其上进一步开发。
+- 可以参考[上海交通大学的雷达站](https://www.bilibili.com/video/BV1FM4y1579H)[^1]，基本功能都已经实现，API封装的很好，通信功能也很完善，适合在其上进一步开发。
+
+  ![]()
 
   
-
+  
   ---
 
 
@@ -3919,7 +3921,7 @@ OpenCV用于标定的`calib3d`中，用于识别棋盘标定板的函数就用�
 
 如果像上图一样，在两张图中找到的特征点无法重合，即在不同条件下物理意义下相同的点不能被稳定检测出来，后续的匹配也就无从谈起了。因此，不要忘记我们寻找特征点的目的，我们首要是希望能在经过变换的图像上找到和原图一样的特征点，其次才是找到那些比较有特点的点方便我们进行匹配。那么要想在不同图像尺寸和不同尺度的特征上能够**重复**、稳定地检测出特征点，就需要引出**尺度空间和图像金字塔的概念**。
 
-
+---
 
 ##### 5.5.4.1.2. 尺度空间及其上的极值检测
 
@@ -4003,11 +4005,11 @@ blob和corner一样，属于能够被精确定位的特征点。和角点一样�
 
 <center>把标准化的LoG倒过来看看，周围有一圈反向的“环形山”</center>
 
+我们再看个例子，[5.5.4.1.2.2](######5.5.4.1.2.2. 尺度和分辨率的定义)处的教堂图片，要想把红色圈中的屋檐拐角定位出来，在不同的尺度上就要用不同直径的红圈！
+
 要是还有点不明白的话，视频讲解戳这里：[Detecting Blobs | SIFT Detector - YouTube](https://www.youtube.com/watch?v=zItstOggP7M&list=PL2zRqk16wsdqXEMpHrc4Qnb5rA1Cylrhx&index=15)，这里也推荐一篇对尺度空间斑点极值检测的**尺度不变性**讲得比较好的博客：[对SIFT算法尤其是尺度不变性的理解-ChuanjieZhu的博客](https://blog.csdn.net/u014485485/article/details/78681086)
 
 > 至于为什么要使用规范化的LoG即乘以尺度的平方，直觉的解释是，随着尺度的增大，高斯函数也变得越来越平滑，它的峰值响应会逐渐减小。虽然我们仍然可以在斑点处利用LoG检测到极大值，但是相对于其他地方来说这个极值显得太不明显了，不够稳定且容易被噪声干扰。这是二维高斯窗的公式：$G(x, y, \sigma)=\frac{1}{2 \pi \sigma^{2}} e^{-\left(x^{2}+y^{2}\right) / 2 \sigma^{2}}$，每次求偏导都会将幂指数上方的$1/2\sigma^2$乘到前面的系数项，使得函数值成比例缩小。为了保持不同尺度的LoG拥有相同的性质——$\Delta_{(x, y)} G_{\text {norm }}(\sigma x, \sigma y ; \sigma)=\Delta_{(x, y)} G_{\text {norm }}(x, y ; 1)$，标准化的LoG在不同尺度上对应不同的斑点就将拥有**等比例缩放**相同的响应。这样我们就能保证在较大尺度的时候，遇到斑点仍然拥有比较尖锐的响应。要从数学上推导，参见[Feature Detection with Automatic Scale Selection](http://www.diva-portal.org/smash/get/diva2:453064/FULLTEXT01.pdf)
-
-
 
 ###### 5.5.4.1.2.4. 通过DoG近似LoG
 
@@ -4023,21 +4025,21 @@ blob和corner一样，属于能够被精确定位的特征点。和角点一样�
 
 <center>是不是很像？</center>
 
-
-
 ###### 5.5.4.1.2.5. 筛选极值点
 
 根据我们的已有知识，终于可以开始寻找那些尺度不变的极值点了。首先构建尺度空间，我们就会得到一个3维的stack（两维为xy，另外一维是构建尺度空间的时候使用的$\sigma$）。如下图所示，我们在每一个像素点处进行极值点检测，对比其像素值和周围26个像素的大小，如果比周围的像素都大/小，那么就是尺度空间中的一个极值点。
 
 ![](Image_base\extremainscalespace.png)
 
-<center>“x”是待检测点，筛选需要对尺度空间中的所有点运行，复杂度是26\*h\*w\*(t-2)，t为使用的尺度个数</center>
+<center>“x”是待检测点，筛选需要对尺度空间中的所有点运行，复杂度是26*h*w*(t-2)，t为使用的尺度个数</center>
 
 下图是对尺度不变的直观理解，这里有两幅不同尺度的图片，我们利用不同尺度的标准化LoG处理“x”位置的那个角点，会产生下方的响应值，四组图片中使用的LoG的尺度逐渐增大。对于图像中这个相同的但是尺度不同的角点（“x”处），总有一个尺度的LoG会对其产生最大的响应。**那么不管这个角点被缩放到什么大小，我们都能通过在尺度空间中检测极值将其检出，这就实现了尺度不变性。**
 
 ![](Image_base\cornerwithdifflog.png)
 
 上图的角点由于尺度不同，其极值出现在不同的尺度中，但是不管怎么样，它们都被**检出**。
+
+> 实际上，SIFT算法也建立了图像金字塔，其目的是为了减小构建尺度空间的开销，因为在相同分辨率上进行大核卷积（即尺度很大的时候），时间开销是非常大的。我们在[5.5.4.1.5](#####5.5.4.1.5. 图像金字塔和尺度空间的区别和联系)将会介绍图像金字塔和尺度空间之间的千丝万缕。
 
 说到这里，要是你对[5.5.4.1.2](#####5.5.4.1.2. 尺度空间及其上的极值检测)尺度空间中尺度不变的斑点检测还是有些晕，我们再缕一缕思路：
 
@@ -4053,7 +4055,8 @@ blob和corner一样，属于能够被精确定位的特征点。和角点一样�
 
 6. 建立尺度空间，在尺度空间中利用DoG近似LoG，通过寻找尺度空间（3维）中的极值，将斑点检出
 
-   
+
+---
 
 ##### 5.5.4.1.3. 极值检测的改进与积分图近似
 
@@ -4103,22 +4106,74 @@ $$
 
 上面得到得是LoG在各个方向的分量，实际要得到LoG的话，把不同分量加在一起即可。用上图左侧的矩形块计算LoG就不再需要进行超高复杂度的卷积，这种模板被称作box filter（盒式滤波器）。现在要建立尺度空间，就比原来简单得多了：对于图像输入，首先建立积分图，这需要花费w\*h的时间。随后，利用不同尺度的box filter对原图进“滤波”，就构建出了尺度空间。最后，用前面介绍的方法在尺度空间中寻找极值点即可。
 
-> 复习一下微积分，拉普拉斯算子的表达结果是这样的：$\nabla^{2} f=\frac{\partial^{2} f}{\partial x^{2}}+\frac{\partial^{2} f}{\partial y^{2}}$，因此要获取拉普拉斯-高斯响应，我们就要把纵向和横向的盒式滤波器的响应加在一起。对于$\frac{\hat{\partial}^{2}}{\partial x \hat{\partial} y} g(x, y)$这一项，在构建尺度空间的时候是不需要使用的。SURF（speed-up robust feature）是首先使用盒式滤波器构建尺度空间的算法，实际上该算法使用海塞矩阵**Hessian Matrix**的特征值检验来检测尺度空间中的极值点。相比规范化LoG，通过计算Hessian矩阵能够得到尺度空间中更稳定、重复性更好的特征点。感兴趣的同学可以直接参考SURF的[论文](https://www.sciencedirect.com/science/article/pii/S1077314207001555?ref=pdf_download&fr=RR-2&rr=7315b20d4b6f6a84)，摘要和背景中有关于Hessian矩阵和LoG在尺度空间中的异同的介绍。
+> 复习一下微积分，拉普拉斯算子的表达结果是这样的：$\nabla^{2} f=\frac{\partial^{2} f}{\partial x^{2}}+\frac{\partial^{2} f}{\partial y^{2}}$，因此要获取拉普拉斯-高斯响应，我们就要把纵向和横向的盒式滤波器的响应加在一起。对于$\frac{\hat{\partial}^{2}}{\partial x \hat{\partial} y} g(x, y)$这一项，在构建尺度空间的时候是不需要使用的。
+>
+> SURF（speed-up robust feature）是首先使用盒式滤波器构建尺度空间的算法，实际上该算法使用海塞矩阵**Hessian Matrix**的特征值检验来检测尺度空间中的极值点。并且利用盒式滤波器生成尺度空间时，在任何大小的开销都是常数时间级的，因此SURF不需要使用图像金字塔。阅读SURF论文你会发现它仍然产生了几组（octave）不同分辨率的图像，这是因为盒式滤波器在增大的时候（即尺度增大），并没有添加相应大小的padding。
+>
+> 相比规范化LoG，通过计算Hessian矩阵能够得到尺度空间中更稳定、重复性更好的特征点。感兴趣的同学可以直接参考SURF的[论文](https://www.sciencedirect.com/science/article/pii/S1077314207001555?ref=pdf_download&fr=RR-2&rr=7315b20d4b6f6a84)，摘要和背景中有关于Hessian矩阵和LoG在尺度空间中的异同的介绍。
+>
+> 一篇从数学上介绍为什么Hessian能够用于特征点检测的博客戳这里：[Introduction to the Hessian feature detector for finding blobs in an image - Milania's Blog](https://www.milania.de/blog/Introduction_to_the_Hessian_feature_detector_for_finding_blobs_in_an_image)，讲的非常好，而且这位作者的前端功底非常牛批，甚至在博客界面给读者提供了拖条可视化。
 >
 > 在此我们简要地讲述一下Hessian矩阵检测特征的直觉，在多元微积分部分大部分同学都应该学习过相关的知识，直接看Hessian的形式：
 > $$
 > H=\begin{bmatrix}
->  \frac{\partial ^2f}{\partial x^2}  &\frac{\partial ^2f}{\partial x\partial y}  \\
->   \frac{\partial ^2f}{\partial x\partial y}&\frac{\partial ^2f}{\partial y^2} 
+> \frac{\partial ^2f}{\partial x^2}  &\frac{\partial ^2f}{\partial x\partial y}  \\
+> \frac{\partial ^2f}{\partial x\partial y}&\frac{\partial ^2f}{\partial y^2} 
 > \end{bmatrix}
 > $$
-> 对于f为高斯函数的情形，此时H的迹实际上就是LoG！那么Hessian的物理意义是什么呢？还是先考虑一维情形，一阶导数正负代表变化方向幅度代表变化快慢，而二阶导数正负代表变化趋势快慢（**曲率**的大小），正负代表弯曲方向。
+> 对于f为高斯函数的情形，此时H的迹实际上就是LoG！那么Hessian的物理意义是什么呢？还是先考虑一维情形，一阶导数正负代表变化方向幅度代表变化快慢，而二阶导数正负代表变化趋势快慢（**曲率**的大小），正负代表弯曲方向。二维的情形就复杂了，往各个方向移动会有不同的曲率，对于二元函数的一阶导数，我们会使用**方向导数**来描述某个特定方向的导数，对于曲率我们同样可以使用**方向曲率**的概念！计算方向导数，我们需要用**这个函数的梯度乘以一个单位化的方向向量**，那么对于方向曲率我们又应该怎么做？看看多元函数的泰勒展开：
+> $$
+> f(\mathbf{x})=f\left(\mathbf{x}_{k}\right)+\left[\nabla f\left(\mathbf{x}_{k}\right)\right]^{T}\left(\mathbf{x}-\mathbf{x}_{k}\right)+\frac{1}{2 !}\left[\mathbf{x}-\mathbf{x}_{k}\right]^{T} H\left(\mathbf{x}_{k}\right)\left[\mathbf{x}-\mathbf{x}_{k}\right]+o^{n}
+> $$
+> 一阶代表函数值当前变化方向带来的附加值，二阶代表函数变化趋势带来的附加值，也就是曲率变化的影响。那么要计算方向曲率，通过$C=x^THx$（c表示curvature）就行了，这又再次转化为了一个二次型问题！$H$是一个对称阵，接下来该怎么做应该很清楚了：对角化，利用特征值来解决问题。虽然矩阵元素的含义和特征值的意义不同，但后续的解决方案是不是和前面利用梯度变化来解决Harris角点检测的问题完全一致？那$H$矩阵有什么含义呢，他的两个特征值就代表了**曲率变化最大和最小的两个方向**。要用Hessian矩阵检验斑点，我们就应该找到那些所有方向上曲率变化都很大的区域，话不多说直接看图：
+>
+> ![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\Hessianmean.png)
+>
+> <center>橙色向量就表示检测点出Hessian矩阵的两个特征值的方向（实际上是特征向量的方向，长度为特征值）；图源https://blog.csdn.net/sy95122/article/details/80825846</center>
+>
+> 对于边缘，显然只有一个方向的曲率变化大，即垂直边缘的方向。所以SURF最终采用的检验尺度空间极值的方法是找到尺度空间中满足下式的点：
+> $$
+> \operatorname{det}(H)=D_{x x} * D_{y y}-w * D_{x y}^{2}\ge thre
+> $$
+> 其中$w$是用于修正盒式滤波器误差的系数，因为盒式滤波器将相同的系数赋予所有位置，而在边缘处响应实际上要弱一些，因此用此系数修正。可视化的效果和[5.5.4.1.1](#####5.5.4.1.1. Harris角点检测)中的双曲线图是一样的！上式为单个尺度的响应，在为每个尺度都计算出响应之后，用[5.5.4.1.2.5](######5.5.4.1.2.5. 筛选极值点)中一样的方法找尺度空间极值。
 
-
-
-
+---
 
 ##### 5.5.4.1.4. FAST特征点检测
+
+> FAST在[Fusing Points and Lines for High Performance Tracking](http://www.edwardrosten.com/work/rosten_2005_tracking.pdf)中被提出，是为了解决目标跟踪中图像特征在短时间内会发生巨大变化故无法保证视角不变性的问题而提出的。显然传统的特征点检测算法都是无法提供视角不变性的，因为所有特征都是在线提取并用后销毁。FAST特征虽然不如SIFT、SURF稳定，但是速度足够快，这样就能保证两帧之间视角不发生太大的变化。
+
+虽然利用盒式滤波器替代归一化LoG构建尺度空间已经让速度提升了接近十倍，但寻找特征点的总耗时仍然是秒级的，而FAST（Features From Accelerated Segment Test）的提出直接把寻找特征点的时间干小了两个数量级。前面的方法都是通过梯度、曲率等需要微分算子作用的特征来描述像素的变化，这种方法一方面可以提高特征点的稳定性（因为梯度和曲率相对于像素值要稍微high level一些），另一方面是为了方便构建尺度空间并在尺度空间中找到LoG等的自适应尺度模板（即尺度不变地找出特征点）。而在图像上的微分实际上都是通过**差分**实现的，那为什么不干脆就直接通过像素间的差值来描述变化？只要保证这种方法足够稳定就行，况且直接检查像素，速度要快得多。
+
+从像素值的层次来看，角点或斑点和周围像素应该有显著差别，那么我们需要一种定量的方法描述像素如何不同，FAST就直接对带检测点及其周围的一圈像素点进行测试：
+
+![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\FAST.png)
+
+<center>如果想提高精度，还可以对斜角上的像素进行插值</center>
+
+测试点$p$和半径为3的一圈16个像素值进行比较，当16个像素中出现至少12个**连续的像素**都大于或小于测试点的像素值时，就认为这是一个潜在的特征点。为了提升特征点的稳定性，还为比较设置了阈值，即将条件收缩到当这些像素和测试点**差值的绝对值**大于阈值$thre$的时候才认为通过。由于要求是12个连续的像素点，FAST还能够进一步加速：先看3、7、11、15号像素，只有当这四个像素有3个满足前述条件的时候，才对剩下的点进行测试。因为至少12个连续的点一定会包含这四个点中的至少三个。经过这样的预筛选，FAST的速度又进一步提高了。
+
+为了避免较大尺度特征点附近的集中响应（多个相似的集中响应用一个就能代表全部）和强响应附近较弱的响应（不稳定），在运行检测的时候同时计算每个测试点的响应得分：
+$$
+V=\max \left(\sum_{x \in S_{b r i g h t}}\left|I_{p \rightarrow x}-I_{x}\right|-t, \sum_{x \in S_{\text {dark }}}\left|I_{x}-I_{p \rightarrow x}\right|-t\right)
+$$
+上式就代表这个点和周围像素的差异，取更亮像素和其差值之和以及更暗像素与其差值之和的最大值。然后，对于每一个测试点及其的3x3邻域内的其他响应点运行NMS，比较它们的分数筛除弱响应和集中响应（重复响应）。
+
+后续对于FAST，还有人提出利用决策树的机器学习方法判断测试点是否为特征点。可以把测试点附近的16个像素点按照下面的方式进行分类，我们便会得到一个16维的分类特征，其中$t$为上面介绍到的阈值$thre$：
+$$
+S_{p \rightarrow x}=\left\{\begin{array}{ll}
+d, I_{p \rightarrow x} \leq I_{p}-t  \text { ( darker ) }\\
+s, I_{p}-t<I_{p \rightarrow x}<I_{p}+t \quad(\text { similar ) } & \\
+b, I_{p}+t \leq I_{p \rightarrow x} \text { (brighter) }
+\end{array} \quad\right.
+$$
+而最终分类的目标就是判断该测试点是否为我们要找的角点，因此我们只需要建立一颗2-state的决策树（实现上一般常用ID3-tree），树叶即对该角点的分类。先通过其他的特征点检测算法制作数据集，然后用决策树训练一个分类器即可。由于大部分时候都不会触碰到最长的树枝，平均复杂度应该是$log_216$即只需要8次测试就能确定角点的分类。（~~多少带点瞎猜的成分~~）
+
+至于检出时的尺度不变性，FAST是通过建立**图像金字塔**，然后在不同分辨率上的图像中分别运行一次角点检测实现的。
+
+##### 5.5.4.1.5. 图像金字塔和尺度空间的区别和联系
+
+ 
 
 
 
@@ -5436,9 +5491,15 @@ binary robust independent elementary feature
 
 # 参考文献和网络资源
 
+> 所有的图片已在对应注释中添加引用来源，此处不再重复引用。介绍到的相关论文、大部分网络资源，也已超链接的形式放在文中相应位置。这里只添加一些无法在文中确定详细引用位置的内容。
 
+[1] Lowe, D.G. Distinctive Image Features from Scale-Invariant Keypoints. *International Journal of Computer Vision* **60,** 91–110 (2004). https://doi.org/10.1023/B:VISI.0000029664.99615.94
 
+[2] Local Feature Descriptors: Harris and Hessian Corner Detector.[[CV\] 10. Local Feature Descriptors: Harris and Hessian Corner Detector | by jun94 | jun-devpBlog | Medium](https://medium.com/jun94-devpblog/cv-10-local-feature-descriptors-harris-and-hessian-corner-detector-7d524888abfd)
 
+[3] Signals & Systems,Alan V. Oppenheim, Alan S. Willsky, Syed Hamid Nawab,Pearson Educación, 1997.
+
+[4] 
 
 
 
