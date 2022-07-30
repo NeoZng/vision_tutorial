@@ -1,13 +1,61 @@
-# 了解CV和RoboMaster视觉组
 
-<p align='right'>
-    --NeoZng[neozng1@hnu.edu.cn]
-</p>
-**关注我（们）：**
 
-GitHub：HNUYueLURM vision_tutorial https://github.com/HNUYueLuRM/vision_tutorial (本教程仓库，star/watch获取最新动态！)
 
-CSDN：HNU跃鹿战队 https://blog.csdn.net/NeoZng
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1><center>了解CV和RoboMaster视觉组</center></h1>
+
+<h4>
+<center><font face="楷体">
+   曾庆铖 neozng1@hnu.edu.cn  </font>
+<center>    
+</h4>
+<h4>
+<center><font face="楷体">
+    湖南大学 机器人学院 RoboMaster跃鹿战队 视觉组 2022© </font>
+<center>    
+</h4>
+
+
+
+
+
+ 
+
+
+
+
+
+
+
+> ***只需要注明引用来源，就可以随意使用、复制、修改、合并、散布本文的部分或全部内容，本文中引用的其他内容版权归其著作者所有。***
+>
+> ***注意，请勿将本文作任何盈利或商业用途***
+
+
+
+
+
+
+
+# 关注我（们）
+
+GitHub： HNUYueLURM https://github.com/HNUYueLuRM/vision_tutorial ***(本教程仓库，star/watch获取最新动态！)***
+
+CSDN： HNU跃鹿战队 https://blog.csdn.net/NeoZng
 
 知乎：NeoAndrew https://www.zhihu.com/people/zengen-38
 
@@ -15,11 +63,11 @@ Bilibili：湖南大学跃鹿战队 https://space.bilibili.com/522795884
 
 Bilibili：RoboMaster机甲大师官方账号 https://space.bilibili.com/20554233
 
-微博：HNU跃鹿战队的微博 https://weibo.com/u/7503257970
+微博： HNU跃鹿战队的微博 https://weibo.com/u/7503257970
 
 RMCV 视觉开源数据站：https://rmcv.52pika.cn/#/rmcv
 
-RM开源资料汇总：https://bbs.robomaster.com/forum.php?mod=viewthread&tid=6979&fromuid=14
+RM开源资料汇总：https://bbs.robomaster.com/forum.php?mod=viewthread&tid=6979
 
 RoboMaster机甲大师官方网站：https://www.robomaster.com/zh-CN
 
@@ -255,7 +303,7 @@ RoboMaster机甲大师官方网站：https://www.robomaster.com/zh-CN
 
 - 为什么使用Ubuntu
 
-  - Ubuntu是一个Debian系分支的第一大系统，是当前**用户量最大的linux发行版**。因此，遇到任何问题一般都能够在用户社区[askubuntu](https://askubuntu.com/)中得到解答。它的安装也非常的方便，并且在更新到20.04后，ubuntu的桌面美观性也有提升。同时，ROS是在Ubutnu之下开发的。如果要使用ROS，Ubuntu是你的不二之选。
+  - Ubuntu是一个Debian系分支的第一大系统，是当前**用户量最大的linux发行版**。因此，遇到任何问题一般都能够在用户社区[askubuntu](https://askubuntu.com/)中得到解答。它的安装也非常的方便，并且在更新到20.04后，ubuntu的桌面美观性也有提升。同时，ROS是在Ubuntu之下开发的。如果要使用ROS，Ubuntu是你的不二之选。
 
   - Linux下开发C++程序相比Windows有无与伦比的优势，可以方便的配置各种第三方库和依赖。常言道python好用是因为有大量开箱即用的第三方库，可以轻松通过pip安装，而Linux下通过yum/apt/pacman等包安装软件管理的软件包，实际上就是C/C++隐藏的库安装/管理利器！apt是Debian系发行版用于管理第三方库的一个软件，负责管理系统中安装的各类软件包，开发包，依赖库。可以通过apt轻松地安装各种软件（可执行文件）、开发库（头文件headers，.so动态链接库等。如果你曾经在Visual Studio中为项目配置繁杂的头文件、链接库路径等依赖，你一定会爱上Linux下用cmake管理c++环境的开发方式。
 
@@ -4505,6 +4553,10 @@ K-Nearest Neighborhood即K-近邻，是机器学习的一种经典算法，这�
 
   即最近点小于阈值，且要两个点相对测试点的距离有足够大的差距；否则，将当前测试点从候选库中删除，后续不再匹配此点。此法可以通过特征之间的相似性差别筛除一些错误匹配点。
 
+<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\KNNcaption.png" style="zoom:67%;" />
+
+<center>橙色来自A图，蓝色来自B图，橙色点只看得到蓝色点而看不到其他橙色点；反向验证也是如此，只需关注另一幅图像上的特征点</center>
+
 OpenCV将特征点匹配算法封装成了`matcher`类，其中就提供了KNN匹配的方法，详情戳[这里](https://docs.opencv.org/3.4/d5/d6f/tutorial_feature_flann_matcher.html)
 
 
@@ -4871,13 +4923,35 @@ OpenCV将特征点匹配算法封装成了`matcher`类，其中就提供了KNN�
 
 - 配置环境
 
-  根据仓库中的readme走就可以了，repo一般都会提供一个requirements.txt，直接用pip安装所有环境就完事了。也就是：
+  建议使用anaconda来管理不同repo的环境防止出现各种软件包版本不兼容的情况。如果没有梯子，可以**更换conda和pip的软件源**（和Ubuntu的apt是一样的道理），可以让安装过程更为迅速。
 
+  由于英伟达引领的CUDA几乎已经成为了深度学习训练的事实标准，若在Linux下，配置深度学习环境你需要安装显卡驱动（默认驱动是nouveau），你可以选择在“软件与更新”中的“附加驱动”中选择需要的驱动版本。然后你还需要安装CUDA，**强烈建议利用conda/pip**安装cudatoolkit而不是从英伟达官网下载！因为你并不需要CUDA的所有功能，上述安装方法已经提供了深度学习训练所需的所有工具。还需要特别注意的是显卡、驱动版本、cuda版本和pytorch版本之间的对应关系。
+  
+  [Release Notes :: CUDA Toolkit Documentation](https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html#title-resolved-issues)提供了显卡驱动和cuda之间的对应关系，对于不同的cuda版本，切换到对应版本的release notes，你只需要关注表格中的最下方：
+
+  ![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\cudadriverversion.png)
+  
+  而pytorch和上述软件和驱动之间的对应关系，在pytorch官网已经帮你安排好了兼容性：[Start Locally | PyTorch](https://pytorch.org/get-started/locally/)，若这里没有你要的版本，[Previous PyTorch Versions](https://pytorch.org/get-started/previous-versions/)中提供了历史版本和其他cuda版本的支持，建议按照网站上的关系进行安装。完成安装之后，在终端中通过以下命令确认安装：
+  
+  ```shell
+  python # 在终端中启动python,注意先conda activate对应的环境
+  ```
+  
+  ```python
+  import torch
+  torch.cuda.is_available() # 若输出true说明cuda安装好了
+  t=torch.Tensor([1,1])
+  t.to("cuda") 
+  print(t) # 输出tensor([1,1], device='cuda:0')说明cuda工作正常
+  ```
+  
+  剩下的依赖根据算法仓库中的readme走就可以了，其repo一般都会提供一个requirements.txt，直接用pip安装所有环境就完事了。也就是：
+  
   ```shell
   pip/pip3 install -r requirements.txt # 若在base环境安装或没有使用anaconda,提示permission denied,有可能需要管理员权限,加上sudo即可
   ```
-
-  建议使用anaconda来管理不同repo的环境防止出现各种软件包版本不兼容的情况。如果没有梯子，可以**更换conda和pip的软件源**（和Ubuntu的apt是一样的道理），可以让安装过程更为迅速。
+  
+  
 
 
 
@@ -4998,7 +5072,7 @@ OpenCV将特征点匹配算法封装成了`matcher`类，其中就提供了KNN�
 
     strides是对特征图进行下采样的时候的步长，还是要和之前的参数设置对应（我们使用了三个经融合后的特征）。
 
-    reg_max是和distribution focal loss有关的参数，因为DFL要求回归出框的分布，该参数指定了离散的区间数目，可以参考Generalized Focal Loss文章：[大白话 Generalized Focal Loss ](https://zhuanlan.zhihu.com/p/147691786)
+    reg_max是和distribution focal loss有关的参数，因为DFL要求回归出框的分布，该参数指定了离散的区间数目，[5.2.6.5.7](#####5.2.6.5.7. GFL)中介绍了通用离散损失。
 
     norm_cfg则是关于归一化层的设置，type中可以选择不同的归一化方法，最长常用的是Batch Norm，也可以使用Group normlization和Layer normlization。
 
