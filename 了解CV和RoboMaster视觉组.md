@@ -4809,37 +4809,245 @@ OpenCV自家的东西肯定是整得明明白白的，直接把检测和描述�
 
 ## 5.6.三维视觉基础
 
+现实世界在空间上有三个维度，而照片却是二维的，图片在成像过程中损失了一个维度：**深度**。从仿生和类比的角度来说，人眼也能观察到三维信息，这是因为它是一个**双目视觉**系统。再加上人在基因中、成长过程中习得的大量先验信息，在大部分时候我们都可以轻松辨别物体的远近。为了更好地为下游任务服务，我们就要想方设法让计算机也能理解图像中的深度信息。
+
+### 5.6.1. 坐标系变换
+
+> 这里只是介绍如何描述三维空间中的刚体变换但是并不涉及**它们为什么是这样的形式**的解释，要进一步学习请自行查阅相关资料。
+
+这里我们简要介绍一下三维空间中的两种**刚体变换**和它们的组合：平移+旋转=位姿变换。三维空间内任意两个刚体系都可以通过如下两步变换实现。首先是平移，令初始坐标原点为：
+$$
+C_0=\begin{bmatrix}
+ x_0\\
+ y_0\\
+z_0
+\end{bmatrix}
+$$
+平移之后得到$C_1$:
+$$
+C_1=\begin{bmatrix}
+ x_1\\
+ y_1\\
+z_1
+\end{bmatrix}
++\begin{bmatrix}
+ x_0\\
+ y_0\\
+z_0
+\end{bmatrix}
+$$
+把旋转矩阵拆成绕三个轴的旋转：
+$$
+\begin{array}{l}
+R_{x}(\beta)=\left[\begin{array}{ccc}
+1 & 0 & 0 \\
+0 & \cos \beta & -\sin \beta \\
+0 & \sin \beta & \cos \beta
+\end{array}\right] 
+\quad
+R_{y}(\theta)=\left[\begin{array}{ccc}
+\cos \theta & 0 & \sin \theta \\
+0 & 1 & 0 \\
+-\sin \theta & 0 & \cos \theta
+\end{array}\right]
+\end{array}\quad
+R_{z}(\alpha)=\left[\begin{array}{ccc}
+\cos \alpha & -\sin \alpha & 0 \\
+\sin \alpha & \cos \alpha & 0 \\
+0 & 0 & 1
+\end{array}\right]
+$$
+将旋转施加到平移后的坐标系，得到变换结果$C_2$：
+$$
+C_2=R_x(\beta)R_y(\theta)R_z(\alpha)C_1
+$$
+由于平移变换不是三维向量空间中的**线性变换**因此无法用矩阵表示，为了方便起见我们增加一个额外的维度形成**齐次坐标系**，用四维矩阵$T$描述三维空间中的任意刚体变换：
+$$
+\left[\begin{array}{c}
+x' \\
+y'\\
+z'\\
+1
+\end{array}\right]=\left[\begin{array}{cc}
+R & t \\
+0^{T} & 1
+\end{array}\right]\left[\begin{array}{l}
+x \\
+y\\
+z\\
+1
+\end{array}\right]=T\left[\begin{array}{l}
+x \\
+y\\
+z\\
+1
+\end{array}\right]
+$$
+$t$是一个3x1的向量，$R$则是3x3的旋转矩阵，自己动手写一下，按照矩阵乘法进行展开，能够加深理解。
+
+> 简要直观地讲解一下为什么三维空间中的**平移**不是线性变换。首先你需要理解线性变换的概念：线性变换是向量空间$V$到其自身的线性映射。线性映射$A$需要满足两个条件：
+> $$
+> \begin{array}{l}
+> \mathrm A(\boldsymbol{\alpha}+\boldsymbol{\beta})=\mathrm{A}(\boldsymbol{\alpha})+\mathrm{A}(\boldsymbol{\beta}) \\
+> \mathrm{A}(\mathrm{k} \boldsymbol{\alpha})=\mathrm{kA}(\boldsymbol{\alpha})
+> \end{array}
+> $$
+> 其中$\alpha,\beta$为向量空间$V$中的任意两个元素，$k$是任意大小的矢量。一种最简单也是最”定义“的角度就是，**平移无法用三维方阵描述**，因为常数矩阵是描述线性变换的工具，所有线性变换都可以表示为矩阵的形式（矩阵就是因为描述线性变换很方便，才被发明出来）。不开玩笑，我们从线性映射的定义出发，理解平移。为了方便起见同时又不失一般性，我们采用二维空间中的平移帮助理解。为了满足第一个条件，首先对其上的两个向量$\alpha,\beta$分别施以平移变换$shift$（记为$s$），得到等式右边$\alpha_1+s,\beta_1+s$；等式的左侧为$\alpha+\beta+s$，等式右边的变换项却是$2s$！用二维笛卡尔坐标系可视化一下：
+>
+> <img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\shiftnotlinear.png" style="zoom:67%;" />
+>
+> 怎么画出来就不对了呢？**这是因为虚线是仍然在原坐标系下进行矢量相加得到的结果**，而实际上在经过变换之后，**原点**已经跑到$(0,1)$处了。实际上，平移变换导致向量空间中的**零元**发生改变，而线性变换需要保证零向量在施加变换之后仍然是零向量，但在这里，变换后的坐标系原点已经跑到原坐标系的$(0,1)$处！为了保证线性空间的性质，同时又能利用矩阵这个工具进行计算，我们加入额外的一个维度，让平移变换在**新增的维度**上进行，从而移除对原点的影响。
+
+
+
+---
+
+
+
+### 5.6.2. 相机成像模型
+
+有了坐标系变换的基础，就可以学习相机成像模型了。物体投影到相机的光线传感器的过程，仅仅是在刚体变换的基础上增加了一些缩放。[4.1.1](###4.1.1. 镜头)已经介绍了相机的小孔成像模型，对于我们的应用场景来说这个近似已经足够，因此下面在进行变换的时候都把**镜头等效为一个小孔**。另外，在小孔模型下，**像距$d$和焦距$f$相等**。
+
+<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\smallhole.png" style="zoom: 80%;" />
+
+<center>像平面（相机的感光单元平面）上成倒像，将其竖直镜像后放置在光心前方一个焦距的位置方便计算</center>
+
+现在用数学化的语言描述物体上每一个点在像平面上的对应关系：
+
+<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\frontimagesmallhole.png" style="zoom:80%;" />
+
+<center>相机主点即相机光心/镜头的光学中心</center>
+
+利用中学的几何知识就可以知道，这里有两个相似三角形$\Delta Opc$和$\Delta OPZ_c$，显然实际物体上的每一点和像平面上的物体都符合这个关系，用等式描述，即：
+$$
+\left\{\begin{array} { l } 
+{ \frac { X } { Z } = \frac { x } { f } } \\
+{ \frac { y } { Z } = \frac { y } { f } }
+\end{array} \Rightarrow \left\{\begin{array}{l}
+x=f \frac{X}{Z} \\
+y=f \frac{Y}{Z}
+\end{array}\right.\right.
+$$
+在这里，我们假定两个方向的焦距**相同**，用矩阵来描述这种关系，也就是：
+$$
+Z_{c} *\left[\begin{array}{c}
+x \\
+y \\
+1
+\end{array}\right]=\left[\begin{array}{lll}
+f & 0 & 0 \\
+0 & f & 0 \\
+0 & 0 & 1
+\end{array}\right]\left[\begin{array}{c}
+X_{c} \\
+Y_{c} \\
+Z_{c}
+\end{array}\right]
+$$
+这时的**坐标原点是相机的光心**，$x,y$ 是像平面上点的坐标，$X_c,Y_c,Z_c$是物体在**相机系**下的坐标，$Z_c$在投影后将被压扁而丢弃。由于使用惯例和方便起见，图像在计算机中保存时原点为左上角，而刚刚图像坐标系的原点则是在CMOS的正中心。另外，CMOS上的感光单元都是离散的，因此这一步转换涉及坐标系的平移和数值的离散化：
+
+<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\imgtopixeltrans.png" style="zoom: 67%;" />
+
+<center>O'就是CMOS中心的位置</center>
+
+$u_0,v_0$一般都为CMOS长宽的一半，令$dx,dy$为一个像素在水平位置和数值位置上占据的单位长度（就是一个感光单元的尺寸），写成矩阵乘法形式：
+$$
+\left[\begin{array}{l}
+u \\
+v \\
+1
+\end{array}\right]=\left[\begin{array}{ccc}
+\frac{1}{d x} & 0 & u_{0} \\
+0 & \frac{1}{d y} & v_{0} \\
+0 & 0 & 1
+\end{array}\right]\left[\begin{array}{c}
+x \\
+y \\
+1
+\end{array}\right]
+$$
+得到的$u,v$就是最终在图像坐标系下的位置了，以OpenCV为例，访问该图像`Mat`的(u,v)位置，得到的就是上述变换后的像素。
+
+最后，因为相机常常不是固定的，而是在空间中旋转、移动，我们希望将所有信息的处理都转换到绝对参考系下，因此还需要一个相机本体到绝对系的位姿变换矩阵：
+$$
+\left[\begin{array}{c}
+X_{c} \\
+Y_{c} \\
+Z_{c} \\
+1
+\end{array}\right]=\left[\begin{array}{cc}
+R & t \\
+0^{T} & 1
+\end{array}\right]\left[\begin{array}{c}
+X_{w} \\
+Y_{w} \\
+Z_{w} \\
+1
+\end{array}\right]=T_{w}\left[\begin{array}{c}
+X_{w} \\
+Y_{w} \\
+Z_{w} \\
+1
+\end{array}\right]
+$$
+所有的变换都已经介绍完毕，串在一起，看看一个物体从世界坐标系（绝对系）到像素坐标系的转换过程：
+$$
+\left[\begin{array}{c}
+u \\
+v \\
+1
+\end{array}\right]=
+\color{purple}
+\frac{1}{Z_{c}}
+\color{green}
+\left[\begin{array}{ccc}
+\frac{1}{d x} & 0 & u_{0} \\
+0 & \frac{1}{d y} & v_{0} \\
+0 & 0 & 1
+\end{array}\right]
+\color{blue}
+\left[\begin{array}{cccc}
+f & 0 & 0 & 0 \\
+0 & f & 0 & 0 \\
+0 & 0 & 1 & 0
+
+\end{array}\right]
+\color{red}
+\left[\begin{array}{cc}
+R & t \\
+0^{T} & 1
+\end{array}\right]
+\color{black}
+\left[\begin{array}{c}
+X_{w} \\
+Y_{w} \\
+Z_{w} \\
+1
+\end{array}\right]
+$$
+红色是物体从世界坐标系变换到相机坐标系的位姿变换矩阵；蓝色是根据小孔成像模型将物体从三维”压扁“成二维的伸缩变换矩阵（没有旋转，没有平移，但在x和y上都乘上了缩放系数f，即焦距），即相机坐标系到图像坐标系；绿色是图像坐标系转到像素坐标系的平移（图像原点在左上角）+缩放矩阵（离散化）；紫色是在投影过程中丢失的维度，也是比例缩放系数（离得越远的物体越小，越近越大）。
+
+红色矩阵内的参数也称作**相机外参**，蓝色和绿色矩阵则是相机内部的变换信息，称作**内参**，一般通过标定得到。标准化的相机（啥也不能动，固定好的）则由厂家提供内参（当然自己要再标定也可以，一般没有厂家给的准）。
+
+在[4.1.1](###4.1.1. 镜头)也介绍了，实际上在成像的过程中，镜头由于种种原因会产生畸变，不能得到蓝色矩阵这般简单的变换，因此需要通过标定来确定畸变的类型和畸变参数以最大程度消除其影响。
+
+
+
+---
+
+### 5.6.3. 重投影
 
 
 
 
-### 5.6.0. 坐标系变换
+
+### 5.6.4. 旋转描述和四元数
 
 
 
 
 
-### 5.6.1. 相机成像模型
-
-
-
-
-
-
-
-### 5.6.2. 重投影
-
-
-
-
-
-### 5.6.3. 旋转描述和四元数
-
-
-
-
-
-### 5.6.4. 点云处理和PCL
+### 5.6.5. 点云处理和PCL
 
 
 
@@ -5969,7 +6177,7 @@ Ceres的官方文档里详细介绍了非线性优化问题和其工作原理，
 
 
 
-### 6.3.4. 深度学习方法
+### 6.3.4. 深度学习方法（实验性）
 
 一张depth map很容易让人联想到卷积神经网络生成的feature map，和语义分割任务。而基于卷积神经网络的深度估计方法也已经兴起许久。语义分割是逐像素的分类任务，而深度估计则是逐像素的回归任务，要得到图像上每一个点距离相机光心的距离（再次感慨神经网络真的是万能的）。
 
@@ -5981,15 +6189,11 @@ Ceres的官方文档里详细介绍了非线性优化问题和其工作原理，
 
 
 
-更换相机、更换镜头甚至改变焦距，受光线的影响大
+更换相机、更换镜头甚至改变像距都会影响，受光线的影响大
 
 
 
 速度限制，需要一个单独的网络来解算，不过也可以融合到目标检测网络中于检测头部并行，（是否能共享前面的feature map？怕是不能）
-
-
-
-
 
 
 
