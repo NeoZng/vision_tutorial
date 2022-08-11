@@ -77,15 +77,15 @@ RM开源资料汇总：https://bbs.robomaster.com/forum.php?mod=viewthread&tid=6
 
 RoboMaster机甲大师官方网站：https://www.robomaster.com/zh-CN
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\YueLuRM.png)
+![](Image_base\YueLuRM.png)
 
 <center>湖大RoboMaster公众号</center> 
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\DJIedu.png)
+![](Image_base\DJIedu.png)
 
 <center>大疆教育公众号</center>
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\commugroup.jpg" style="zoom: 25%;" />
+<img src="Image_base\commugroup.jpg" style="zoom: 25%;" />
 
 <center>RM视觉交流群</center>
 
@@ -180,7 +180,7 @@ RoboMaster机甲大师官方网站：https://www.robomaster.com/zh-CN
 
 看图说话，有图有真相！先看看RM比赛场地”战场“上和视觉组有关的场地道具和交互模块吧。记住这些框框和注释，方便理解接下来出现的一些名词和概念，记不住也没关系，再回来看看。
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\RMBF.png)
+![](Image_base\RMBF.png)
 
 <center>图源RoboMaster2022超级对抗赛规则手册；有删改</center>
 
@@ -212,7 +212,7 @@ RoboMaster机甲大师官方网站：https://www.robomaster.com/zh-CN
 
 - 英雄**狙击点机制**的加入让三维视觉又有了用武之地。英雄机器人在狙击点发射大弹丸将会**返还**10个金币，并且狙击点处发射的大弹丸若击中对方的基地会获得2.5倍的攻击力增益！而传统英雄吊射（狙击）都是采用**量测射表**的方式进行的：通过云台不同仰角的弹丸发射测试，获取不同距离的落点信息，得到一张**射表**；然后在操作界面上利用自定义UI画出不同距离时需要对准的位置，从而实现瞄准。
 
-  <img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\snipaim.png" style="zoom: 67%;" />
+  <img src="Image_base\snipaim.png" style="zoom: 67%;" />
 
   <center>类似狙击枪/火炮的瞄准镜</center>
 
@@ -220,7 +220,7 @@ RoboMaster机甲大师官方网站：https://www.robomaster.com/zh-CN
 
   那么应该如何定量的确定狙击时需要的云台仰角，并准确地将炮口方向对准目标呢？假如我们能精确定位英雄机器人的位置就好了！通过**雷达系统**，我们用某种方式计算出雷达相对英雄机器人的距离，而雷达在绝对系下的坐标又是可知的，整个战场的各种尺寸也在规则中给出，由此以来就可以利用准确的公式计算英雄机器人狙击时需要的瞄准参数了！
 
-  ![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\IHITerhero.png)
+  ![](Image_base\IHITerhero.png)
 
   <center>哈工大I HITer战队的英雄机器人头顶一个ArUco定位标签，笔者猜测就是用于雷达定位的</center>
 
@@ -279,19 +279,19 @@ RoboMaster机甲大师官方网站：https://www.robomaster.com/zh-CN
 
 - 在抓取矿石的时候，可以在工程机器人的机械爪上安装可见光相机、测距传感器等，再编写相关的算法来识别矿石，实现自动对位和自动夹取。在技术交流中，上交、东大等惊艳全场的“空接矿石”依赖的就是自动识别矿石的算法。
 
-  ![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\goldNsilvermine.png)
+  ![](Image_base\goldNsilvermine.png)
 
   <center>金矿和银矿</center>
 
 - 在兑换矿石时，当且仅当矿石下方二维码处的RFID被兑换站扫描到之后再推入，才视为兑换成功。而工程机器人在抓取矿石的时候无法保证矿石的朝向始终正确，因此可以通过识别矿石的姿态来自动翻转矿石。同时，根据兑换站上的一些图像特征，还可以定位扫描矿石窗口的位置，来快速地完成自动化兑换，不需要操作手手动控制机器人以提高效率。
 
-  ![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\mineback.png)
+  ![](Image_base\mineback.png)
 
   <center>矿石下方的二维码，内嵌一个射频模组；二维码一样能够当作特征作为检测对象</center>
 
 - 障碍块夹取算法的设计与矿石识别算法如出一辙。通过移动障碍块，我们可以改变战场的地形来阻挡对手的推进或保护我方机器人。
 
-  ![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\obstacle.png)
+  ![](Image_base\obstacle.png)
 
   <center>障碍块；其定位标签和矿石相似，因此识别算法基本可以复用</center>
 
@@ -315,7 +315,7 @@ RoboMaster机甲大师官方网站：https://www.robomaster.com/zh-CN
 
 - 可以参考[上海交通大学的雷达站](https://www.bilibili.com/video/BV1FM4y1579H)，基本功能都已经实现，API封装的很好，通信功能也很完善，适合在其上进一步开发。
 
-  <img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\radar.jpg" style="zoom:50%;" />
+  <img src="Image_base\radar.jpg" style="zoom:50%;" />
 
   <center>两侧各有一枚相机，中间被罩子盖住的是激光雷达；图源沈航-TUP战队</center>
   
@@ -330,17 +330,17 @@ RoboMaster机甲大师官方网站：https://www.robomaster.com/zh-CN
 
 - 飞镖系统也是2020赛季新增的兵种，相当于战争中的”导弹“。其目标是且仅是比赛中的建筑物：前哨战和基地。云台手可以控制飞镖闸门的开启，每局最多能开启两次，每局最多发射四枚。一旦命中，可以造成巨量伤害（前哨站750点，基地1000点），以及对**对方全体机器人长达5秒的视障效果**（遮挡操作界面，相当于fps游戏中的“闪光弹”，~~A1高闪来1个！~~）。最关键的是，发射飞镖不需要消耗金币！
 
-  <img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\dart.jpg" style="zoom: 33%;" />
+  <img src="Image_base\dart.jpg" style="zoom: 33%;" />
 
   <center>飞镖的本体，前方带“R“标的是击打触发装置，前哨战和基地可以检测其上发出的红外光以确认是否击中</center>
 
-  <img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\dartshooter.jpg" style="zoom: 33%;" />
+  <img src="Image_base\dartshooter.jpg" style="zoom: 33%;" />
 
   <center>飞镖发射架；以通过包胶轮摩擦、挤压飞镖以提供动力</center>
 
 - 高收益却不意味着高成本，那就意味着高技术难度。对于机械和控制组的同学来说，空气动力学在本科阶段是较为复杂的领域，镖体设计、发射方式等都需要经过精心地设计，由于依赖经验和试错，大量的实验是不可避免的。对于视觉组的同学来说，为了实现主动制导，我们需要给飞镖一个打击的目标。前哨战和基地顶部各有一个特殊的装甲板以及一枚绿色引导灯，这可以作为我们的参考对象。由于规则（制作规范手册）对飞镖镖体的体积和重量都有限制，我们只能选用一些片上系统作为运算平台，并且尽可能地精简算法以提高识别帧率，毕竟飞镖的速度最快可以达到18m/s，而发射站距离前哨战只有16.3m左右的距离！
 
-  ![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\guidelight.png)
+  ![](Image_base\guidelight.png)
 
   <center>前哨站和基地顶部的装甲板和飞镖引导灯</center>
 
@@ -528,9 +528,9 @@ RoboMaster机甲大师官方网站：https://www.robomaster.com/zh-CN
 
 - Docker：标志性的小蓝鲸logo。Docker可以把开发环境和依赖打包在一起并于Docker engine上运行，运行时完全和系统的环境隔离。就像一个**轻量级**的虚拟机。Docker能够将应用程序与基础架构（操作系统、开发环境、依赖等）分开，使用docker engine提供的抽象大大提高兼容性，不需要关心底层和外部复杂的关联从而专注于软件开发。相信很多同学都遇到开发的时候配环境时醉生梦死的情况，使用Docker镜像则可以免除这一切烦恼！华南师范大学PIONEER战队的[开源代码](https://github.com/chenjunnn/rm_vision)就提供了Docker的部署方案。
 
-  <img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\docker.png" style="zoom: 50%;" />
+  <img src="Image_base\docker.png" style="zoom: 50%;" />
   
-  <img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\dockerhow.png" style="zoom: 80%;" />
+  <img src="Image_base\dockerhow.png" style="zoom: 80%;" />
   
   <center>Docker的架构</center>
   
@@ -680,7 +680,7 @@ RoboMaster机甲大师官方网站：https://www.robomaster.com/zh-CN
 
   动态范围在硬件实现上体现为单个CMOS/CCD单元能够容纳电荷的数量，光电耦合单元的容量越大就能保证曝光时间增大时不会发生“溢出”。摄影技术中常用的一种从软件层面提高动态范围的方法称作HDR（high dynamic range），这是一种一次性拍摄多张不同曝光的图片并利用算法对多帧图像进行对齐以及融合的技术。例如在逆光拍摄的时候光线来源区域往往会过曝，而背光处的物体常常“黑成一团”，这时候开启HDR，相机会采用两种曝光参数分别采样数次，高曝光图像能够捕获更多背光区域的细节，低曝光图像能够防止光线来源区域的感光单元溢出。通过自适应阈值技术自动为不同区域选择合适的图像进行填充即可得到一张完美的图像。
 
-  <img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\HDR.jpg" style="zoom:50%;" />
+  <img src="Image_base\HDR.jpg" style="zoom:50%;" />
 
   <center>上方图片采用了6种曝光下采样的数据进行融合，左下角是融合的最终结果；图源http://bbs.a9vg.com/thread-5113593-1-1.html</center>
 
@@ -863,11 +863,11 @@ RoboMaster机甲大师官方网站：https://www.robomaster.com/zh-CN
 
 先看看微机电陀螺仪的实现。我们知道加速度的来源是力，因此需要通过某种物理效应将力转化为方便测量的量，对于现代传感器来说，大部分选用电作为信号载体，因为相关的信号处理技术已经非常成熟（而新的发展方向是利用光，其功率更低载波频率更高）。考虑下面的一个质量块弹簧阻尼系统：
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\accspring.png" style="zoom:67%;" />
+<img src="Image_base\accspring.png" style="zoom:67%;" />
 
 质量块M在受到力F的作用的时候，将发生运动；由于阻尼器的存在，质量块最终会在新的位置停下来：这个位置满足$\Delta xK=F$。学习过自动控制原理/电路的你应该知道，可以用微分方程/传递函数描述这个**标准的二阶系统**。只要K是已知的，我们就能根据位移量x确定力的大小。相信此时你已经有了不少方案，最简单的一种也许是在质量块上搭载滑动变阻器抽头根据电阻分压确定位移。不过，为了让我们的传感器足够小，小到能够放进一块芯片当中，并且对外部的加速度有足够的敏感性，我们采用如下的方案：
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\MEMSacc.gif)
+![](Image_base\MEMSacc.gif)
 
 <center>MEMS加速度计的原理，实际上有3组这样的器件，分别置于三个两两垂直的方向；图源HowToMechatronics.com</center>
 
@@ -877,19 +877,19 @@ RoboMaster机甲大师官方网站：https://www.robomaster.com/zh-CN
 
 再看看MEMS陀螺仪，高中的时候就学过物体在旋转时会受到向心加速度，可以据此原理进行检测。但是在设计上太难实现，而且很难区分旋转产生的向心力和物体受到的其它力。因此，我们通过间接的方式对旋转进行测量：**科里奥利力**。如下图所示，考虑一个光滑的竖直圆盘和一个自由下落的小球，由于参考系的选取问题，若一个物体在转动参考系上发生径向运动，转动参考系上的观察者会发现物体实际上走过一道弧形。因此在旋转系下看，物体受到了某种虚拟的惯性力作用。我们就可以利用这个虚拟的力对旋转进行检测。由公式推导可以得到这个惯性力的大小为$F_c=2wmV$,$\omega$为旋转系的角速度，m是物体质量，V则是物体在绝对系的速度。
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\Coriolis.gif" style="zoom:67%;" />
+<img src="Image_base\Coriolis.gif" style="zoom:67%;" />
 
 <center>上方为惯性系视角，下方为旋转系视角（红点不动）</center>
 
 那我们的设计思路就是，让一个质量已知的质量块以某个速度运动，并以适当的方式检测出惯性力的大小，从而推得旋转速度。像上图小球那样一去不返的运动显然是不可取的，我们通过对质量块施以周期性的力使其在限定范围内往复运动，它的速度是可以获知的。然后，在其内部再添加一组运动方向和前者垂直的质量块（内部的结构和加速度计相同，即让惯性力$F_c$反映为位移大小），一旦发生旋转，内部的质量块就会受到科氏力从而发生位移，通过电容的变化将检测出位移大小，从而推算惯性力的大小，再由$\omega=F_c/2mV$得到物体旋转的角速度。
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\memsgryo.gif" style="zoom:67%;" />
+<img src="Image_base\memsgryo.gif" style="zoom:67%;" />
 
 <center>MEMS陀螺仪的原理，这里同样只展示了一个轴；图源亚诺德半导体</center>
 
 可以发现，上图中内部用于检测科氏力的加速度计装置和外层框通过弹簧进行了隔离，这就能在很大程度上防止装置在受到纵向的加速度时产生误动作。
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\mpu6050die-shot.png" style="zoom:67%;" />
+<img src="Image_base\mpu6050die-shot.png" style="zoom:67%;" />
 
 <center>这是MPU-6050的晶片显微镜视图，依稀可以看见两个传感器的排布</center>
 
@@ -925,7 +925,7 @@ RoboMaster 开发板C型（C板）上集成了一颗博世生产的六轴IMU（�
 
 雷达（Radar，RAdio Detection And Ranging）是一种通过发射电磁波并根据回波强度和时间判断物体距离的一种传感器。那么激光雷达的工作媒介就是激光（故称LIDar，LIght，实际上激光也是电磁波）。在自动驾驶大热的今天，激光雷达、毫米波雷达、IMU、可见光相机可以算是Auto-driving界的四大金刚（有时候还包括超声雷达）。根据工作原理的不同，可以将雷达分为**TOF**（time of flight，飞行时间法）和**FMCW**（frequency modulated continuous wave，调频连续波）两种；根据工作范围也分为点式、线阵和面阵三种。还有其他的分类方法如根据扫描方式和发射/接受方式分为机械旋转、MEMS、转镜、棱镜、Flash等...... 我们主要介绍工作原理的分类，并分析在RM比赛场景下激光雷达可能的用途。
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\LiDAR.png" style="zoom:%;" />
+<img src="Image_base\LiDAR.png" style="zoom:%;" />
 
 <center>Livox MID-70激光雷达；参赛队伍可以以优惠价格购买供开发使用</center>
 
@@ -943,7 +943,7 @@ FMCW的原理稍微复杂一些，雷达通过发送和接收连续某种频段�
 
 从激光雷达的工作原理我们很容易得知，采集得到的结果一定是一堆点，每个点都记载着和传感器的距离和角度（回忆FOV的概念，接收器会接收不同角度射入的回波），而在实际中为了方便处理一般转换成以雷达为原点的笛卡尔坐标。数量众多的点就形成了点云，因此数据处理方法主要式点云处理算法。我们在[5.6.6](###5.6.6. 点云处理和PCL)会大致介绍一下点云处理，前提是有二维图像处理的知识（或你已经有相关背景）。Livox官方也提供了开发SDK和一些开源的算法实现，包括点云去畸、配准、雷达自动标定、相机联合标定、车道检测、点云目标检测等，戳这里：[Livox-SDK](https://github.com/Livox-SDK)。
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\Livowithimu.jpg" style="zoom:67%;" />
+<img src="Image_base\Livowithimu.jpg" style="zoom:67%;" />
 
 <center>配合IMU，激光雷达在城市道路上生成的点云图；不同的颜色代表采集该点云时与激光雷达的距离</center>
 
@@ -2429,7 +2429,7 @@ Focal Loss将损失函数设计成如下的样子：
 
 然而，倘若对深度神经网络也是用HNM，开销就太大了：我们不能等到把所有样本都计算一遍之后再区分难易样本，不仅训练速度慢，就连区分样本都要花很多时间。因此，结合随机梯度下降和mini-batch法，直接让网络在每一个batch中都挑选出难易样本，并在线更新模型（这是相对HNM而言的“在线“）。实际上，前面介绍的Focal Loss就是这么做的（这也可以看作使用mini-batch训练的必然结果）。现在来看看OHEM的结构：
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\ohemtwohead.png)
+![](Image_base\ohemtwohead.png)
 
 <center>OHME以Faster R-CNN为baseline；上方是一个read-only head，下方模型的参数会正常更新</center>
 
@@ -2455,7 +2455,7 @@ RPN实际上已经将那些不太可能包含物体的区域去除掉了，生�
 
 s=stratify，意为分层在线难例挖掘。OHEM提出后效果确实不错，但是它将所有的难样本都一视同仁，并且在整个训练的过程中始终为分类损失和回归损失赋予相同的权重，只按照总loss对ROI进行排序。于是，s-OHEM的作者就从这里入手，进一步探讨细化的问题，提出了分层的样本选择方案。
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\sohem.png)
+![](Image_base\sohem.png)
 
 s-OHEM的基本架构和OHEM是一样的，都是用一个只读网络用于对ROI损失排序，外加一个常规的head用于对只读head排序生成的Top-k的损失最大的ROI进行训练，一轮迭代后将参数复制给只读网络。s-OHEM将网络的训练分为四个阶段，即上图中的s1~s4。实际上分类任务和回归任务的难度是不一样的，产生的损失也不能一视同仁。因此它单独考虑类别损失$L_{cls}$和定位（回归）损失$L_{loc}$，在网络学习的初期，两类损失都较大；而经过一段时间的学习，分类损失会较快的下降，此时应该逐渐重视回归损失，以达到更高的定位精度。因此在选择难例的时候，s-OHEM实际上通过下式，在不同的训练阶段选择不同的调制系数$\alpha,\beta$（一般在具体实现上令$\beta=1-\alpha$以保证总权重为1）：
 $$
@@ -3909,7 +3909,7 @@ W_{b}=\sum_{p \in U} G_{g}(p) G_{r}(p)=\sum_{p \in U} \exp \left(-\frac{\|p-q\|^
 $$
 看看使用不同的$\sigma_g,\sigma_r$的时候，滤波的效果：
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\bilateralcat.png)
+![](Image_base\bilateralcat.png)
 
 <center>纵向变化的是值域方差，越往下越大；横向变化的是空间域方差，越往右越大</center>
 
@@ -4696,13 +4696,13 @@ $$
 
 
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\samepatterntomatchpyramid.png)
+![](Image_base\samepatterntomatchpyramid.png)
 
 
 
 
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\scale_space_proposer.png)
+![](Image_base\scale_space_proposer.png)
 
 
 
@@ -4764,7 +4764,7 @@ HOG算是我们的老朋友了，在前面的[*5.5.2.3*](####5.5.2.3. gradient-b
 
 后续步骤和 *5.5.2.3* 完全一致，不再赘述，这里着重说说如何确定**特征点的方向**。确定特征点的方向和提取特征基本大同小异，只不过不用划分子区域。以SIFT为例，首先在选择和尺度对应的邻域大小（如尺度为3$\sigma$，那么邻域半径就选3$\sigma$），然后为这个邻域建立梯度直方图，将属于各个方向的梯度幅值累加到对应bin中（同样，如果想提高精度可以对角度进行插值或分解到两个不同方向）：
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\siftorientationassign.png)
+![](Image_base\siftorientationassign.png)
 
 <center>分配方向示意图，忽略更粗的绿线，我们只需要在整个邻域范围内统计直方图</center>
 
@@ -4784,7 +4784,7 @@ wavelet即小波特征，在[5.5.3.2](####5.5.3.2. GIST)介绍GIST的时候我�
 
 小波的理论基础过于复杂多说无益，直接看Haar特征长什么样：
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\Haarfeature.png" style="zoom:50%;" />
+<img src="Image_base\Haarfeature.png" style="zoom:50%;" />
 
 <center>常用的Haar特征模板，白色取1黑色取-1</center>
 
@@ -4792,17 +4792,17 @@ wavelet即小波特征，在[5.5.3.2](####5.5.3.2. GIST)介绍GIST的时候我�
 
 有了积分图，算这玩意不是有手就行？斜着的特征还需要插值，方形的特征要拆成5个部分分别算，麻烦！我们就用最简单的水平和数值的edge feature：
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\waveletline.png" style="zoom: 50%;" />
+<img src="Image_base\waveletline.png" style="zoom: 50%;" />
 
 还是以特征点为锚点，选取对应尺度大小的邻域，对下图所示的扇形区域内的所有点计算上面的小波特征，按角度求和（实际上和直方图一样，把方向分配一下）。当然了，**小波模板的大小也要跟尺度一起变化**。算完之后转一个角度（SURF论文中取扇形为60度，每次旋转60度），再算。最后，取小波响应和最大的扇形方向为该特征点的主方向。SIFT用过的trick这里也可以用，比如给小波响应加一个高斯窗啊。不过插值可就用不上了，想想为什么？这就是积分图的好处！
 
 > 这里实际上忽略了一些细节，还需要根据水平方向总响应和数值方向总响应在60°扇形内确定更精细的角度，感兴趣的参照SURF论文（前文已经给出链接）。
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\SURForientation.png" style="zoom:50%;" />
+<img src="Image_base\SURForientation.png" style="zoom:50%;" />
 
 有了方向剩下的也没什么好说的了，先把窗口转到主方向，然后在邻域里划分格点和种子点，对每个种子点都建立一个Haar特征的直方图，统计完Haar特征后再把特征归一化，一个特征描述子就建立好了！
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\surfdescriptor.png)
+![](Image_base\surfdescriptor.png)
 
 <center>以上图为例，选用了8x8的格点，以4个格点为一个直方图统计单元（即一共16个种子点）</center>
 
@@ -4810,7 +4810,7 @@ wavelet即小波特征，在[5.5.3.2](####5.5.3.2. GIST)介绍GIST的时候我�
 
 > SURF在建立特征描述子的时候，还会加上额外的一个“标志位”，即特征点处拉普拉斯响应的正负号。这样在进行匹配的时候可以减少一半的工作量，只尝试匹配那些符号相同的特征点。回忆一下多元微积分，拉普拉斯响应的正负号代表什么？
 >
-> ![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\LaplacianSign.png)
+> ![](Image_base\LaplacianSign.png)
 
 
 
@@ -4844,13 +4844,13 @@ wavelet即小波特征，在[5.5.3.2](####5.5.3.2. GIST)介绍GIST的时候我�
 
 最早的LBP描述方式非常简单，以锚点为中心建立半径为1的邻域，然后依次比较周围像素和锚点的像素值，像素值大于等于参考点者被置1，小于者置零；然后从左上角开始顺时针将比较后的二值数据序列化成8维的特征向量，就得到了LBP编码：
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\LBPraw.png)
+![](Image_base\LBPraw.png)
 
 <center>左侧图像生成的LBP编码为10001011</center>
 
 这种编码方式最多只会产生256种不同的特征，显然在实际使用中会出现大量的编码重复，并且最致命的是，它不具有旋转不变性，一旦特征发生旋转，生成的编码就会出现**“循环”**。那我们首先解决第一个问题，重复率过高。问题的原因就出在原始版LBP的编码方式太粗暴了，比锚点大的像素就全部变成1，小的全部变成0，它们之间没有任何区分度。FAST在找特征点的时候好歹还设置了一个可以调整的阈值。因此我们要想办法凸显出不同像素值在编码后的不同，但又不能增加太多的计算量，上文引用中的第一篇论文给出了解决方案：
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\twolevelLBP.png)
+![](Image_base\twolevelLBP.png)
 
 <center>邻域中的每个位置被赋予了位置相关的权值</center>
 
@@ -4860,7 +4860,7 @@ wavelet即小波特征，在[5.5.3.2](####5.5.3.2. GIST)介绍GIST的时候我�
 
 不过这里还有另一种方法能够让LBP编码本身支持旋转不变性。我们前面提到，在特征点发生旋转的时候，编码会出现循环的现象，以上图为例，若特征点顺时针旋转45度，第一个level的特征就会从10001011变成11000101，即发生了一位的循环右移，这会让编码冗余度不足的情况进一步恶化。不过在经过上面的two-level改进之后，我们已经拥有了6561种编码，建立描述子时重复的概率已经大大下降。**那我们干脆就让编码循环起来**，使得level-1的特征从256减少到36种（并不是$C^8_1+...+C^8_8$，圆形是首位相连的)，通过level-2的特征进行进一步区分。
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\LBProtateall.png)
+![](Image_base\LBProtateall.png)
 
 <center>所有旋转LBP模式</center>
 
@@ -4870,7 +4870,7 @@ wavelet即小波特征，在[5.5.3.2](####5.5.3.2. GIST)介绍GIST的时候我�
 
 为了进一步提高特征的丰富性，降低重复性，还可以为LBP选择不同的邻域大小，将多个尺寸生成的描述子拼接在一起，形成更稳定的特征描述符：
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\LBPmultiscale.png" style="zoom: 33%;" />
+<img src="Image_base\LBPmultiscale.png" style="zoom: 33%;" />
 
 <center>注意LBP一般在图像金字塔中提取，因此这里选择多个邻域是为了丰富特征，而不是像尺度空间那样选择对应尺度</center>
 
@@ -4902,7 +4902,7 @@ $$
 4. $x_{i}, y_{i}  $ 在极坐标下的离散位置处进行随机采样
 5. $x_{i}=(0,0)^{T}, y_{i} $ 在空间量化极坐标下的离散位置处进行随机采样，这种方法其实和LBP很像，只不过第二个点的选取是随机的
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\BRIEFsample.png)
+![](Image_base\BRIEFsample.png)
 
 <center>五种不同方法抽样得到的点对示例</center>
 
@@ -4910,7 +4910,7 @@ $$
 
 经过实验发现第二种采样方法能够得到最高的匹配正确率，而且不论采用哪种方法，作者都发现匹配成功的点呈现近似的高斯分布，而未匹配成功的点、被直接筛除的点则自然而然地呈现出以**匹配时的汉明距离**大小为128为中心的非常漂亮的高斯分布（注意是匹配的时候计算得到的汉明距离，从采样方式中显然可以推断得到这样的结果）：
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\BRIEFmethod2.png)
+![](Image_base\BRIEFmethod2.png)
 
 <center>第二种方法的实验结果，蓝色为匹配成功者，红色反之</center>
 
@@ -4957,7 +4957,7 @@ K-Nearest Neighborhood即K-近邻，是机器学习的一种经典算法，这�
 
   即最近点小于阈值，且要两个点相对测试点的距离有足够大的差距；否则，将当前测试点从候选库中删除，后续不再匹配此点。此法可以通过特征之间的相似性差别筛除一些错误匹配点。
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\KNNcaption.png" style="zoom:67%;" />
+<img src="Image_base\KNNcaption.png" style="zoom:67%;" />
 
 <center>橙色来自A图，蓝色来自B图，橙色点只看得到蓝色点而看不到其他橙色点；反向验证也是如此，只需关注另一幅图像上的特征点</center>
 
@@ -4989,7 +4989,7 @@ OpenCV将特征点匹配算法封装成了`matcher`类，其中就提供了KNN�
 
 这种方法被称作**align-based**，即基于对齐的方法。此类方法假设用于提取特征点的两幅图像是从不同位置/不同视角拍摄得到的（视角变化不太大，因为我们需要保证提取出来的特征不能有过大的变化这个前提条件），那么两张图片实际上可以用通过一个**投影变换**进行转化：
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\projectiontransformation.png)
+![](Image_base\projectiontransformation.png)
 
 <center>两张图像被不同位置的相机记录下来</center>
 
@@ -4999,13 +4999,13 @@ OpenCV将特征点匹配算法封装成了`matcher`类，其中就提供了KNN�
 
 从利用投影变换来检测物体的位置这个思路来看，也是很直觉的，以*5.5.4* 开篇的那张图为例：
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\objecttobefound.png)
+![](Image_base\objecttobefound.png)
 
 <center>a book to be found</center>
 
 我们希望在一些候选图片中找到上述物体，那么就可以为这些图片应用特征点检测算法并建立描述子，然后和上述图片中的特征点进行匹配：
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\objectmatchignresult.png)
+![](Image_base\objectmatchignresult.png)
 
 随后，通过某些方法选取匹配点对，对剩下的点运行投影变换，若能对应上大部分特征点，则说明此物体在该图像中出现了。且倘若我们知道模板图片中特征点之间的真实3D尺寸，我们还能够通过反投影将候选图片中找到的物体的真实尺寸标出。实际上，一些经典的以图搜图算法以及图像索引库的建立（就和字典的字典序索引一样）就是通过这种方法完成的。此法也被称作**基于特征点/描述符的模板匹配**。
 
@@ -5023,7 +5023,7 @@ OpenCV将特征点匹配算法封装成了`matcher`类，其中就提供了KNN�
 
 为了帮助理解，我们先看一个用RANSAC解决线性回归的例子。对于一组有较多立群点的数据（但它们实际上又不是那么离谱，无法通过阈值筛选的方法将其删除），倘若用常规方法如最小二乘可能导致解被外点带偏，迭代方法如梯度下降则容易引起优化过程中的不稳定甚至发散。而从**概率角度**出发的RANSAC则可以较好的解决这个问题（在某些方面有点像BRIEF描述子）。
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\RANSACexample.png)
+![](Image_base\RANSACexample.png)
 
 <center>左侧是待拟合数据，右侧是RANSAC得到的结果</center>
 
@@ -5076,7 +5076,7 @@ ORB(Oriented FAST and Rotated BRIEF)系列是当下在实时性要求高的场�
 
 当然，为了提供旋转不变性，在提取特征之前，要先将图像采样patch旋转到主方向的位置。ORB加入了旋转预处理的操作，将oFAST确定的主方向离散到以30度为一个单位的12个方向，提前计算好961个点在经过$(0,30,...,330,360)$度的旋转后会到达的位置形成查找表（look-up table）。这样，在建立描述子的时候，就通过LUT寻找离和主方向最接近的那个位置（实现为取模），常数时间就可以算出旋转后的位置，不需要每次都计算矩阵乘法（2x2）。
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\ORBsBRIEF.png" style="zoom: 67%;" />
+<img src="Image_base\ORBsBRIEF.png" style="zoom: 67%;" />
 
 <center>30°为一个单位在速度和精度之间取得权衡，而且由于对比像素值时高斯窗的加入，可以进一步提高对近似带来的噪声的抗性</center>
 
@@ -5086,13 +5086,13 @@ ORB(Oriented FAST and Rotated BRIEF)系列是当下在实时性要求高的场�
 
 BRIEF一个令人满意的特性是由它生成的特征描述子每个维度拥有接近0.5的均值（意味着**所有生成的特征点**中，在每一位上0和1的数量几乎持平，是对所有描述子的某个维度的纵向分析），这说明了BRIEF描述子的方差很大，不同的描述子之前有很好的区分性。但通过oFAST引入旋转不变性后，有些维度的均值会偏向0或1，这就说明此维度对匹配的贡献下降了，两个不同的描述子很可能会在这些位上有相同的值：
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\BRIEFcompetitioninmeanvalue.png" style="zoom:67%;" />
+<img src="Image_base\BRIEFcompetitioninmeanvalue.png" style="zoom:67%;" />
 
 <center>三种不同方法产生的均值分布，其中X轴表示的是距离均值为0.5的距离（绝对值）</center>
 
 除了让不同特征描述子间的位均值接近0.5，我们还希望建立一个特征描述子时，使用不同的测试对（即生成一个描述子时，在31x31patch上不同点对产生的特征，1位，这个测试要进行256次以形成256维特征）之间的关联性越小越好（我们肯定不希望两次采样都碰到相近的区域，可想而知这样会导致两次测试生成相同的结果）。为了分析单个BRIEF特征（就是256维向量，要找不同维度之间的相关性，对一个描述子的横向分析），作者对100k个keypoints运行了**PCA**并将不同分量的特征值大小进行排序，得到的结果如下：
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\briefPCA.png" style="zoom: 67%;" />
+<img src="Image_base\briefPCA.png" style="zoom: 67%;" />
 
 <center>对三种方法的产生的描述子进行PCA分解得到的特征值分布</center>
 
@@ -5118,7 +5118,7 @@ BRIEF一个令人满意的特性是由它生成的特征描述子每个维度拥
 
 改进之后，显然是很有效的，作者还对比了三者在进行匹配时计算得到的汉明距离的分布：
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\BRIEFdescriptorcomp.png" style="zoom: 67%;" />
+<img src="Image_base\BRIEFdescriptorcomp.png" style="zoom: 67%;" />
 
 <center>中间的三个高斯分布是没匹配上的点，左侧是匹配成功的点</center>
 
@@ -5241,7 +5241,7 @@ $t$是一个3x1的向量，$R$则是3x3的旋转矩阵，自己动手写一下�
 > $$
 > 其中$\alpha,\beta$为向量空间$V$中的任意两个元素，$k$是任意大小的矢量。一种最简单也是最”定义“的角度就是，**平移无法用三维方阵描述**，因为常数矩阵是描述线性变换的工具，所有线性变换都可以表示为矩阵的形式（矩阵就是因为描述线性变换很方便，才被发明出来）。不开玩笑，我们从线性映射的定义出发，理解平移。为了方便起见同时又不失一般性，我们采用二维空间中的平移帮助理解。为了满足第一个条件，首先对其上的两个向量$\alpha,\beta$分别施以平移变换$shift$（记为$s$），得到等式右边$\alpha_1+s,\beta_1+s$；等式的左侧为$\alpha+\beta+s$，等式右边的变换项却是$2s$！用二维笛卡尔坐标系可视化一下：
 >
-> <img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\shiftnotlinear.png" style="zoom:67%;" />
+> <img src="Image_base\shiftnotlinear.png" style="zoom:67%;" />
 >
 > 怎么画出来就不对了呢？**这是因为虚线是仍然在原坐标系下进行矢量相加得到的结果**，而实际上在经过变换之后，**原点**已经跑到$(0,1)$处了。实际上，平移变换导致向量空间中的**零元**发生改变，而线性变换需要保证零向量在施加变换之后仍然是零向量，但在这里，变换后的坐标系原点已经跑到原坐标系的$(0,1)$处！为了保证线性空间的性质，同时又能利用矩阵这个工具进行计算，我们加入额外的一个维度，让平移变换在**新增的维度**上进行，从而移除对原点的影响。
 
@@ -5255,13 +5255,13 @@ $t$是一个3x1的向量，$R$则是3x3的旋转矩阵，自己动手写一下�
 
 有了坐标系变换的基础，就可以学习相机成像模型了。物体投影到相机的光线传感器的过程，仅仅是在刚体变换的基础上增加了一些缩放。[4.1.1](###4.1.1. 镜头)已经介绍了相机的小孔成像模型，对于我们的应用场景来说这个近似已经足够，因此下面在进行变换的时候都把**镜头等效为一个小孔**。另外，在小孔模型下，**像距$d$和焦距$f$相等**。
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\smallhole.png" style="zoom: 80%;" />
+<img src="Image_base\smallhole.png" style="zoom: 80%;" />
 
 <center>像平面（相机的感光单元平面）上成倒像，将其竖直镜像后放置在光心前方一个焦距的位置方便计算</center>
 
 现在用数学化的语言描述物体上每一个点在像平面上的对应关系：
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\frontimagesmallhole.png" style="zoom:80%;" />
+<img src="Image_base\frontimagesmallhole.png" style="zoom:80%;" />
 
 <center>相机主点即相机光心/镜头的光学中心</center>
 
@@ -5293,7 +5293,7 @@ Z_{c}
 $$
 这时的**坐标原点是相机的光心**，$x,y$ 是像平面上点的坐标，$X_c,Y_c,Z_c$是物体在**相机系**下的坐标，$Z_c$在投影后将被压扁而丢弃。由于使用惯例和方便起见，图像在计算机中保存时原点为左上角，而刚刚图像坐标系的原点则是在CMOS的正中心。另外，CMOS上的感光单元都是离散的，因此这一步转换涉及坐标系的平移和数值的离散化：
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\imgtopixeltrans.png" style="zoom: 67%;" />
+<img src="Image_base\imgtopixeltrans.png" style="zoom: 67%;" />
 
 <center>O'就是CMOS中心的位置</center>
 
@@ -5390,7 +5390,7 @@ $$
 
 对于小孔成像模型，影响最显著的两种畸变是**桶形畸变**和**切向畸变**。直接看图便知：
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\barreldistortion.png" style="zoom: 67%;" />
+<img src="Image_base\barreldistortion.png" style="zoom: 67%;" />
 
 <center>由于透镜制作工艺不能保证边缘的光线平行进光轴进入后仍然射向焦点，因此产生桶形畸变；来源未知</center>
 
@@ -5403,7 +5403,7 @@ y_{d}=y\left(1+k_{1} r^{2}+k_{2} r^{4}+k_{3} r^{6}\right)
 $$
 与之对应的是凹透镜成像的时候出现的枕形畸变，三种图像拍摄棋盘格得到的图像如下：
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\threekindsofdistortion.png)
+![](Image_base\threekindsofdistortion.png)
 
 <center>完美透镜、桶形畸变、枕形畸变；图源Wikipedia</center>
 
@@ -5411,7 +5411,7 @@ $$
 
 切向畸变则指的是下面这种情况：
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\tangentdistortion.png" style="zoom: 80%;" />
+<img src="Image_base\tangentdistortion.png" style="zoom: 80%;" />
 
 <center>由于贴装工艺问题，感光芯片在封装时可能无法和镜头平行放置，导致成像畸变的发生；来源未知</center>
 
@@ -5444,7 +5444,7 @@ $$
 
 以标定相机为例，我们通过下面的流程验证标定结果的准确性：对于一真实物体中的某个点$P$，我们已知其相对相机的位置如何，而相机内参已知，即我们用[5.6.2](###5.6.2. 相机成像模型)中叙述的成像模型加以修正之后对该点进行变换，得到结果点$\hat{p_2}$；而实际在拍摄的时候由于小孔成像的近似和畸变的不完全矫正，$p_2$的位置肯定无法和$\hat{p_2}$重合，两者在像平面上的距离误差就是**重投影误差**。
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\reprojection.png" style="zoom:80%;" />
+<img src="Image_base\reprojection.png" style="zoom:80%;" />
 
 OpenCV的例程在每次完成标定的时候，都会输出标定结果在用于标定的图像上的重投影误差的MSE（以mm计）：
 $$
@@ -5478,17 +5478,17 @@ $$
 
 当只有一对投影关系约束的时候，**反向投影**的结果可以处在以像素点为起点、和真实点连线构成的**射线**上的**任意位置**：
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\1pointproject.gif" style="zoom:67%;" />
+<img src="Image_base\1pointproject.gif" style="zoom:67%;" />
 
 加入第二对投影点，反向投影的结果会被限制在一个范围内，但仍然有无数组解。约束即真实点之间的距离（图中绿色圆的半径），确定下方紫色点为第一个解后，绿色圆与上方射线的交点都是第二个点可能解的位置，因为只要保证两点的距离为半径R：
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\2pointproject.gif" style="zoom: 80%;" />
+<img src="Image_base\2pointproject.gif" style="zoom: 80%;" />
 
 加入第三个投影，反向投影的结果被继续约束，这时候**最多**只有四组可能的解。首先在一条射线上确定一个点$p_1$，然后作半径为该点到第二个点真实点的距离$d_1$的**球**$s_1$，并在该球与第二条射线的交点$p_2$（1个或2个，取决于圆的半径和$p_1$的位置）上建立**第二个球**$s_2$（半径为第二个点到第三个点的真实距离$d_2$），$s_2$会与点第三条射线产生交点$p3$，最后以$p_3$为中间建立一个半径为第三个点到第一个点真实距离的球$s_3$，$s_3$将和第一条射线产生交点$p_4$。不断移动$p1$在第一条射线上的位置，直到$p_1$和$p_4$重合，这样$p_1,p_2,p_3$就形成了一个面，并找到一组可能的解。
 
 > 加入第三个投影后，实在画不来图，如果你有画3维动图的好方法，请告诉笔者。倘若你熟悉一些3维CAD软件如Solidworks的操作，可以作好后发给笔者，感激不尽。
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\3project.png" style="zoom: 60%;" />
+<img src="Image_base\3project.png" style="zoom: 60%;" />
 
 <center>abc是像素点；ABC是真实点，其边长就代表真实距离</center>
 
@@ -5500,7 +5500,7 @@ $$
 
 有了直观的理解之后，现在用代数的方式构建约束方程组进行求解。还是上方的那张图，我们给每条边分别标注参数：
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\p3p.png)
+![](Image_base\p3p.png)
 
 <center>真实点和投影点的关系；图源https://jishuin.proginn.com/p/763bfbd69afc</center>
 
@@ -5764,7 +5764,7 @@ OpenCV中提供了`SolveP3P()`和`SolvePnP()`方法，前者会返回四个结�
 
   模板匹配虽然使用起来最简单，不过也正是由于其简单的机制导致它的精度和准确度不是那么的高，而且数字和图案都是只有黑白两种颜色，在同一个区域往往也有很多重叠，导致不同模板之间的差异不够大，若受到干扰可能难以区分。
 
-  <img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\numberafteraffine.png" style="zoom:50%;" />
+  <img src="Image_base\numberafteraffine.png" style="zoom:50%;" />
 
   <center>实际运行时变换后的数字和标准模板的对比,可以看到由于投影变换的误差导致数字并没有”正立“</center>
 
@@ -5774,7 +5774,7 @@ OpenCV中提供了`SolveP3P()`和`SolvePnP()`方法，前者会返回四个结�
 
   这是一个非常朴素的想法，我们将可能的灯条匹配对进行投影变换后，在得到的ROI上划分一组合适大小的网格，然后分别对每个网格内是否有像素块，如数字1在中间的这一排竖直方向上的网格都有像素块。这样我们就能针对不同的数字和图案得到不同的匹配标准，在检测时分别验证这些标准，从而得到分类。要是不符合任何一个分类，则认为是一个伪装甲板。
 
-  ![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\armorhandcraft.png)
+  ![](Image_base\armorhandcraft.png)
 
   <center>利用handcraft特征对数字和图案进行筛选，绿色网格为一种合适的划分策略</center>
 
@@ -5790,7 +5790,7 @@ OpenCV中提供了`SolveP3P()`和`SolvePnP()`方法，前者会返回四个结�
 
   OpenCV中提供了封装好的二分类和多分类SVM，其训练和预测可以参照此教程：[在OpenCV中使用SVM](https://blog.csdn.net/chaipp0607/article/details/68067098)。上交在19年的视觉开源代码中就使用了SVM进行数字标签分类，可以戳他们的[开源仓库](https://github.com/xinyang-go/SJTU-RM-CV-2019)，吉林大学2020年则是使用了一个多分类SVM，并且提供了他们训练好的支持向量参数。
 
-  <img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\svmvisualization.png" style="zoom: 80%;" />
+  <img src="Image_base\svmvisualization.png" style="zoom: 80%;" />
 
   <center>采用了核方法的多分类SVM，可视化</center>
 
@@ -5867,7 +5867,7 @@ OpenCV中提供了`SolveP3P()`和`SolvePnP()`方法，前者会返回四个结�
   
   [Release Notes :: CUDA Toolkit Documentation](https://docs.nvidia.com/cuda/cuda-toolkit-release-notes/index.html#title-resolved-issues)提供了显卡驱动和cuda之间的对应关系，对于不同的cuda版本，切换到对应版本的release notes，你只需要关注表格中的最下方：
 
-  ![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\cudadriverversion.png)
+  ![](Image_base\cudadriverversion.png)
   
   而pytorch和上述软件和驱动之间的对应关系，在pytorch官网已经帮你安排好了兼容性：[Start Locally | PyTorch](https://pytorch.org/get-started/locally/)，若这里没有你要的版本，[Previous PyTorch Versions](https://pytorch.org/get-started/previous-versions/)中提供了历史版本和其他cuda版本的支持，建议按照网站上的关系进行安装。完成安装之后，在终端中通过以下命令确认安装：
   
@@ -6428,7 +6428,7 @@ gradient clip和模型参数滑动平均也是推荐使用的训练策略，都�
 
   因为检测中心的耗时并不大，一般建议识别“R“标以提高圆拟合的精度，可以将通过不同方法确定的圆心进行加权以得到最优的结果。
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\Ricon.png" style="zoom:67%;" />
+<img src="Image_base\Ricon.png" style="zoom:67%;" />
 
 
 
@@ -6471,11 +6471,11 @@ gradient clip和模型参数滑动平均也是推荐使用的训练策略，都�
 
   此方法和装甲板角点识别相同，得到需要击打的扇叶后直接对末端的四个角点进行解算。不过这里要注意最好不要只选择扇叶末端的装甲板的四个角点，因为未激活和已经激活的角点的特征差别并不是很大，区别仅在于内侧的两个角点旁是否有灯条。因此应该选择更特殊、特征更丰富的点作为用于回归的特征点，否则遇到场地光线和其他灯光的干扰很容易出现漏检或误检。具体网络的设计请参考[6.1.2](###6.1.2.基于CNN的目标检测方法)和[6.1.3](###6.1.3. 设计key-point detection方法的装甲板检测)。
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\buffpointselect.png)
+![](Image_base\buffpointselect.png)
 
 <center>直接回归角点，不同颜色代表不同分类</center>
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\keypointbuff.gif)
+![](Image_base\keypointbuff.gif)
 
 <center>上述选点策略的效果，画面旋转是因为云台正在跟随目标转动，稍显卡顿是gif帧率原因；图源哈工深南工骁鹰战队</center>
 
@@ -6510,7 +6510,7 @@ gradient clip和模型参数滑动平均也是推荐使用的训练策略，都�
 
 能量机关的尺寸信息已经在规则手册中给出，因此，利用识别得到的装甲板尺寸和扇叶尺寸，我们可以计算出圆心的位置，再根据装甲板的中心从而确定整个圆：
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\armorleafratio.png)
+![](Image_base\armorleafratio.png)
 
 <center>蓝色长度由预处理得到的外接矩形或轮廓确定，距圆心距离从规则图纸上获取</center>
 
@@ -6526,7 +6526,7 @@ gradient clip和模型参数滑动平均也是推荐使用的训练策略，都�
 
 > 把每一片扇叶都映射到标准位置，比如下方左侧正中央朝上的位置。如此投影产生的变换矩阵中的子矩阵（旋转矩阵）就包含了旋转变化信息，由此可以计算出帧差。
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\runeproject.png)
+![](Image_base\runeproject.png)
 
 <center>左侧为标准模板，为了凸显效果特意夸张了右侧图像的形变</center>
 
@@ -6552,7 +6552,7 @@ gradient clip和模型参数滑动平均也是推荐使用的训练策略，都�
 
 另外，我们还需要确定角速度的方向。最简单的方法是通过两帧间装甲板和能量机关中心这3点，通过叉乘以判断旋转方向。根据右手定则，我们一般以前一帧的位置为起点，藉此确定绝对方向。
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\crossproduct.png" style="zoom:50%;" />
+<img src="Image_base\crossproduct.png" style="zoom:50%;" />
 
 > 叉乘的其他作用还包括判断4个点是否在一个平面内、计算立方体的体积、获取平面的法向量等。内积也是计算两条线之间位置关系的利器。通过这两个工具我们很容易把点之间的关系转换为线和面的关系，而不需要真的构建一条线或一个面。
 
@@ -6566,7 +6566,7 @@ gradient clip和模型参数滑动平均也是推荐使用的训练策略，都�
 
 只要你学习过信号与系统，第一时间想到的应该就是这个方法。持续通过帧差采集角速度信息，当采样总时间至少达到一个周期时进行离散傅里叶变换获取信号的频率谱，找出最大的响应峰即能量机关的旋转频率。由于其旋转频率随机，因此至少保证采样时间为可能周期的最大值（$2\pi/1.884$) 。OpenCV中恰好提供了`cv::DFT()`的接口，只需要构建一个一维的`Mat`（或者直接使用OpenCV对`vector`封装得到的`Vec`）并将采样点保存在其中，传入函数后就可以得到返回的结果。遍历结果中的频率谱，找到最大值对应的下标即要找的频率。然后在对应频率上查看相位谱，即可得到采样开始时刻的初项。
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\fouriertransform.jpg" style="zoom: 67%;" />
+<img src="Image_base\fouriertransform.jpg" style="zoom: 67%;" />
 
 <center>很经典的图片，如果不断增加项数，上面的级数最终会逼近一个方波</center>
 
@@ -6704,7 +6704,7 @@ PnP返回的结果是一个目标到相机的**旋转矩阵**和**平移矩阵**
 
 > 有同学可能回想，为什么我不能先在图像上检测出打击目标然后再用激光测距呢？这是因为检测得到目标后，你只能获取物体相对相机的偏角，由于没有深度信息，物体可能存在射线的任意位置上，因此激光测距器不知道应该对准哪个位置，无法完成测量：
 >
-> <img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\laserpointsensor.gif" style="zoom:80%;" />
+> <img src="Image_base\laserpointsensor.gif" style="zoom:80%;" />
 >
 > <center>激光传感器不知道应该转到哪个位置，因为总能产生交点</center>
 >
@@ -6720,7 +6720,7 @@ PnP返回的结果是一个目标到相机的**旋转矩阵**和**平移矩阵**
 
 这里不介绍如何标定两者的位姿变换矩阵，假设它们的**关系已知**，我们看看如何将点云投影到2维图像上。此法一般用于雷达系统，激光雷达指面阵。当然不排除将激光雷达装载在其他机器人上的情况。
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\cocalibration.png)
+![](Image_base\cocalibration.png)
 
 <center>点云可视化（上）和投影到二维图像的效果（下），不同颜色表示深度不同；图源KITTI DataSet</center>
 
@@ -6732,7 +6732,7 @@ PnP返回的结果是一个目标到相机的**旋转矩阵**和**平移矩阵**
 >
 > 可我们刚刚不是说点式激光测距传感器不能确定物体到底在哪个位置吗？这是因为我们增加了**只采样一次**的前提。若能多次采样，实际上可以实现和面阵激光雷达相同的效果。还是使用[6.3.2](###6.3.2. 双目和深度相机)的那张动图，通过逆向思维，一种直观的解释如下：对于测距传感器在每一个角度测量到的深度值，我们都可以计算出该点是否在光心和物体成像点（像平面上的点）形成的射线上，因此只需要连续改变测距传感器的角度，不断采集数据，直到计算出的点恰好位于射线上，这个位置就一定是物体所在的真实位置。
 >
-> <img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\lasercontinuousdetect.gif" style="zoom:80%;" />
+> <img src="Image_base\lasercontinuousdetect.gif" style="zoom:80%;" />
 >
 > <center>真的要用也不是不行，也应该采样离散抽样的方式，不过速度还是有点慢，只适合静态目标</center>
 
@@ -7012,7 +7012,7 @@ $$
 
 > 实际上，我们利用水平方向的弹道运动方程估计$T$，用竖直方向的落点估计$\theta$，这是参数相互依赖的两个模型，耦合程度非常高。我们采用的轮流更新参数的方法，可以看作是机器学习中非常经典的**期望最大化**（EM，expectation maximum）算法，将时间$T$或仰角$\theta$当作隐变量，首先根据己经给出的观测数据（角度初始化得到$v_x(0)$），估计出模型参数的值（时间$T$)；然后再依据上一步估计出的参数值估计缺失数据的值（在第二步利用$T$计算新的$\theta$），再根据估计出的缺失数据加上之前己经观测到的数据重新再对参数值进行估计，然后反复迭代，直至最后收敛，迭代结束。如果你了解这个算法，应该能更好地理解我们用于迭代的这两个过程。 注意，外圈有一个大的“迭代“，而对于我们的方法，每一小步也通过迭代法求解微分方程或进行反馈求解。
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\pitchangleiteration.png" style="zoom: 50%;" />
+<img src="Image_base\pitchangleiteration.png" style="zoom: 50%;" />
 
 <center>这里还考虑了竖直方向的运动，一般只要在上坡时可能发生，故在上面的算法中忽略了竖直方向的运动</center><center>图源哈工程创梦之翼战队自瞄系统设计</center>
 
@@ -7030,7 +7030,7 @@ $\psi$不需要在每轮迭代都更新计算，虽然它的改变会导致云�
 
 前面对目标的建模都是针对**平动**的，虽然在很短的时间内装甲板绕机器人自身的旋转也可以等效为平动，但是对于舵轮、全向轮步兵等转速高达数r/s的目标，没有考虑旋转的预测模型就无能为力了，预测值常常会飘到机器人外。
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\noantispinner.gif)
+![](Image_base\noantispinner.gif)
 
 <center>机器人发生旋转的时候，由于装甲板转到另一侧导致预测失效超出车体；图源华广机器人RMUA技术报告</center>
 
@@ -7050,7 +7050,7 @@ $\psi$不需要在每轮迭代都更新计算，虽然它的改变会导致云�
 
 利用重投影，还可以将转到背面的装甲板的角点投影到像平面上进行可视化，以评估位姿估计的准确性：
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\fourarmors.png" style="zoom:67%;" />
+<img src="Image_base\fourarmors.png" style="zoom:67%;" />
 
 <center>四块装甲板识别及底盘建模的可视化，蓝色为被遮挡的，绿色为可检测到的</center>
 
@@ -7074,7 +7074,7 @@ $\psi$不需要在每轮迭代都更新计算，虽然它的改变会导致云�
 
 - **装甲板识别流程**
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\autoaimpipeline.png)
+![](Image_base\autoaimpipeline.png)
 
 
 
@@ -7082,7 +7082,7 @@ $\psi$不需要在每轮迭代都更新计算，虽然它的改变会导致云�
 
 - **能量机关识别流程**
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\runepipeline.png)
+![](Image_base\runepipeline.png)
 
 
 
@@ -7090,7 +7090,7 @@ $\psi$不需要在每轮迭代都更新计算，虽然它的改变会导致云�
 
 如果算法的总耗时小于相机的采集时间间隔，那么只需要为线程之间的通信设计一个容量为1的共享数据队列。由于IMU和下位机发送的频率远高于相机采集和算法处理，因此一般为它们预留大小至少为相机图像buffer 5~10倍的数据队列，以方便进行时间戳对齐。如果算法时间开销大于相机采集速度，应该增大共享数据队列的容量保证其能够进行同时读写，用**流水线处理**掩盖算法多出来的latency。也可以考虑使用线程池，一旦有新的任务进入（即新图像到来），立刻取出一个线程发射新任务。
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\totalframework.png)
+![](Image_base\totalframework.png)
 
 这里选择使用三个buffer，实际上如果算法处理速度较慢，可以在算法的内部子环节中插入额外的FIFO buffer以掩盖延迟的时间开销。从下位机处的数据接收可以采用轮询或者中断的方式，根据需要自行选择。
 
@@ -7423,7 +7423,7 @@ IMU也是任何和姿态、状态估计有关的学科或应用的核心之一�
 
 利用二阶系统的方法对悬挂进行分析，根据需求可以设计合适的阻尼系数和弹簧的劲度系数，以确保其性能满足需求（对独立悬挂而言）。由于二阶系统需要在截止频率和响应时间上取得权衡，不能做到美美与共，更先进的设计方法是采用**分级悬挂**，在不同的行程上采用不同的参数使得悬挂在所有位置都能取得令人满意的性能。最高境界则是**主动悬挂**，轮腿式的设计（尤其是平衡步兵）自然地将机械悬挂替代，当然也可以选择保留机械悬挂以降低电机的负荷。使用主动悬挂则可以对任意频率、任意幅值的输入进行针对性设计并实时更新参数，合理的算法设计甚至能够使其达到如履平地的效果。
 
-<img src="C:\Users\Neo\Desktop\vision_tutorial\Image_base\upheavalsystem.png" style="zoom:80%;" />
+<img src="Image_base\upheavalsystem.png" style="zoom:80%;" />
 
 <center>将单个轮组建模，得到的二阶系统，M为近似为四分之一车身重量</center>
 
@@ -7453,7 +7453,7 @@ IMU也是任何和姿态、状态估计有关的学科或应用的核心之一�
 
 另外，在上述遇到问题的情况下，你自己可能无法解决（**但是也请仔细看一看报错信息，这并不困难，而且很多时候其实很快就能定位问题所在**，不要看到一片红色的error就不知所措），这时候就要利用搜索引擎或者向它人求助。一般来说，技术类的问题，Google可以得到比较好的结果，bing次之，最好不要不用baidu。搜索的时候，请使用陈述句而不要加入语气词/问号/疑问词等。如“C++ vector的初始化”就比“怎么样初始化一个vector”好得多。善用搜索引擎的**规则搜索**，大部分搜索引擎都支持类似正则表达式的功能，可以限定搜索内容，请参考：[搜索引擎实用语法](https://zhuanlan.zhihu.com/p/349614983)。请有意识的在相关的平台寻找对应的知识，在该软件平台的官方网站/说明文档中寻找解答是一个很好的方法。对于编程问题，StackOverflow是比较合适的选择，系统出现的问题如Ubuntu就去askubuntu。谨慎使用CSDN上的解决方法，很多完全不奏效甚至会造成意想不到的后果，并且质量良莠不齐，存在大规模的复制黏贴。[How-To-Ask-Questions-The-Smart-Way](https://github.com/ryanhanwu/How-To-Ask-Questions-The-Smart-Way/blob/main/README-zh_CN.md)详细地介绍了**提问的艺术**，良好的问题描述有助于它人了解你的情况。
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\helpme.png)
+![](Image_base\helpme.png)
 
 <center>广为流传的“提问收费表”，表明了问题描述的重要性；这也是视觉交流群“救命啊”的梗来源</center>
 
@@ -7777,7 +7777,7 @@ PyTorch基本上是现在深度学习开发的标配了，虽然有很多其他�
 
 从一开始的半桶水都没有还喜欢装逼，逐渐在做机器人的过程中跨越了愚昧的山顶，到最后终于明白自己有太多东西需要学习。在RoboMaster里，认识了非常多志同道合的朋友，也真正让我感受到什么叫人外有人。当我在为自己懂得编程而沾沾自喜的时候殊不知别人在高中甚至初中就已经于OI里大杀四方，当我觉得自己会用单片机高人一等的时候，早已经有人在它上面跑起了MPC和FOC；我也曾认为自己在目标检测上颇有理解，大神们却默默地把自己的算法迭代了好几次。
 
-![](C:\Users\Neo\Desktop\vision_tutorial\Image_base\zhuangbility.png)
+![](Image_base\zhuangbility.png)
 
 <center>经典老图永不过时</center>
 
