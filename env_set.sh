@@ -9,7 +9,7 @@
 # basic needs
 echo "welcome! this is a auto env config script,what you only need to do is input your passwd. once the process start,leave it along!"
 
-sudo apt-get install git vlc simplescreenrecorder synaptic cutecom qv4l2 cmake build-essential htop -y
+sudo apt-get install git vlc simplescreenrecorder synaptic cutecom qv4l2 cmake build-essential htop ssh octave -y
 
 echo "good job! now just wait until it finish. when it's done we will tell you about it with a long sequence like : --------------------------- ,and also some prompts."
 
@@ -47,13 +47,13 @@ sudo dpkg -i SunloginClient_11.0.1.44968_amd64.deb
 wget https://download.nomachine.com/download/7.10/Linux/nomachine_7.10.1_1_amd64.deb
 sudo dpkg -i nomachine_7.10.1_1_amd64.deb
 
-# installatin of intel OpenVINO if your platform is that kind
+# installatin of intel OpenVINO if your platform is of that kind
 
 
 
 
 
-# installation of HIK industrial camera driver and client,if your cam is that kind
+# installation of HIK industrial camera driver and client,if your cam is of that kind
 wget https://www.hikrobotics.com/cn2/source/support/software/MVS_STD_GML_V2.1.1_220511.zip
 unzip MVS_STD_GML_V2.1.1_220511.zip
 sudo dpkg -i MVS-2.1.1_x86_64_20220511.deb
