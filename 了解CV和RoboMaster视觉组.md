@@ -65,7 +65,7 @@ GitHub： https://github.com/NeoZng/vision_tutorial ***(本教程仓库，star/w
 
 CSDN： HNU跃鹿战队 https://blog.csdn.net/NeoZng
 
-知乎：NeoAndrew https://www.zhihu.com/people/zengen-38
+知乎：NeoAndrew https://www.zhihu.com/people/zengen-38  ***关注neozng谢谢喵***
 
 Bilibili：湖南大学跃鹿战队 https://space.bilibili.com/522795884
 
@@ -93,6 +93,8 @@ RoboMaster机甲大师官方网站：https://www.robomaster.com/zh-CN
 >
 >  1. KCF（实在有点难，很难讲得通俗易懂）
 >  2. 自适应滤波在控制理论中的解释（某种最优准则下的观测器？）
+>  3. SLAM初步
+>  4. 路径规划初步
 
 
 
@@ -5886,7 +5888,9 @@ ToF和结构光相机的深度测算原理和双目类似，可以归入此类�
 
 
 
-#### 5.7.4.1. IMU
+#### 5.7.4.1. IMU和轮式里程计
+
+
 
 
 
@@ -7648,6 +7652,8 @@ done
 
 <center>建议打开大图查看，Image_base文件夹下有矢量格式图片，可以更清晰的看到内部的小图像</center>
 
+
+
 ## 7.1.硬件相关
 
 工欲善其事必先利其器，了解底层原理和封装的细节有助于软件算法的设计与优化。地基不牢就妄想万丈高楼拔地而起是万万不可的。
@@ -7859,7 +7865,7 @@ IMU也是任何和姿态、状态估计有关的学科或应用的核心之一�
 
 
 
-下面笔者将会分门别类，大致按照学习的时间顺序和知识的依赖关系，把所有精心挑选的资源和书籍一一罗列。
+下面笔者将会分门别类，大致按照学习的时间顺序和知识的依赖关系，把所有精心挑选的资源和书籍一一罗列。已经在正文部分出现的相关算法学习教程和书籍资料等均已在出处给出链接，这里不再重复罗列。
 
 > 如果你有相关方面的课程和教材推荐，欢迎补充。若认为还需要增加方向，也欢迎提出建议。
 
@@ -7877,13 +7883,15 @@ IMU也是任何和姿态、状态估计有关的学科或应用的核心之一�
 
   - 教材推荐：《普林斯顿微积分读本》，相对国内的定义式教材有着无与伦比的优势，直观性会强很多，笔者认为这点非常重要，要先有直观的认识然后再加入严谨的定义。
   - 课程推荐：[麻省理工-微积分重点](https://www.bilibili.com/video/BV1Jt41157Jr)，涵盖了微积分中最重要的概念，可以用作预习/复习。[高等数学-国防科技大学](https://www.icourse163.org/course/NUDT-9004?tid=1207008225)由朱建民教授讲授，个人认为是国内上的最好的慕课，不仅贴合应试内容还注重实用，可以保证你在考试也拿高分，一共有五个系列，分别对应高数上下册。它也贴心的提供了先修课[微积分CAP](https://www.icourse163.org/course/NUDT-1001626005?tid=1206450227)。
-  - 重要概念：映射、极限、导数和微分、泰勒公式、定积分和不定积分、向量值函数和多元函数、偏导数和全微分、条件极值、多重积分、坐标变换、梯度/散度/旋度、格林公式/高斯公式/斯托克斯公式、傅里叶级数。
+  - 重要概念：映射、极限、导数和微分、泰勒公式、定积分和不定积分、向量值函数和多元函数、偏导数和全微分、条件极值（拉格朗日和KKT非常重要之后会遇到n多次）、多重积分、坐标变换（结合线性代数，jacobian）、梯度/散度/旋度、格林公式/高斯公式/斯托克斯公式、傅里叶级数。
 
   
 
 - **线性代数**
 
-  是机器学习、矩阵分析、凸优化和积分变换等后续课程的基础。个人认为是计算机视觉最核心的数理基础课，有人说，程序员一生只要要学五遍线性代数。
+  是机器学习、矩阵分析、凸优化和积分变换等后续课程的基础。个人认为是计算机视觉最核心的数理基础课。
+
+  > 有人说，程序员一生要学五遍线性代数。
 
   - 教材推荐：《linear algebra done right》，抛开行列式，直接从最本质的角度分析线性变换，由线性映射的概念导出矩阵、特征向量、相似等的概念，同时涉及了一些简单的泛函分析。《Introduction to Linear Algebra》，结合了大量工科应用实例，并且深入分析了线性空间（丢掉你的同济绿皮吧！）。
   - 课程推荐：[MIT-18.06](https://www.bilibili.com/video/BV1bb411H7JN)——永远的神！配合《Introduction to Linear Algebra》食用。还有广受欢迎的3blue1brown的[线性代数的本质](https://www.bilibili.com/video/BV1ys411472E)，这个系列课程通过大量直观有趣的可视化，给你提供直觉的理解。这里还有一个精心制作的可视化线性代数课程网站，包含了大量**可以自行操作和交互**的图像和模型，戳这里：[Immersive linear algebra](http://immersivemath.com/ila/index.html)。18.06还有后续课程：[线性代数在数据分析、信号处理、机器学习中的应用](https://www.bilibili.com/video/BV1s7411L7xd?spm_id_from=333.999.header_right.fav_list.click&vd_source=ddae2b7332590050afe28928f52f0bda)。
@@ -7893,7 +7901,7 @@ IMU也是任何和姿态、状态估计有关的学科或应用的核心之一�
 
 - **概率论**
 
-  机器学习和深度学习的根基，进阶课程包括随机过程、数理统计等。
+  机器学习和深度学习的根基，进阶课程包括随机过程、数理统计等。课内知识大概已经足够。
 
   - 教材推荐：《概率导论》、《普林斯顿概率论读本》，优点和前述的教材一样。
   - 课程推荐：[MIT 概率论](https://www.bilibili.com/video/BV1Ea411S7ug?p=1&vd_source=ddae2b7332590050afe28928f52f0bda)
@@ -7904,18 +7912,20 @@ IMU也是任何和姿态、状态估计有关的学科或应用的核心之一�
 - **进阶**（新人跳过）
 
   > 待补充。
+  >
+  > 其实很大一部分都是同学们的专业课或专选课，但是课内学的与达到掌握的程度并将其应用在实际问题的分析中之间有很大的鸿沟。
 
   集大成者，[MIT 18.086 Mathematical Methods for Engineers II](https://www.bilibili.com/video/BV1Rt411i7yy?spm_id_from=333.999.header_right.fav_list.click&vd_source=ddae2b7332590050afe28928f52f0bda)，很适合工科生看，相当于把下面常用的一些数学方法糅合在一起。
-
-  - 凸优化
-  - 复变函数
-  - 信号与系统
-  - 自动控制原理
-  - 流形分析
-  - 群论
-  - 非线性优化
-  - 偏微分方程
-
+  
+  - 凸优化，非常重要
+  - 复变函数（结合线性代数、信号与系统和自动控制原理）
+  - 信号与系统，推荐奥本海姆绿皮书以及他的配套视频课程
+  - 自动控制原理（time+freq domain）
+  - 流形分析（微分几何？流形学习？）
+  - 群论，主要用在状态估计上
+  - 非线性优化（以梯度下降为基础展开的一系列改进）
+  - 偏微分方程，多元微积分其实已经学了一些
+  
   
 
 ---
@@ -7943,6 +7953,10 @@ IMU也是任何和姿态、状态估计有关的学科或应用的核心之一�
   [CS50-Harvard University](https://www.bilibili.com/video/BV1Rb411378V?vd_source=ddae2b7332590050afe28928f52f0bda)也是非常广为流传的课程。其课程体系来自学校的真实授课，课时数充足而且很详尽，老师讲得生动且深入浅出，也有很多梗。看完这个，对于计算机科学的基本理解就大差不差了，接下来在你感兴趣的领域进行深入即可。
 
 - （新人跳过）若有兴趣，可以继续学习CSAPP《以程序员的视角看待的计算机系统》、计算机组成原理、操作系统等CS专业的课程。
+
+- **missing course in CS**
+
+  一门非常流行的对CS传统教育的补充课程。
 
 
 
@@ -7980,15 +7994,15 @@ IMU也是任何和姿态、状态估计有关的学科或应用的核心之一�
 
 - **Numpy**
 
-  主要是数据类型和基本函数接口的使用，不需要跟着课程学，看官方文档即可。
+  主要是数据类型和基本函数接口的使用，不需要跟着课程学，看官方文档即可。RM的主要场景是数据集处理和简单的图像处理。
 
 - **Matplotlib**
 
-  熟悉一些基本的画图、坐标系、换颜色等api就行。
+  熟悉一些基本的画图、坐标系、换颜色等api就行。训练模型可能用得到。
 
 - **Matlab**（新人跳过）
 
-  也是脚本语言，写起来很方便关键是工具箱贼多，开发demo非常好用。跟随官方tutorial即可。
+  也是脚本语言，写起来很方便关键是工具箱贼多，开发demo非常好用。跟随官方tutorial即可。simulink和simscape配合工具箱是强大的仿真工具。
 
 - **Shell**
 
@@ -7997,6 +8011,8 @@ IMU也是任何和姿态、状态估计有关的学科或应用的核心之一�
 - **ROS/ROS2**（新人跳过）
 
   robot operator system，它们是专为机器人的软件开发所设计出来的一套程序，实际上并不是真正的操作系统，而是为程序提供类似于操作系统的服务，包括硬件抽象描述、底层驱动程序管理、共用功能的执行、程序间消息传递、程序发行包管理，它也提供一些工具和库用于获取、建立、编写和执行多机融合的程序。使用ROS开发最大的优点就是可以专注于算法的实践和逻辑的编写，它已经提供了完整的模块封装、抽象、交互和通信的功能，我们只需要编写好每个模块，然后利用ROS中适当的功能将这些模块拼接在一起进行工作。同样，ROS/ROS2拥有完整的文档和社区，以及大量Tutorial。你并不需要专门寻找某个教程。在学习完C++并对计算机体系和机器人有较好的了解后，推荐学习ROS。它实际上已经成为了某种行业开发的规范。
+  
+  ***强烈建议你基于ROS打造感知算法框架。***
 
 
 
@@ -8058,13 +8074,15 @@ PyTorch基本上是现在深度学习开发的标配了，虽然有很多其他�
 
 - [Sci-Hub: removing barriers in the way of science](https://www.sci-hub.st/)：学术期刊下载，配合学校数据库使用
 - [arXiv.org e-Print archive](https://arxiv.org/)，论文预印本，大部分CS和CV相关的论文都可以找得到
+- [The latest in Machine Learning | Papers With Code](https://paperswithcode.com/)，各大数据集和榜单出现的方法和论文
 - [世纪图书馆](http://gen.lib.rus.ec/)、[z-lib.org](https://z-lib.org/)：找电子书
 - [Wolfram|Alpha: Computational Intelligence](https://www.wolframalpha.com/)，有可能用得上的all-in-one智能搜索引擎
 - [w3school 在线教程](https://www.w3school.com.cn/)：W3C组织的在线学习教程
 - [力扣](https://leetcode.cn/)：毕竟人是要吃饭的
 - [在线LaTeX公式编辑器](https://www.latexlive.com/)，快速编写Latex公式，还提供了公式识图一键白嫖
+- [SimpleTex - Snip & Get!](https://simpletex.cn/ai/latex_ocr)，公式ocr识别，好用，准，免费
 - [Markdown 基本语法](https://markdown.com.cn/basic-syntax/)：记得学会用markdown编写说明文档
-- [ProcessOn](https://www.processon.com/)：方便画流程图和各种图
+- [ProcessOn](https://www.processon.com/)：方便画流程图和各种图，也推荐vscode的drawio插件
 - [The latest in Machine Learning | Papers With Code](https://paperswithcode.com/)：炼丹人必备
 - [Kaggle](https://www.kaggle.com/)：打点比赛
 - [MathPages](https://www.mathpages.com/home/index.htm)：进阶数学知识的学习
@@ -8153,7 +8171,7 @@ PyTorch基本上是现在深度学习开发的标配了，虽然有很多其他�
 
 **下个赛季，我会继续战斗，不摆烂的那种。**
 
-至于到底有什么感想？你自己来参加试试吧！
+至于到底有什么感想，百闻不如一见。
 
 > 2023/06/01增补：最后一个赛季以遗憾收尾，小组赛与另外两支队伍积分相同，小分落败。
 >
