@@ -25,7 +25,7 @@
 \midrule
 \endhead
 RMUC 2025 比赛规则 & V2.1.0 & 2025-08-02 & 历史基线，不用早期版本代替赛季终版\cite{rmuc2025_rules} \\
-RMUC 2026 比赛规则 & V2.2.0 & 2026-08-07 & 当前规则快照；官方 MD5 为 \texttt{d4808d8f91575d89e2fe4f7ba2f4fb3f}\cite{rmuc2026_rules_v220} \\
+RMUC 2026 比赛规则 & V2.2.0 & 2026-08-07 & 当前规则快照；官方 MD5 为 \nolinkurl{d4808d8f91575d89e2fe4f7ba2f4fb3f}\cite{rmuc2026_rules_v220} \\
 RMUC 2026 制作规范 & V2.0.0 & 2026-06-26 & 无线设备、结构、安全和客户端边界\cite{rmuc2026_resource} \\
 RMUC 2026 通信协议 & V2.0.0 & 2026-06-26 & 链路、频率、带宽、数据格式与客户端接口\cite{rmuc2026_protocol_v200} \\
 \bottomrule
@@ -35,7 +35,7 @@ V2.2.0 的修改日志（文内 p.~2）表明，相对 V2.1.0 只新增空中机
 
 \section{从 2025 到 2026：规则事实到算法能力}
 
-\begin{longtable}{p{0.12\textwidth}p{0.34\textwidth}p{0.25\textwidth}p{0.19\textwidth}}
+\begin{longtable}{p{0.11\textwidth}p{0.34\textwidth}p{0.25\textwidth}p{0.19\textwidth}}
 \caption{赛季变化与课程能力映射；第二列为规则事实，第三列为工程推导}\label{tab:season-capability}\\
 \toprule
 子系统 & 经核验的规则变化 & 推导出的算法能力 & 对应章节 \\
@@ -59,7 +59,7 @@ V2.2.0 的修改日志（文内 p.~2）表明，相对 V2.1.0 只新增空中机
 
 \section{裁判系统不是高速控制总线}
 
-2026 协议将通信划分为常规串口、图传和雷达无线链路。常规串口帧使用 \texttt{SOF=0xA5}、CRC8 与 CRC16；第 1.1 节（pp.~4--5）给出的正常环境参考值约为 130\,ms、丢包率小于 1\%，恶劣环境约为 200\,ms、丢包率约 3\%\cite{rmuc2026_protocol_v200}。
+2026 协议将通信划分为常规串口、图传和雷达无线链路。常规串口帧以 \texttt{SOF=0xA5} 开始，并分别使用 CRC8 与 CRC16 校验。第 1.1 节（pp.~4--5）给出的正常环境参考值约为 130\,ms、丢包率小于 1\%；恶劣环境约为 200\,ms、丢包率约 3\%\cite{rmuc2026_protocol_v200}。
 
 \begin{longtable}{p{0.29\textwidth}p{0.27\textwidth}p{0.34\textwidth}}
 \caption{裁判系统协议边界与系统含义}\label{tab:referee-boundary}\\
