@@ -1,0 +1,22 @@
+\chapter{深度、激光雷达、点云与多传感器融合}
+\label{ch:lidar-fusion}
+\chapterstatus{结构已定，待写实}
+
+\begin{learningobjectives}
+理解双目/深度/ToF 测距误差；掌握点云几何、ICP/NDT 与占据表示；完成相机--雷达外参与时间校准。
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置为第~\ref{ch:closed-loop-hardware}、\ref{ch:geometry}、\ref{ch:state-estimation}~章。实验产物是带时间戳和外参版本的融合局部地图。
+\end{prerequisites}
+
+\plannedsection{不同深度来源}{双目视差 $Z=fb/d$ 的误差放大、主动深度和 ToF 的材料/多径问题。}
+\plannedsection{点云与邻域几何}{法向、体素、近邻与数据结构，只讲后续配准和建图所需内容。}
+\plannedsection{ICP 与 NDT}{对应关系、局部最优、初始化和退化环境。}
+\plannedsection{外参与时间校准}{空间变换与时间偏差联合影响，避免只做静态棋盘外参。}
+\plannedsection{融合架构}{松/紧耦合、raw measurement 与 track-level fusion 的信息损失。}
+
+\begin{chaptertransition}
+多传感器融合产生连续的 ego pose、目标轨迹和局部几何。下一章把这些约束组织为 VO/VIO/SLAM 后端和统一 WorldState，正式结束感知栈。
+\end{chaptertransition}
+

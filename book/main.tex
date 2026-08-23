@@ -1,0 +1,81 @@
+\documentclass[UTF8,zihao=-4,openany,fontset=fandol]{ctexbook}
+
+\input{config/preamble}
+\input{config/commands}
+
+\title{RoboMaster 机器人算法教程\\[0.5em]\large 感知、决策、规划与控制}
+\author{NeoZng 与开源贡献者}
+\date{重构草案 \today}
+
+\begin{document}
+
+\frontmatter
+\maketitle
+\input{frontmatter/preface}
+\input{frontmatter/roadmap}
+\input{frontmatter/notation}
+\tableofcontents
+
+\mainmatter
+
+\part{平台、硬件与工程工具}
+\input{chapters/ch01_closed_loop_hardware}
+\input{chapters/ch02_reproducible_toolchain}
+\input{chapters/ch03_ai_agent_workflow}
+
+\part{数学、数值与动态系统底座}
+\input{chapters/ch04_linear_algebra_geometry}
+\input{chapters/ch05_probability_uncertainty}
+\input{chapters/ch06_optimization_dynamics}
+
+\part{从数字图像到现代视觉识别}
+\input{chapters/ch07_image_formation}
+\input{chapters/ch08_convolution_features}
+\input{chapters/ch09_machine_learning_classification}
+\input{chapters/ch10_detection_segmentation_temporal}
+\input{chapters/ch11_data_evaluation_deployment}
+
+\part{三维感知、融合与 SLAM}
+\input{chapters/ch12_camera_geometry_pnp}
+\input{chapters/ch13_multiview_ba}
+\input{chapters/ch14_state_estimation_tracking}
+\input{chapters/ch15_lidar_fusion}
+\input{chapters/ch16_slam_world_model}
+
+\part{运动规划与控制}
+\input{chapters/ch17_modeling_identification_feedback}
+\input{chapters/ch18_lqr_lqg}
+\input{chapters/ch19_path_planning}
+\input{chapters/ch20_trajectory_optimization}
+\input{chapters/ch21_mpc_nonlinear_control}
+\input{chapters/ch22_auto_aim_nonlinear_estimation}
+
+\part{自主决策与学习规划}
+\input{chapters/ch23_behavior_architecture}
+\input{chapters/ch24_dp_mdp_rl}
+\input{chapters/ch25_multi_robot_coordination}
+\input{chapters/ch26_vlm_hybrid_intelligence}
+
+\part{系统集成与赛季案例}
+\input{chapters/ch27_system_integration}
+\input{chapters/ch28_auto_aim_case}
+\input{chapters/ch29_sentry_case}
+\input{chapters/ch30_radar_case}
+\input{chapters/ch31_season_2025_2026}
+
+\appendix
+\input{appendices/app_a_notation}
+\input{appendices/app_b_legacy_map}
+\input{appendices/app_c_experiment_contract}
+
+\backmatter
+\ifusebiblatex
+  \printbibliography[heading=bibintoc,title={参考文献}]
+\else
+  \chapter*{参考文献}
+  \addcontentsline{toc}{chapter}{参考文献}
+  当前精简 TeX 环境未安装 \texttt{biblatex}；正式构建与 CI 将从
+  \texttt{references.bib} 生成参考文献。
+\fi
+
+\end{document}

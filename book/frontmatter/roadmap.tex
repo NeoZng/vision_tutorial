@@ -1,0 +1,35 @@
+\chapter*{阅读路线与章节依赖}
+\addcontentsline{toc}{chapter}{阅读路线与章节依赖}
+
+全书不是按算法出现年代排列，而是按“上一章产物成为下一章输入”的方式组织。
+
+\begin{longtable}{p{0.16\textwidth}p{0.35\textwidth}p{0.39\textwidth}}
+\toprule
+路线 & 建议章节 & 结束时应具备的能力 \\
+\midrule
+\endfirsthead
+\toprule
+路线 & 建议章节 & 结束时应具备的能力 \\
+\midrule
+\endhead
+全栈路线 & 1--31 章顺序阅读 & 从硬件信号链出发，设计并验证感知--决策--规划--控制闭环 \\
+感知路线 & 1--16、27、30--31 章 & 形成带时间戳、坐标系和协方差的统一世界状态，而非只输出检测结果 \\
+规划控制路线 & 1--6、14、16--27、29--31 章 & 从状态空间、LQR/LQG 到 MPC、行为决策与多机器人协同 \\
+自瞄路线 & 1--14、17--18、21--22、27--28 章 & 贯通标定、PnP、跟踪、延迟补偿、弹道求根和云台控制 \\
+\bottomrule
+\end{longtable}
+
+五条概念桥贯穿全书：
+
+\begin{enumerate}
+  \item \term{信号链桥}：物理量 $\rightarrow$ 传感器 $\rightarrow$ 采样和时间戳 $\rightarrow$ 软件消息；
+  \item \term{卷积桥}：线性移不变算子与局部结构 $\rightarrow$ 梯度和特征点 $\rightarrow$ CNN 的局部连接与权值共享；
+  \item \term{估计桥}：检测输出是量测 $\rightarrow$ Bayesian estimation 和数据关联 $\rightarrow$ 目标轨迹、位姿与地图；
+  \item \term{最优性桥}：最小二乘和 QP $\rightarrow$ LQR 的局部最优反馈 $\rightarrow$ 轨迹优化与 MPC；
+  \item \term{Bellman 桥}：最短路和动态规划 $\rightarrow$ MDP/POMDP $\rightarrow$ 强化学习与受约束的 VLM 高层规划。
+\end{enumerate}
+
+\begin{failuremode}
+章节依赖不是阅读建议而已。例如，没有统一的时间戳、外参和协方差定义，所谓“雷达与视觉融合”无法形成可检验的估计问题；没有动力学和约束，路径点也不能直接作为执行器命令。
+\end{failuremode}
+

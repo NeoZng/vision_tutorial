@@ -1,0 +1,25 @@
+\chapter{哨兵自主案例}
+\label{ch:sentry-case}
+\chapterstatus{案例框架已定；已接入 2026 V2.2.0 规则快照}
+
+\begin{learningobjectives}
+把定位、语义地图、动态目标、全局/局部规划、行为决策、自瞄与安全监督组合为可回放哨兵系统。
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置为第~\ref{ch:slam-world}、\ref{ch:path-planning}--\ref{ch:integration}~章。产物是多场景仿真/回放 benchmark 与实机 HIL 计划。
+\end{prerequisites}
+
+\plannedsection{规则到能力矩阵}{自动/半自动形态、人工干预成本、进攻/防御/移动姿态、切换冷却与持续时间按规则版本配置。}
+\plannedsection{定位与语义地图}{可通行域、战略区域、动态障碍、重定位和地图版本。}
+\plannedsection{全局与局部规划}{重规划周期、制动距离、对手预测和 fallback。}
+\plannedsection{行为与资源}{巡逻、交战、补给、撤退、功率/弹量/血量与多目标 utility。}
+\plannedsection{验证}{任务成功率、人工干预、碰撞、最坏延迟、定位丢失恢复和规则违反次数。}
+
+\begin{engineeringcheck}
+对同一回放分别运行自动与半自动配置；将地图标记、买弹、复活、回血、换姿态等人工动作记为带成本事件。报告完成任务所需成本、姿态切换次数、失定位恢复时间和安全监督触发次数，不能只报告导航成功率。
+\end{engineeringcheck}
+
+\begin{chaptertransition}
+哨兵以自身传感和地图完成局部自主；雷达站案例把视角提升到全场态势、跨视角关联与队友通信，并与多机器人决策连接。
+\end{chaptertransition}

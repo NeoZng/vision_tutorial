@@ -1,0 +1,35 @@
+\chapter{LQR 与 LQG：局部最优反馈}
+\label{ch:lqr}
+\chapterstatus{结构已定，核心推导待展开}
+
+\begin{learningobjectives}
+从有限时域二次代价推导 Riccati 递推；理解无限时域 LQR、tracking augmentation、Kalman 对偶与分离原理的条件。
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置为第~\ref{ch:probability}、\ref{ch:optimization-dynamics}、\ref{ch:state-estimation}、\ref{ch:modeling-feedback}~章。实验比较 PID、LQR 与 LQG 在噪声、延迟和模型失配下的表现。
+\end{prerequisites}
+
+对离散线性系统
+\begin{equation}
+  \vect{x}_{k+1}=\mat{A}\vect{x}_k+\mat{B}\vect{u}_k,
+\end{equation}
+有限时域代价为
+\begin{equation}
+  J=\vect{x}_N\trans\mat{Q}_N\vect{x}_N+
+  \sum_{k=0}^{N-1}
+  \left(\vect{x}_k\trans\mat{Q}\vect{x}_k+
+  \vect{u}_k\trans\mat{R}\vect{u}_k\right).
+\end{equation}
+后续将从 Bellman recursion 假设价值函数 $V_k(\vect{x})=\vect{x}\trans\mat{P}_k\vect{x}$，逐步推导最优线性反馈 $\vect{u}_k=-\mat{K}_k\vect{x}_k$ 和 Riccati 递推，而不是只给软件接口。
+
+\plannedsection{有限时域 LQR 推导}{完成平方、Riccati backward recursion 和反馈增益。}
+\plannedsection{无限时域与稳定性}{stabilizability/detectability、DARE 和闭环极点。}
+\plannedsection{参考跟踪与积分扩维}{稳态前馈、误差坐标和积分状态。}
+\plannedsection{LQG 与分离原理}{线性高斯、无约束条件下估计器与控制器分离；模型失配时的边界。}
+\plannedsection{权重如何选择}{从量纲、允许误差和输入尺度出发归一化，不把 $Q,R$ 调参神秘化。}
+
+\begin{chaptertransition}
+LQR 给出了局部反馈和 value function 的第一个解析例子。接下来先解决全局几何可达性：如何在地图中找到避障路径；随后再加入时间、动力学与约束。
+\end{chaptertransition}
+

@@ -1,0 +1,26 @@
+\chapter{被控对象建模、系统辨识与反馈}
+\label{ch:modeling-feedback}
+\chapterstatus{结构已定，待写实}
+
+\begin{learningobjectives}
+从机构与执行器得到运动学/动力学模型；理解线性化、可控性、可观性、系统辨识、PID 与前馈；建立模型误差和延迟的验收方法。
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置为第~\ref{ch:optimization-dynamics}、\ref{ch:slam-world}~章。产物是云台或底盘的一组输入--输出实验、辨识模型、残差诊断和闭环 baseline。
+\end{prerequisites}
+
+\plannedsection{从物理对象到状态空间}{选择状态、输入、输出和扰动；单位、坐标和 actuator dynamics。}
+\plannedsection{工作点线性化}{从非线性 $\dot{\vect{x}}=f(\vect{x},\vect{u})$ 得到局部 $\mat{A},\mat{B}$，说明有效邻域。}
+\plannedsection{可控性与可观性}{区分“存在控制/观测序列”和数值条件良好。}
+\plannedsection{系统辨识}{激励设计、ARX/state-space、训练/验证数据与残差白化。}
+\plannedsection{PID、前馈与 anti-windup}{从误差动力学解释比例/积分/微分；输入饱和和积分累积。}
+
+\begin{failuremode}
+用闭环运行数据直接做辨识时，输入与噪声常相关；若忽略控制器和闭环结构，得到的模型可能在离线拟合上很好，却不具备可用于新控制器设计的因果意义。
+\end{failuremode}
+
+\begin{chaptertransition}
+本章得到局部线性模型与 baseline 控制器。下一章把“跟踪误差小、控制量不过大”写成二次型最优控制问题，并通过 Riccati 方程得到 LQR/LQG。
+\end{chaptertransition}
+

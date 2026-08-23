@@ -1,0 +1,20 @@
+\chapter{多视图几何与 Bundle Adjustment}
+\label{ch:multiview}
+\chapterstatus{结构已定，待写实}
+
+\begin{learningobjectives}
+理解极线几何、基础/本质矩阵、三角化、尺度与 gauge freedom；从重投影残差推导小型 bundle adjustment。
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置为第~\ref{ch:features}、\ref{ch:camera-pnp}~章。产物是双目/多目三角化和小型 BA，需报告基线、视差、条件数与失败场景。主要参考多视图几何教材\cite{hartley2004multiple}。
+\end{prerequisites}
+
+\plannedsection{极线约束}{从同一三维点的两条投影射线推导 ${\vect{x}'}\trans\mat{F}\vect{x}=0$。}
+\plannedsection{相对位姿与尺度}{本质矩阵分解、cheirality 检查和单目尺度不可观。}
+\plannedsection{三角化}{代数误差与几何重投影误差、低视差退化。}
+\plannedsection{Bundle Adjustment}{相机位姿和路标点的稀疏非线性最小二乘、鲁棒核与 gauge fixing。}
+
+\begin{chaptertransition}
+多视图提供跨帧几何约束，但真实在线系统还要递归处理噪声、漏检和目标身份。下一章以 Bayesian filtering 与数据关联统一动态目标估计。
+\end{chaptertransition}

@@ -1,0 +1,25 @@
+\chapter{自瞄端到端案例}
+\label{ch:auto-aim-case}
+\chapterstatus{案例框架已定；已接入 2026 V2.2.0 规则快照}
+
+\begin{learningobjectives}
+把相机/曝光、关键点、PnP、关联、状态估计、弹道、云台控制和开火逻辑组合成可拆账的实战系统。
+\end{learningobjectives}
+
+\begin{prerequisites}
+直接复用第~\ref{ch:auto-aim-method}、\ref{ch:integration}~章。案例必须报告命中率随距离、相对速度、旋转状态、曝光、延迟和弹速变化的条件曲线。
+\end{prerequisites}
+
+\plannedsection{需求与观测}{以 2026 移动旋转装甲、英雄部署和飞镖末端移动靶为验收场景；把正式规则事实与训练场参数分开配置。}
+\plannedsection{baseline 架构}{关键点或精简检测器、PnP、EKF/多模型、弹道求根、云台参考。}
+\plannedsection{系统辨识}{相机--枪管外参、云台响应、弹速、发射延迟和空气阻力。}
+\plannedsection{评测与消融}{像素、位姿、预测、弹道、控制逐层误差以及最终命中率。}
+\plannedsection{失败与回退}{漏检、切甲、目标交叉、时间戳异常、超时和手动接管。}
+
+\begin{engineeringcheck}
+2026 英雄部署会切断视频流但保留受限数据、小地图与 UI，第 31 章给出了条款位置。回放实验应主动切断图像，验证估计器是否只凭部署前状态、地图先验与合法数据维持有效期，并在不确定性越界时禁止发射，而不是用隐藏真值“补图传”。
+\end{engineeringcheck}
+
+\begin{chaptertransition}
+自瞄围绕单个目标形成高速局部回路。哨兵案例进一步需要定位建图、动态避障、任务行为和补给/撤退等长时程自主。
+\end{chaptertransition}

@@ -1,0 +1,26 @@
+\chapter{MPC 与非线性约束控制}
+\label{ch:mpc}
+\chapterstatus{结构已定，核心推导待展开}
+
+\begin{learningobjectives}
+推导线性 MPC 的 condensed/sparse QP；理解 receding horizon、terminal cost/set、recursive feasibility；认识 iLQR/SQP/NMPC 的局部性与实时权衡。
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置为第~\ref{ch:lqr}、\ref{ch:trajectory}~章。实验在相同模型上比较 LQR、线性 MPC 和 NMPC 的跟踪误差、约束违反和求解时间。推荐参考\cite{rawlings2017model}。
+\end{prerequisites}
+
+\plannedsection{有限时域最优控制}{状态/输入序列、动力学约束和 stage/terminal cost。}
+\plannedsection{线性 MPC 转为 QP}{消元形式与稀疏形式、warm start、active constraints。}
+\plannedsection{稳定性与可行性}{terminal ingredients、soft constraint 与不可行恢复。}
+\plannedsection{iLQR、SQP 与 NMPC}{局部二次化、rollout、line search 和 realtime iteration。}
+\plannedsection{工程周期}{求解 deadline、上次可行解 fallback、模型更新和 actuator saturation。}
+
+\begin{failuremode}
+MPC 输出的第一步控制只有在求解结果可行且未过期时才应执行。若求解器偶发超时却没有 fallback，平均算时达标仍可能导致真实系统失控。
+\end{failuremode}
+
+\begin{chaptertransition}
+前述章节给出了估计动态目标、求解受约束轨迹与反馈执行的工具。下一章以自瞄为主线，把 PnP、关联、多模型预测、延迟、弹道根求解和云台约束压缩成一个完整高速闭环。
+\end{chaptertransition}
+

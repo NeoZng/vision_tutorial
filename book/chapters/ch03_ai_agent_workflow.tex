@@ -1,0 +1,99 @@
+\chapter{AI 时代的学习与 agent coding}
+\label{ch:ai-agent}
+\chapterstatus{首轮正文}
+
+\begin{learningobjectives}
+\begin{itemize}
+  \item 把 AI 工具放入“提出假设--实现--验证--复盘”的工程闭环；
+  \item 区分官方事实、文献结论、工程经验、模型推断与未验证设想；
+  \item 设计范围明确、可测试、可审查的 agent coding 任务；
+  \item 识别生成式工具在数学证明、引用、接口和安全操作上的典型失效。
+\end{itemize}
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置知识是第~\ref{ch:toolchain}~章的版本控制、自动构建和回放测试。本章产物是一份任务规格、一组自动测试和一份包含证据链接的审查记录。
+\end{prerequisites}
+
+\section{学习目标从记忆 API 转为建立可检验模型}
+
+当 API 用法和代码模板可以被即时检索时，学习的稀缺能力转向三件事：
+
+\begin{enumerate}
+  \item 把模糊需求形式化为变量、假设、约束和评价指标；
+  \item 判断资料的证据等级与适用边界；
+  \item 设计能否证错误误实现的实验，而不是只观察“程序运行了”。
+\end{enumerate}
+
+例如“用 Kalman filter 让轨迹更稳”不是合格规格。更精确的问题应说明状态 $\vect{x}$、量测 $\vect{y}$、采样时刻、动力学、噪声假设、丢测处理，以及用 NIS/NEES、预测误差还是最终命中率评估。只有这样，agent 才能生成可被反驳的实现。
+
+\section{证据分层}
+
+建议在笔记、issue 和正文草稿中显式标注证据类型：
+
+\begin{longtable}{p{0.18\textwidth}p{0.30\textwidth}p{0.42\textwidth}}
+\toprule
+等级 & 典型来源 & 使用方式 \\
+\midrule
+E1 & 官方规则、标准、源代码、原始论文 & 可支撑精确事实，但仍需记录版本和上下文 \\
+E2 & 权威教材、官方教程、作者技术报告 & 用于解释和归纳，必要时回溯 E1 \\
+E3 & 可复现实验、队内日志和 benchmark & 支撑特定平台结论，不能无条件外推 \\
+E4 & 论坛、博客、经验总结 & 作为线索或工程假设，需要独立核验 \\
+E5 & AI 生成、口头传闻、未运行代码 & 只能作为待验证候选，不进入事实性结论 \\
+\bottomrule
+\end{longtable}
+
+对 2025/2026 赛季规则尤其要记录文档名、版本、发布日期和适用赛事。预告、征求意见稿与正式规则不能混用；由规则推导出的策略应明确标为推断。
+
+\section{agent coding 的闭环}
+
+一个可靠的 agent 任务应遵循以下顺序：
+
+\begin{enumerate}
+  \item \term{定义完成条件}：指定允许修改的文件、接口兼容性、测试和性能上限；
+  \item \term{先读上下文}：检查仓库结构、构建方式、现有约定和未提交改动；
+  \item \term{先计划后修改}：把大任务拆成可独立验证的小步；
+  \item \term{最小变更}：避免顺手重构无关模块，不覆盖用户已有修改；
+  \item \term{自动验证}：执行格式化、静态检查、单元测试、回放和 benchmark；
+  \item \term{人工审查}：检查坐标、单位、时间、边界条件、权限与破坏性操作；
+  \item \term{记录证据}：提交信息和 PR 说明包含实验、失败与剩余风险。
+\end{enumerate}
+
+任务规格可以采用下列模板：
+
+\begin{lstlisting}[language={}]
+Goal: Add timestamp-aware camera/IMU synchronization.
+Inputs: camera frame, IMU samples, both in monotonic clock domain.
+Output: synchronized packet with age and validity fields.
+Constraints: no unbounded queue; no API break outside sync module.
+Tests: exact match, interpolation, out-of-order, dropout, clock rollback.
+Metrics: P99 latency < 2 ms on the reference log.
+Forbidden: changing sensor timestamps to message receive time.
+\end{lstlisting}
+
+\section{三类高风险输出}
+
+\subsection{数学推导}
+
+语言模型可能生成形式连贯但前提缺失的推导。审查时应逐行检查：变量是否定义、等式是否真的成立、Jacobian 的线性化点是否一致、矩阵维度是否匹配、近似项是否有量级依据。数值仿真只能发现反例或提供证据，不能替代需要普遍成立的证明。
+
+\subsection{引用与规则}
+
+模型可能混淆论文标题、年份、规则赛季或不存在的 API。任何引用进入正文前必须打开原始资料；网页结论记录访问日期，规则结论记录版本。若没有一手来源，正文应写“尚未核验”，而不是用更肯定的语气掩盖不确定性。
+
+\subsection{能运行但语义错误的代码}
+
+最危险的错误通常不会导致编译失败，例如把度当弧度、把 $\mat{T}_{AB}$ 写成 $\mat{T}_{BA}$、用消息到达时刻代替采样时刻、在队列积压时仍按固定 $\Delta t$ 预测。测试必须针对物理不变量和边界场景，而不只是 happy path。
+
+\begin{aiverify}
+让 agent 实现一个相机--IMU 时间同步器，同时要求生成性质测试。人工再注入四类错误：单位错、坐标变换方向错、时间戳乱序、队列无限增长。若测试不能捕获，优先改进规格和测试，而不是继续扩展功能。
+\end{aiverify}
+
+\section{AI 在本书中的横向位置}
+
+后续每章都将包含一个 \term{AI-assisted, but verified} 模块：在图像章节中用 agent 生成实验脚手架；在 SLAM 章节中让它检查 Jacobian 和数据集接口；在控制章节中生成离散化与单元测试；在赛季案例中帮助建立 rule-to-capability matrix。VLM/LLM 用于高层规划时，还必须经过结构化动作空间、安全监督器和传统规划/控制器验证，不能直接输出执行器命令。
+
+\begin{chaptertransition}
+前三章建立了物理信号、软件执行和人机协作的共同底座。下一部分进入数学语言：坐标与刚体几何描述“量在哪里”，概率描述“我们知道多少”，优化与动力学描述“如何根据模型选择状态和动作”。
+\end{chaptertransition}
+

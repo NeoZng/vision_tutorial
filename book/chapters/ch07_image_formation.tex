@@ -1,0 +1,25 @@
+\chapter{图像如何形成：光学、曝光与数字表示}
+\label{ch:image-formation}
+\chapterstatus{结构已定，待写实}
+
+\begin{learningobjectives}
+理解辐照度到像素值之间的采样、量化、颜色与 ISP 链路；能够分析欠曝、饱和、运动模糊、aliasing 和 gamma 对后续算法的影响。
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置为第~\ref{ch:closed-loop-hardware}、\ref{ch:optimization-dynamics}~章。实验产物是一组固定场景下改变曝光、增益、帧率与运动速度的数据及定量误差曲线。
+\end{prerequisites}
+
+\plannedsection{从连续光场到离散数组}{建立曝光积分、空间采样和量化模型，明确图像不是场景的无损副本。}
+\plannedsection{颜色、Bayer 阵列与 ISP}{只讲白平衡、去马赛克、gamma 和自动曝光中会改变算法统计分布的环节。}
+\plannedsection{采样定理与 aliasing}{从频谱复制推导抗混叠动机；图像金字塔仅在尺度变化确有需要时出现。}
+\plannedsection{卷积作为成像与处理算子}{将点扩散函数、模糊和离散卷积联系起来，为下一章建立物理动机。}
+
+\begin{failuremode}
+在 JPEG/sRGB 图像上直接把像素差解释为光强差通常不成立，因为 gamma、ISP 与压缩已经改变了线性关系。
+\end{failuremode}
+
+\begin{chaptertransition}
+图像形成解释了局部像素为何相关以及信息怎样丢失。下一章从卷积和局部结构出发，只保留对特征匹配、多视图与 CNN 真正必要的经典视觉。
+\end{chaptertransition}
+

@@ -1,0 +1,22 @@
+\chapter{数据工程、评测与边缘部署}
+\label{ch:data-deployment}
+\chapterstatus{结构已定，待写实}
+
+\begin{learningobjectives}
+建立数据版本、标注 QA、切分策略、分布漂移、系统指标与边缘部署基准；能够把错误样本重新送回数据闭环。
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置为第~\ref{ch:toolchain}、\ref{ch:semantic-perception}~章。产物是固定 commit、数据 manifest、模型 hash 和目标硬件 P50/P99 benchmark。
+\end{prerequisites}
+
+\plannedsection{数据集不是文件夹}{场景覆盖、采集策略、版本、标注协议和泄漏控制。}
+\plannedsection{指标必须对应决策}{precision/recall、mAP、mask metric、calibration，以及位姿/跟踪/命中率等下游指标。}
+\plannedsection{导出、量化与算子支持}{ONNX/推理后端、精度漂移、动态 shape、预处理一致性。}
+\plannedsection{端侧性能}{吞吐、P50/P99、内存、功耗、温度、降频和队列年龄。}
+\plannedsection{失败样本回流}{按物理原因而非只按类别整理 hard case，建立回归集。}
+
+\begin{chaptertransition}
+到此为止，二维感知能产生有时间戳的语义量测。下一部分使用相机几何、多视图、状态估计与雷达，把二维量测提升为三维状态和地图。
+\end{chaptertransition}
+

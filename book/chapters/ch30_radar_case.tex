@@ -1,0 +1,29 @@
+\chapter{雷达站与全队态势融合案例}
+\label{ch:radar-case}
+\chapterstatus{案例框架已定；已接入 2026 V2.2.0 规则与通信协议快照}
+
+\begin{learningobjectives}
+区分 RoboMaster“雷达站”这一赛场角色与具体雷达传感器；完成全场标定、多视角/多传感目标定位、跨视角关联、轨迹融合和队友广播。
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置为第~\ref{ch:camera-pnp}--\ref{ch:slam-world}、\ref{ch:multi-robot}、\ref{ch:integration}~章。实验报告定位误差、刷新率、identity switch、覆盖率、通信年龄和丢包鲁棒性。
+\end{prerequisites}
+
+\plannedsection{观测拓扑}{固定/移动相机、激光雷达或其他当季允许传感器的覆盖与遮挡。}
+\plannedsection{全场标定与定位}{场地坐标、相机/雷达外参、地面约束和标定漂移监控。}
+\plannedsection{多视角数据关联}{类别、位置、运动和外观信息；重复信息与 identity consistency。}
+\plannedsection{轨迹融合与态势}{track-level/raw fusion、可见性、敌我状态和不确定性。}
+\plannedsection{通信与策略接口}{按 2026 协议拆分小地图、10\,Hz 雷达无线链路、2-GFSK 信息波/干扰波、空中反制与失联 fallback。}
+
+\begin{engineeringcheck}
+建立三条独立回放管线：传感观测到 track、RF 采样到协议字段、两者到全队态势与策略。分别注入标定漂移、identity switch、CRC 错误、密钥错误、乱序和断链，确认任一管线失败时不会污染其余状态。
+\end{engineeringcheck}
+
+\begin{failuremode}
+名称中含“雷达”不意味着系统必须使用毫米波雷达。传感器选择应由场地覆盖、精度、遮挡、规则、成本和部署条件决定，并在正文中明确“赛场角色”与“物理传感器”。
+\end{failuremode}
+
+\begin{chaptertransition}
+最后一章按规则版本把自瞄、哨兵、雷达站和全队协同的能力需求汇总为可维护矩阵，形成从规则到系统、从实验到赛场的 capstone。
+\end{chaptertransition}

@@ -1,0 +1,26 @@
+\chapter{配置空间、代价地图与路径规划}
+\label{ch:path-planning}
+\chapterstatus{结构已定，待写实}
+
+\begin{learningobjectives}
+从机器人几何构造配置空间与 cost map；理解 Dijkstra/A*/D*、admissible heuristic、采样规划和动态重规划的适用范围。
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置为第~\ref{ch:geometry}、\ref{ch:slam-world}~章。实验在同一地图和动态障碍序列上比较路径代价、搜索节点数、重规划时间与碰撞率。路径规划基础可参考\cite{lavalle2006planning}。
+\end{prerequisites}
+
+\plannedsection{工作空间与配置空间}{障碍膨胀不是任意 dilation，而是机器人形状与障碍的 Minkowski sum。}
+\plannedsection{图搜索与动态规划}{Dijkstra、A* 的最优性条件，heuristic 的 admissibility/consistency。}
+\plannedsection{增量搜索}{地图变化下 D*/D* Lite 如何重用搜索信息。}
+\plannedsection{采样方法}{PRM/RRT/RRT* 的概率完备性、窄通道和有限时间表现。}
+\plannedsection{动态障碍与时空规划}{时间作为状态维度、预测不确定性和安全余量。}
+
+\begin{failuremode}
+把机器人质点化后在占据栅格中找到的路径，可能让车体、云台或机构与障碍碰撞。cost map 必须与机器人 footprint、定位误差和制动距离共同定义。
+\end{failuremode}
+
+\begin{chaptertransition}
+路径只描述几何曲线，不包含何时到达、速度、加速度和动力学可行性。下一章对路径做时间参数化，并直接优化满足约束的轨迹。
+\end{chaptertransition}
+

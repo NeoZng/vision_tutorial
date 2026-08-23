@@ -1,0 +1,81 @@
+\usepackage[a4paper,top=25mm,bottom=25mm,left=27mm,right=27mm,headheight=15pt]{geometry}
+\usepackage{amsmath,amssymb,mathtools,bm}
+\usepackage{graphicx}
+\usepackage{booktabs,longtable,tabularx,array,multirow}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\usepackage{listings}
+\usepackage[most]{tcolorbox}
+\usepackage{fancyhdr}
+\usepackage{microtype}
+\usepackage{caption}
+\usepackage{subcaption}
+\usepackage{url}
+\usepackage{csquotes}
+\usepackage{hyperref}
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\newif\ifusebiblatex
+\IfFileExists{biblatex.sty}{%
+  \usepackage[backend=biber,style=numeric,sorting=none,maxbibnames=99]{biblatex}
+  \addbibresource{references.bib}
+  \usebiblatextrue
+}{%
+  \usebiblatexfalse
+}
+\graphicspath{{assets/}{../Image_base/}}
+
+\definecolor{rmblue}{HTML}{174A7E}
+\definecolor{rmcyan}{HTML}{2E86AB}
+\definecolor{rmred}{HTML}{B33A3A}
+\definecolor{rmgold}{HTML}{B88416}
+\definecolor{rmlight}{HTML}{F3F7FA}
+\definecolor{rmgray}{HTML}{566573}
+\definecolor{codebg}{HTML}{F7F7F7}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=rmblue,
+  citecolor=rmred,
+  urlcolor=rmcyan,
+  pdftitle={RoboMaster 机器人算法教程：感知、决策、规划与控制},
+  pdfauthor={NeoZng 与开源贡献者},
+  bookmarksopen=true
+}
+
+\setlist[itemize]{leftmargin=2em,itemsep=0.3em,topsep=0.4em}
+\setlist[enumerate]{leftmargin=2.2em,itemsep=0.3em,topsep=0.4em}
+\setlength{\parindent}{2em}
+\setlength{\parskip}{0.15em}
+\renewcommand{\arraystretch}{1.25}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[LE]{\small\leftmark}
+\fancyhead[RO]{\small\rightmark}
+\fancyfoot[C]{\thepage}
+\renewcommand{\headrulewidth}{0.4pt}
+
+\lstdefinestyle{rmcode}{
+  backgroundcolor=\color{codebg},
+  basicstyle=\ttfamily\small,
+  keywordstyle=\color{rmblue}\bfseries,
+  commentstyle=\color{rmgray},
+  stringstyle=\color{rmred},
+  numbers=left,
+  numberstyle=\scriptsize\color{rmgray},
+  frame=single,
+  rulecolor=\color{rmgray!35},
+  breaklines=true,
+  showstringspaces=false,
+  tabsize=2,
+  columns=fullflexible
+}
+\lstset{style=rmcode}
+
+\captionsetup{font=small,labelfont=bf}
+\crefname{chapter}{第}{章}
+\crefname{section}{第}{节}
+\crefname{figure}{图}{图}
+\crefname{table}{表}{表}
+\crefname{equation}{式}{式}

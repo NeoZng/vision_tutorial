@@ -1,0 +1,108 @@
+\chapter{2025/2026 赛季能力矩阵与综合设计}
+\label{ch:season}
+\chapterstatus{首轮规则核查完成；快照截至 2026-08-24}
+
+\begin{learningobjectives}
+将正式规则映射为观测量、决策变量、规划约束、控制接口、系统指标和 fallback；区分规则事实、工程推导与前瞻研究，形成可随规则版本更新的 capstone。
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置为全书各章。每个赛季条目必须记录赛事、规则文件、版本号、发布日期和原文位置；不得把社区方案、技术评审得分项或未来规则规划写成当前赛场强制条款。
+\end{prerequisites}
+
+\section{证据等级与版本锁定}
+
+本章使用四级证据：正式比赛规则、制作规范和通信协议属于\term{规范性事实}；官方考核细则属于\term{资格或评分要求}；正式规则附录中的未来规划属于\term{方向性信号}；社区开源方案只属于\term{工程案例}。后三级不能反向改写第一层。
+
+\begin{longtable}{p{0.18\textwidth}p{0.18\textwidth}p{0.19\textwidth}p{0.34\textwidth}}
+\caption{本版教材使用的规则快照}\label{tab:season-snapshot}\\
+\toprule
+资料 & 最新核查版本 & 日期 & 教材中的用途 \\
+\midrule
+\endfirsthead
+\toprule
+资料 & 最新核查版本 & 日期 & 教材中的用途 \\
+\midrule
+\endhead
+RMUC 2025 比赛规则 & V2.1.0 & 2025-08-02 & 历史基线，不用早期版本代替赛季终版\cite{rmuc2025_rules} \\
+RMUC 2026 比赛规则 & V2.2.0 & 2026-08-07 & 当前规则快照；官方 MD5 为 \texttt{d4808d8f91575d89e2fe4f7ba2f4fb3f}\cite{rmuc2026_rules_v220} \\
+RMUC 2026 制作规范 & V2.0.0 & 2026-06-26 & 无线设备、结构、安全和客户端边界\cite{rmuc2026_resource} \\
+RMUC 2026 通信协议 & V2.0.0 & 2026-06-26 & 链路、频率、带宽、数据格式与客户端接口\cite{rmuc2026_protocol_v200} \\
+\bottomrule
+\end{longtable}
+
+V2.2.0 的修改日志（文内 p.~2）表明，相对 V2.1.0 只新增空中机器人判罚条例；具体是第 7.2.2.3 节 R55（文内 p.~141）：从 2.4\,m 高度水平直视时，空中机器人激光检测模块必须完整露出，违规最高按模块离线处理。因此 2026 的主要机制变化应追溯到 V2.0.0，而不能把 V2.2.0 的发布日期误写成所有机制的引入日期。
+
+\section{从 2025 到 2026：规则事实到算法能力}
+
+\begin{longtable}{p{0.12\textwidth}p{0.34\textwidth}p{0.25\textwidth}p{0.19\textwidth}}
+\caption{赛季变化与课程能力映射；第二列为规则事实，第三列为工程推导}\label{tab:season-capability}\\
+\toprule
+子系统 & 经核验的规则变化 & 推导出的算法能力 & 对应章节 \\
+\midrule
+\endfirsthead
+\toprule
+子系统 & 经核验的规则变化 & 推导出的算法能力 & 对应章节 \\
+\midrule
+\endhead
+工程 & 2025 第 3.2 节（pp.~29--30）为取矿/兑矿；2026 第 3.2 节（pp.~25--26）转为能量单元与科技核心装配。 & 6D 位姿、手眼标定、视觉伺服、接触状态估计与任务状态机。 & 第~\ref{ch:camera-pnp}、\ref{ch:multiview}、\ref{ch:behavior}~章 \\
+雷达站 & 2025 第 3.7 节（p.~34）面向对方地面单位；2026 第 3.7、5.6.6 节（p.~31、pp.~117--121）扩展至双方地面与空中单位，并加入空中反制与 2-GFSK 信息波/干扰波。 & 多传感多目标融合、敌我身份与置信度、独立 RF/DSP 管线、资源约束下的信息价值。 & 第~\ref{ch:lidar-fusion}、\ref{ch:multi-robot}、\ref{ch:radar-case}~章 \\
+哨兵 & 2025 第 3.5 节（pp.~32--34）仅全自动；2026 第 3.5、5.6.4 节（pp.~29--30、114--115）允许自动/半自动，并引入不同干预成本和进攻/防御/移动姿态。 & 可解释状态机或行为树、资源预算、姿态切换规划、人机协同与故障恢复。 & 第~\ref{ch:behavior}、\ref{ch:dp-rl}、\ref{ch:sentry-case}~章 \\
+英雄 & 2026 第 5.6.1 节（pp.~111--112）规定部署时底盘断电且视频流关闭，但受限数据、小地图和 UI 仍可用；完整形态考核另设盲图传自动瞄准任务。 & 地图先验、无图传状态估计、弹道/外参在线校正和部署状态监督。 & 第~\ref{ch:state-estimation}、\ref{ch:auto-aim-method}、\ref{ch:auto-aim-case}~章 \\
+空中 & 2026 第 3.4、5.6.3 节及 R48--R55（pp.~28--29、112--114、140--141）改变弹丸/经验/热量机制，并加入雷达激光反制与飞行安全约束。 & 安全飞控、受约束轨迹、激光指向、健康监控和可证明的规则保护层。 & 第~\ref{ch:trajectory}、\ref{ch:mpc}、\ref{ch:integration}~章 \\
+飞镖 & 2026 第 5.6.5 节（pp.~115--117）增加末端移动目标：检测到发射 1.2\,s 后启动，并在 600\,ms 内到达新位置。 & 事件时间戳、目标运动预测、制导/弹道、时延补偿与概率落点。 & 第~\ref{ch:state-estimation}、\ref{ch:auto-aim-method}~章 \\
+地形 & 2025 已有高地/公路隧道与起伏路；2026 第 5.5.3.5 节（pp.~108--109）进一步把隧道纳入地形跨越的顺序检测与计时机制。 & 鲁棒定位、可通行性/代价地图、局部规划、越障状态机和失定位降级。 & 第~\ref{ch:slam-world}、\ref{ch:path-planning}、\ref{ch:sentry-case}~章 \\
+\bottomrule
+\end{longtable}
+
+表~\ref{tab:season-capability} 中“规则变化”来自官方现行规则和考核资料\cite{rmuc2026_rules_v220,rmuc2026_assessment_full,rmuc2026_assessment_details}；“算法能力”是教材的工程推导，不代表官方指定实现。
+
+\section{裁判系统不是高速控制总线}
+
+2026 协议将通信划分为常规串口、图传和雷达无线链路。常规串口帧使用 \texttt{SOF=0xA5}、CRC8 与 CRC16；第 1.1 节（pp.~4--5）给出的正常环境参考值约为 130\,ms、丢包率小于 1\%，恶劣环境约为 200\,ms、丢包率约 3\%\cite{rmuc2026_protocol_v200}。
+
+\begin{longtable}{p{0.29\textwidth}p{0.27\textwidth}p{0.34\textwidth}}
+\caption{裁判系统协议边界与系统含义}\label{tab:referee-boundary}\\
+\toprule
+接口 & 协议上限 & 系统含义 \\
+\midrule
+\endfirsthead
+\toprule
+接口 & 协议上限 & 系统含义 \\
+\midrule
+\endhead
+裁判位姿 \texttt{0x0203}；哨兵地面车位置 \texttt{0x020B} & 均为 1\,Hz & 只能作为低频全局信息，不能闭合姿态或底盘内环 \\
+雷达到小地图 \texttt{0x0305}；路径显示 \texttt{0x0307} & 分别不高于 5\,Hz、1\,Hz & 发布层与估计/规划层解耦；旧包必须过期 \\
+机器人交互 \texttt{0x0301} & 内容不超过 112\,B，总上行不超过 30\,Hz；接收端和带宽受限 & 先做消息优先级、压缩、限流和超时设计 \\
+自定义客户端与视频 & 数据接口为 50/75\,Hz；视频为 1080p60 HEVC/H.265，无重传 & 接收端处理序号、丢包、乱序和时间戳，不以 UI 到达时间当观测时间 \\
+雷达无线 \texttt{0x0A01--0x0A06} & 10\,Hz & RF 解调、态势融合和策略消费应为三个可独立回放的阶段 \\
+\bottomrule
+\end{longtable}
+
+这些限制分别见协议表 1-5（pp.~6--8）、表 1-25（pp.~23--24）、表 1-41/1-42（pp.~37--38）、表 1-44 至表 1-49（pp.~39--43）和第 2 章（p.~44 起）。
+
+由此得到两层架构：本体传感器、时钟同步和高速估计承担内环；裁判系统与队友信息进入低频全局态势层，并携带时间戳、来源、有效期和不确定性。任何控制器都不得把低频裁判位姿当成无延迟真值。自定义客户端同样必须处理 Protobuf/MQTT、无重传视频/数据、丢包、乱序、超时与回放；赛场网络拓扑不能假设机器人之间存在任意 Wi-Fi 或 ROS~2 直连。
+
+\begin{engineeringcheck}
+对每条外部消息记录 \texttt{source\_time}、\texttt{receive\_time}、序号、有效期和坐标系；在 0--300\,ms 人工延迟、0--5\% 随机丢包、乱序与断链条件下回放。验收项不是“还能收到包”，而是系统是否按时降级且控制内环保持安全。
+\end{engineeringcheck}
+
+\section{2026 官方考核如何变成实验}
+
+规则测评检验版本化读规能力，裁判系统考核覆盖模块、联网、界面和现场排障；完整形态考核包含移动旋转装甲跟踪射击、英雄盲图传部署射击、工程装配、哨兵导航/定位可视化/自瞄/姿态与越障、空中飞行射击与回收、飞镖动态靶、雷达识别/RF/反制以及自定义客户端交互\cite{rmuc2026_rule_quiz,rmuc2026_referee_assessment,rmuc2026_assessment_full,rmuc2026_assessment_details}。
+
+这些条目用于设计可复现实验，而不是抄成题库。每个实验都要给出输入录制、坐标与时间契约、基线、指标、故障注入、SIL/HIL 阶梯及规则版本。建议优先级如下：
+
+\begin{enumerate}
+  \item \textbf{P0：}裁判通信鲁棒性、基础跟踪与弹道、SLAM 定位导航、哨兵决策/规划/控制、工程 6D 装配；
+  \item \textbf{P1：}雷达多目标融合与 RF/DSP、空中反制、飞镖预测、自定义客户端 HMI；
+  \item \textbf{P2：}RL 与 VLM 启发式决策。二者是研究扩展，不是 2026 明文指定方案。
+\end{enumerate}
+
+\begin{aiverify}
+可以让 agent 比较两版官方 PDF 并生成候选差异表，但人工必须核对文件版本、发布日期、哈希与原文位置。规则数字进入代码时应生成带版本号的配置和单元测试；网页、PDF 与论坛说明冲突时，以明确适用赛事和版本的正式文件为准，并保留冲突记录。
+\end{aiverify}
+
+\begin{chaptertransition}
+本章不是全书终点，而是版本化维护入口：稳定理论按勘误更新，赛季事实按官方版本更新，工程结论按新的回放与比赛数据更新。完整 capstone 必须提交设计、代码、数据、指标、失败分析和 AI 使用记录，闭合感知--决策--规划--控制。
+\end{chaptertransition}

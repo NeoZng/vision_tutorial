@@ -1,0 +1,26 @@
+\chapter{相机几何、标定与 PnP}
+\label{ch:camera-pnp}
+\chapterstatus{结构已定，旧稿重点迁移章}
+
+\begin{learningobjectives}
+推导投影模型与畸变；理解内参、外参和手眼标定；使用 PnP 从 2D--3D correspondence 求位姿，并分析退化与误差传播。
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置为第~\ref{ch:geometry}、\ref{ch:optimization-dynamics}、\ref{ch:features}~章。实验完成一次可复现标定和一组带重投影误差、条件数与协方差的 PnP 解算。
+\end{prerequisites}
+
+\plannedsection{中心投影与畸变}{从三维射线到像素；径向/切向畸变及模型边界。}
+\plannedsection{内参标定}{可观测参数、标定板姿态覆盖、重投影误差与交叉验证。}
+\plannedsection{外参与手眼标定}{坐标链、$AX=XB$ 类问题、同步与机构挠性。}
+\plannedsection{PnP 与退化}{平面目标、多解、初始化、RANSAC 和近共线点的病态性。}
+\plannedsection{像素误差到位姿误差}{利用 Jacobian 传播协方差，连接下游跟踪和瞄准。}
+
+\begin{failuremode}
+标定的平均重投影误差很小，不保证远距离或视场边缘准确。若采样姿态缺乏覆盖，某些参数会高度相关，优化仍可能返回数值解却不具备可辨识性。
+\end{failuremode}
+
+\begin{chaptertransition}
+PnP 使用已知三维结构从单帧恢复位姿。下一章放松这一条件，用多视图对应关系恢复相机运动和未知三维点，并通过 bundle adjustment 联合优化。
+\end{chaptertransition}
+

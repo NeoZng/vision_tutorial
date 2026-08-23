@@ -1,0 +1,27 @@
+\chapter{非线性估计与数值求解：以自瞄为主线}
+\label{ch:auto-aim-method}
+\chapterstatus{结构已定，旧稿重点迁移章}
+
+\begin{learningobjectives}
+建立 detection--PnP--track--predict--ballistic solve--command 全链路；理解切甲、多模型、延迟补偿、弹道阻力、飞行时间隐式方程与不确定性传播。
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置为第~\ref{ch:semantic-perception}、\ref{ch:camera-pnp}、\ref{ch:state-estimation}、\ref{ch:modeling-feedback}--\ref{ch:mpc}~章。产物是可注入延迟和模型偏差的闭环仿真，而非孤立检测 demo。
+\end{prerequisites}
+
+\plannedsection{量测模型}{关键点/box 到 PnP 位姿，装甲板与车体中心的隐变量关系。}
+\plannedsection{目标动力学与切甲}{CV/CA/CTRV/旋转刚体模型、多 hypothesis 和可见性。}
+\plannedsection{延迟与交会条件}{目标在 $t+\tau_{\mathrm{system}}+\tau_{\mathrm{flight}}$ 的状态；飞行时间依赖瞄准解本身。}
+\plannedsection{弹道模型与根求解}{真空抛体、线性/二次阻力数值积分、shooting/root finding 及多解。}
+\plannedsection{云台与发射约束}{角速度/加速度、死区、开火判据和命中概率。}
+\plannedsection{误差拆账}{像素、外参、状态预测、弹速、延迟和控制误差对落点的敏感度。}
+
+\begin{engineeringcheck}
+固定目标轨迹，逐项只改变一种误差源并报告落点误差；再组合真实误差检查非线性交互。若只报告最终命中率，就无法判断下一单位研发时间应投入感知、预测还是控制。
+\end{engineeringcheck}
+
+\begin{chaptertransition}
+自瞄是局部、快速、目标明确的闭环。赛场自主还需要选择“现在做什么”。下一部分先建立可解释的行为架构，再沿 Bellman 原理进入动态规划、RL、多机器人博弈和受约束 VLM 规划。
+\end{chaptertransition}
+

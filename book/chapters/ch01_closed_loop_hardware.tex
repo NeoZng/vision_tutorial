@@ -1,0 +1,144 @@
+\chapter{机器人如何闭环：平台、硬件与信号链}
+\label{ch:closed-loop-hardware}
+\chapterstatus{首轮正文}
+
+\begin{learningobjectives}
+读完本章后，读者应能够：
+\begin{itemize}
+  \item 把一个 RoboMaster 功能拆成物理过程、传感、估计、决策、规划、控制和执行；
+  \item 解释相机、IMU、激光雷达、编码器和计算平台的基本工作原理，而非只记产品参数；
+  \item 建立端到端延迟、采样、带宽、坐标系和单位预算；
+  \item 为每类传感器和执行器写出可被软件检查的接口契约。
+\end{itemize}
+\end{learningobjectives}
+
+\begin{prerequisites}
+本章不要求预先掌握计算机视觉或控制理论。产物是一份 \texttt{Sensor/Actuator Contract}：记录每个数据源的物理量、单位、坐标系、采样时刻、到达时刻、噪声与失效标志。它将成为后续所有实验的共同输入。
+\end{prerequisites}
+
+\section{从视觉模块到闭环机器人算法}
+
+一张图像上的检测框并不直接产生比赛收益。以自动瞄准为例，真实链路至少包含：目标反射光进入镜头，相机曝光与读出，图像传输到计算平台，检测与位姿解算，目标状态估计，弹道与延迟预测，云台参考生成，电机闭环执行，以及弹丸飞行。任何一段出现时间、坐标或模型错误，最终都会表现为脱靶。
+
+用离散状态空间表示机器人及环境：
+\begin{align}
+  \vect{x}_{k+1} &= f_k(\vect{x}_k,\vect{u}_k,\vect{w}_k), \\
+  \vect{y}_k &= h_k(\vect{x}_k,\vect{v}_k).
+\end{align}
+其中 $\vect{x}_k\in\R^n$ 是不可被直接完整读取的状态，$\vect{u}_k\in\R^m$ 是控制输入，$\vect{y}_k\in\R^p$ 是量测；$\vect{w}_k$ 与 $\vect{v}_k$ 分别表示过程扰动和量测噪声。感知的作用不是“识别物体”这一句，而是从历史信息构造可用于决策的后验：
+\begin{equation}
+  p(\vect{x}_k\mid \vect{y}_{0:k},\vect{u}_{0:k-1}).
+\end{equation}
+规划与控制再根据任务、约束和该后验选择动作。由此可以看到，二维视觉只是量测生成的一部分；雷达站、哨兵和多机器人系统更依赖三维状态、地图、通信与决策。
+
+\section{相机：从光子到像素}
+
+\subsection{镜头与成像几何}
+
+在针孔模型下，三维点 $\vect{p}_C=[X,Y,Z]\trans$ 在相机坐标系中的归一化像平面坐标为 $x=X/Z$、$y=Y/Z$。忽略畸变时，像素坐标满足
+\begin{equation}
+  \begin{bmatrix}u\\v\\1\end{bmatrix}
+  =
+  \begin{bmatrix}
+    f_x & 0 & c_x\\
+    0 & f_y & c_y\\
+    0 & 0 & 1
+  \end{bmatrix}
+  \begin{bmatrix}X/Z\\Y/Z\\1\end{bmatrix}.
+\end{equation}
+$f_x,f_y$ 是以像素计的焦距，$(c_x,c_y)$ 是主点。对小视场局部扰动，单像素对应的角分辨率近似为
+\begin{equation}
+  \delta\theta_x \approx \frac{1}{f_x}.
+\end{equation}
+因此，“分辨率更高”不必然意味着远距离角度估计更准；镜头焦距、像元尺寸、调焦质量、标定误差和运动模糊共同决定有效分辨率。
+
+水平视场角可近似写为
+\begin{equation}
+  \mathrm{FOV}_x = 2\arctan\!\left(\frac{W_s}{2f}\right),
+\end{equation}
+其中 $W_s$ 为传感器有效宽度，$f$ 为物理焦距。增大焦距提高远处目标的像素占比，却减少搜索视野；这是真实的系统权衡，而不是单独比较相机型号可以解决的问题。
+
+\subsection{曝光、噪声与快门}
+
+曝光时间 $T_e$ 决定传感器在一次成像中积累光子的时间。若图像角速度为 $\omega$，在局部近似下运动模糊长度约为
+\begin{equation}
+  \ell_{\mathrm{blur}} \approx f_x\,|\omega|\,T_e \quad \text{pixels}.
+\end{equation}
+缩短曝光能减少模糊，却降低光子数并恶化信噪比；提高模拟增益只能放大已有信号与噪声，不能创造信息。一个简化的像素噪声模型为
+\begin{equation}
+  \sigma_I^2 \approx \sigma_{\mathrm{read}}^2 + g^2 N_{\mathrm{photon}},
+\end{equation}
+其中 $\sigma_{\mathrm{read}}^2$ 表示读出噪声，光子计数近似服从 Poisson 分布，$g$ 是增益映射。后续所谓“图像增强”不能恢复采样时已经因饱和、欠曝或模糊而丢失的信息。
+
+全局快门在同一时间窗曝光整帧；滚动快门按行错时曝光。高速云台或快速运动目标下，滚动快门会把时间差混入几何形状。若后续 PnP 仍假设所有像素同一时刻采样，就会产生系统性位姿偏差，而非可由随机滤波消除的噪声。
+
+\section{IMU、编码器与激光雷达}
+
+\subsection{IMU 不是姿态传感器}
+
+陀螺仪测量角速度，比力计测量的是非重力加速度在机体系中的表示。常用连续模型为
+\begin{align}
+  \vect{\omega}_m &= \vect{\omega}+\vect{b}_g+\vect{n}_g,\\
+  \vect{a}_m &= \mat{R}_{WB}\trans(\vect{a}_W-\vect{g}_W)+\vect{b}_a+\vect{n}_a,
+\end{align}
+其中 $\vect{b}_g,\vect{b}_a$ 是缓慢漂移的 bias，$\vect{n}_g,\vect{n}_a$ 是噪声。姿态是对角速度积分并结合重力、视觉或其他外部约束估计得到的；把 IMU 驱动返回的 Euler 角当作无延迟真值，会掩盖内部滤波和坐标约定。
+
+编码器类似地只报告轴或关节的离散位置量测。传动间隙、弹性、安装偏置和时间戳误差意味着“电机角度”等于“机构末端状态”通常只是近似。
+
+\subsection{激光雷达与测距误差}
+
+脉冲 ToF 激光雷达通过往返时间 $\Delta t$ 估计距离：
+\begin{equation}
+  d=\frac{c\Delta t}{2},
+\end{equation}
+其中 $c$ 是光速。实际误差还受计时分辨率、反射率、入射角、多径、扫描运动和时间同步影响。旋转式雷达的一帧点云并非同一时刻采样；高速运动时必须根据每个点的采样时刻去畸变，否则点云配准和地图会系统性扭曲。
+
+\section{计算平台：吞吐不是唯一指标}
+
+CPU 擅长复杂控制流、低延迟串行任务和系统调度；GPU 通过大量并行线程提高规则张量计算吞吐；NPU 通常以更受限的算子集合换取功耗效率。对计算量 $F$、访存量 $B$ 的任务，一个粗略下界为
+\begin{equation}
+  T_{\mathrm{compute}} \gtrsim
+  \max\!\left(\frac{F}{P_{\mathrm{peak}}},\frac{B}{\mathrm{BW}_{\mathrm{memory}}}\right)
+  +T_{\mathrm{launch}}+T_{\mathrm{copy}}.
+\end{equation}
+这解释了为什么只看 TOPS 或 FLOPS 会误导选型：小 batch 的机器人在线推理可能受核启动、内存复制和同步支配。应在目标分辨率、真实预处理和相同功耗模式下报告 P50/P99 延迟、吞吐、内存、温度与降频情况。
+
+\section{总线、时间戳与端到端延迟}
+
+定义物理事件发生于 $t_0$，传感器采样完成于 $t_s$，消息到达算法进程于 $t_m$，计算完成于 $t_p$，执行器开始产生期望作用于 $t_a$。端到端延迟为
+\begin{equation}
+  \tau_{\mathrm{e2e}}=t_a-t_0
+  =\tau_{\mathrm{sense}}+\tau_{\mathrm{transport}}+\tau_{\mathrm{queue}}+
+  \tau_{\mathrm{compute}}+\tau_{\mathrm{actuate}}.
+\end{equation}
+平均延迟不足以描述系统；抖动 $\operatorname{Var}(\tau_{\mathrm{e2e}})$ 会直接影响预测误差。软件必须区分“测量发生时间”和“消息收到时间”。CAN、串口、USB 和以太网的带宽、仲裁、帧化和错误恢复机制不同，但算法接口都应保存采样时刻并监控数据年龄。
+
+\begin{engineeringcheck}
+让机器人或录制系统对同一物理事件在相机、IMU、雷达、算法日志和控制器中打点。报告每段延迟的 P50/P95/P99、丢帧率和时间戳来源。若无法测量执行器生效时间，必须把这一项明确列为未辨识参数，而不是并入“算法延迟”。
+\end{engineeringcheck}
+
+\section{接口契约}
+
+每种量测至少应记录下列字段：
+
+\begin{longtable}{p{0.22\textwidth}p{0.68\textwidth}}
+\toprule
+字段 & 必须回答的问题 \\
+\midrule
+物理量与单位 & 是像素、弧度、米、米每秒，还是无量纲分数？ \\
+坐标系 & 原点、轴向、手性和相对于其他坐标系的外参是什么？ \\
+采样时间 & 时间戳在哪个时钟域产生，精度和同步误差多大？ \\
+有效性 & 饱和、遮挡、CRC 错误、过期或模型 OOD 如何标识？ \\
+不确定性 & 有协方差、区间、经验校准曲线，还是只有未校准 score？ \\
+更新语义 & 固定频率、事件触发、允许乱序，还是只保留最新值？ \\
+\bottomrule
+\end{longtable}
+
+\begin{failuremode}
+常见错误是把模块返回值的“数值类型”当作“语义契约”。例如三个浮点数既可能表示相机系位置，也可能表示云台 yaw/pitch 与距离；没有坐标系、单位和时间，任何融合或控制结果都不可复现。
+\end{failuremode}
+
+\begin{chaptertransition}
+本章得到了一组带明确物理语义的数据和延迟约束。下一章解决这些数据如何在 Linux 进程、构建系统、消息中间件和测试框架中可靠流动，使后续算法实验可以回放、比较和复现。
+\end{chaptertransition}
+

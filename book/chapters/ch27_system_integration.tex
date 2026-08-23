@@ -1,0 +1,26 @@
+\chapter{感知--决策--规划--控制的接口、集成与验证}
+\label{ch:integration}
+\chapterstatus{结构已定，全书收束主干}
+
+\begin{learningobjectives}
+定义 Measurement、WorldState、Intent、Trajectory 与 Command 的数据契约；建立 replay、SIL、HIL、fault injection 和系统级误差/延迟预算。
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置为第~\ref{ch:closed-loop-hardware}--\ref{ch:vlm}~章。本章产物是一套与具体赛题解耦的全栈接口和验收矩阵。
+\end{prerequisites}
+
+\plannedsection{五层数据契约}{\texttt{Measurement -> WorldState -> Intent -> Trajectory -> Command}；字段、坐标、时间、不确定性和 validity。}
+\plannedsection{生命周期与运行状态}{初始化、标定加载、健康检查、激活、降级、恢复与安全停止。}
+\plannedsection{端到端预算}{误差、延迟、算力、带宽、功耗与故障概率如何分配到模块。}
+\plannedsection{验证阶梯}{unit/property test、record replay、SIL、HIL、靶场、对抗测试。}
+\plannedsection{可观测性与日志}{每项系统指标能追溯到中间变量和软件版本。}
+
+\begin{engineeringcheck}
+固定一个录制场景，从原始量测完整重放到控制命令；对每层保存输入/输出 hash、时间和坐标 metadata。任何模块都不得依赖现场无法记录的隐藏全局状态。
+\end{engineeringcheck}
+
+\begin{chaptertransition}
+后三个案例不再各自讲一套孤立算法，而是复用同一接口：自瞄强调高速局部闭环，哨兵强调移动自主，雷达站强调全局态势与通信；最后映射到 2025/2026 规则。
+\end{chaptertransition}
+

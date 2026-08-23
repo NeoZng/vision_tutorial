@@ -1,0 +1,92 @@
+\chapter{计算机系统与可复现工具链}
+\label{ch:toolchain}
+\chapterstatus{首轮正文}
+
+\begin{learningobjectives}
+\begin{itemize}
+  \item 理解进程、线程、内存、文件、设备和网络如何承载机器人算法；
+  \item 用 CMake、Git、容器和 CI 固定“源代码到可执行结果”的路径；
+  \item 为 ROS~2 或自研消息总线选择合理的队列、可靠性和时间语义；
+  \item 建立录制回放、单元测试、性能分析和故障注入的最小闭环。
+\end{itemize}
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置产物是第~\ref{ch:closed-loop-hardware}~章中的传感器/执行器契约。本章产物是一个能读取录制数据、发布带时间戳量测、运行算法、记录输出并在 CI 中复现的最小工程。
+\end{prerequisites}
+
+\section{操作系统不是安装步骤}
+
+Linux 的价值不在于“视觉算法通常在 Ubuntu 上运行”，而在于它提供了一套可组合的资源抽象：文件描述符统一文件、设备、管道与 socket；虚拟内存隔离进程；线程共享地址空间；调度器决定计算何时真正获得 CPU；驱动和内核队列决定传感器数据何时对用户态可见。
+
+设相机以平均速率 $\lambda$ 产生帧，算法平均服务时间为 $S$。单服务器稳定的必要条件是利用率
+\begin{equation}
+  \rho=\lambda\E[S] < 1.
+\end{equation}
+只要长期 $\rho\ge 1$，增加队列长度只能延迟溢出，不能消除积压。对在线控制，保留“最新帧”往往比无界 FIFO 更合理；对离线评测，则必须完整保序。队列策略属于算法语义，不能留给中间件默认值偶然决定。
+
+\section{编译、链接与依赖边界}
+
+C++ 源文件经过预处理、编译、汇编和链接形成可执行文件。头文件决定编译依赖，库的 ABI 决定二进制兼容，运行时动态链接器再解析共享库。许多“换一台机器就不能运行”的问题，本质是编译器、CUDA、OpenCV、C++ ABI 或动态库搜索路径没有进入版本化描述。
+
+一个可维护的 CMake target 应显式声明：
+
+\begin{lstlisting}[language={}]
+add_library(tracker src/tracker.cpp)
+target_include_directories(tracker PUBLIC include)
+target_link_libraries(tracker PUBLIC Eigen3::Eigen)
+target_compile_features(tracker PUBLIC cxx_std_20)
+
+add_executable(replay apps/replay.cpp)
+target_link_libraries(replay PRIVATE tracker)
+\end{lstlisting}
+
+这里 \texttt{PUBLIC}/\texttt{PRIVATE} 描述依赖是否传播，比全局修改 include path 和 linker flag 更接近真实模块边界。完整依赖通过 lockfile、容器镜像 digest 或可复现安装脚本固定，而不是依赖某位队员电脑中的隐含状态。
+
+\section{版本控制是实验因果链}
+
+Git commit 不只用于“备份代码”，而是把源代码状态映射到可复现实验结果的标识。建议每次实验至少记录：commit SHA、配置文件、数据版本、随机种子、模型权重校验和、构建环境和硬件平台。分支承载未合并的假设，PR 承载证据和审查，tag 对应可发布版本。
+
+避免把大模型权重和原始数据直接塞入普通 Git 历史。它们应由数据/模型仓库、对象存储或 release artifact 管理，并在清单中记录不可变哈希。否则一次误提交会永久膨胀所有克隆。
+
+\section{ROS~2 与消息语义}
+
+ROS~2 基于 DDS 提供发布订阅、服务和 action，但“使用 ROS~2”并不会自动解决实时性。需要针对数据性质选择 QoS：
+
+\begin{itemize}
+  \item 高频传感数据通常更关心新鲜度，可使用小 depth 和 best effort；
+  \item 低频配置、状态切换和任务指令更关心可靠到达；
+  \item 坐标变换必须区分静态外参与随时间变化的位姿；
+  \item callback group、executor 和锁决定回调是否并发以及是否产生优先级反转；
+  \item 零拷贝、loaned message 或进程内通信只有在实际 profiling 证明复制是瓶颈时才值得引入。
+\end{itemize}
+
+无论使用 ROS~2 还是自研框架，消息都不应把接收时刻冒充采样时刻。跨计算机通信还需明确时钟同步方法、最大偏差与失锁检测。
+
+\section{回放、测试与性能分析}
+
+机器人算法常见的不可复现来源是：只能连接实机运行、数据依赖现场时序、模块共享全局状态、参数通过临时命令修改。应把在线系统拆成纯算法核与 I/O 适配层，使同一算法核可以消费实时传感器或录制数据。
+
+最小验证金字塔包括：
+
+\begin{enumerate}
+  \item \term{单元测试}：坐标变换、单位换算、边界条件和小型数值函数；
+  \item \term{性质测试}：旋转矩阵正交性、变换逆的一致性、序列化往返不变；
+  \item \term{回放测试}：固定 bag/视频输入产生版本化指标；
+  \item \term{SIL/HIL}：软件在环与硬件在环验证真实时序和接口；
+  \item \term{故障注入}：丢帧、乱序、延迟、外参偏差、传感器冻结和异常重启。
+\end{enumerate}
+
+性能分析必须区分平均吞吐与尾延迟。记录时间线时，至少把采集、拷贝、预处理、推理、后处理、融合与发布分段；只测一个总 FPS 无法定位瓶颈，也无法判断控制是否使用过期量测。
+
+\begin{engineeringcheck}
+选择一段固定录制数据，连续运行同一 commit 三次。验证输出哈希或关键指标是否稳定；记录 P50/P95/P99 延迟与最大队列深度；人为插入 100 ms 延迟、10\% 丢帧和一次时间戳回退，确认系统能检测并降级。
+\end{engineeringcheck}
+
+\begin{failuremode}
+“在我的电脑上能跑”通常不是部署成功的证据。若构建依赖、参数、数据、时钟和硬件状态中任何一项未记录，问题就不能被另一名队员或未来的自己复现。
+\end{failuremode}
+
+\begin{chaptertransition}
+工具链把一次算法运行变成可追溯实验。下一章讨论如何让 AI 和编码 agent 参与这条因果链：它们可以加速检索和实现，但必须受规格、证据、测试与审查约束。
+\end{chaptertransition}
