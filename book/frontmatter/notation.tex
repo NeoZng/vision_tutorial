@@ -1,0 +1,25 @@
+\chapter*{统一记号、坐标系与时间约定}
+\addcontentsline{toc}{chapter}{统一记号、坐标系与时间约定}
+
+\begin{longtable}{p{0.20\textwidth}p{0.70\textwidth}}
+\toprule
+记号 & 含义 \\
+\midrule
+\endfirsthead
+\toprule
+记号 & 含义 \\
+\midrule
+\endhead
+$\vect{x}_k$ & 离散时刻 $k$ 的真实状态；维度和坐标系由所在章节定义 \\
+$\hat{\vect{x}}_k$ & 基于截至时刻 $k$ 的信息得到的状态估计 \\
+$\vect{y}_k$ & 传感器量测，而不是无条件可信的世界状态 \\
+$\vect{u}_k$ & 控制输入；需注明是电流、力矩、速度还是位置目标 \\
+$\mat{R}_{AB}$ & 将 $B$ 坐标系向量表示到 $A$ 坐标系的旋转矩阵 \\
+$\mat{T}_{AB}\in\SE(3)$ & 从坐标系 $B$ 到坐标系 $A$ 的刚体变换 \\
+$\mat{P}_k$ & 状态估计误差协方差，而非经验“置信度分数” \\
+$t_s,t_m,t_p,t_a$ & 采样、消息到达、算法处理和执行器生效时间 \\
+\bottomrule
+\end{longtable}
+
+默认使用 SI 单位，角度计算使用弧度。接口若使用毫米、度或裁判系统离散量，必须在边界显式转换。任何跨模块消息至少包含测量时间戳、坐标系、单位、有效性与不确定性描述。
+

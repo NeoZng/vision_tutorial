@@ -1,0 +1,26 @@
+\chapter{动态规划、MDP/POMDP 与强化学习规划}
+\label{ch:dp-rl}
+\chapterstatus{结构已定，核心推导待展开}
+
+\begin{learningobjectives}
+从 Bellman optimality 推导 value/policy iteration；理解 MDP 与 POMDP 的状态、动作、转移、观测和 reward；区分 model-based planning 与 model-free RL。
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置为第~\ref{ch:probability}、\ref{ch:path-planning}、\ref{ch:behavior}~章。实验先在简化赛场建立精确 DP baseline，再与 RL 比较样本效率、域外泛化和安全约束。基础参考\cite{sutton2018reinforcement,bertsekas2017dynamic}。
+\end{prerequisites}
+
+\plannedsection{Bellman principle}{从最短路的 cost-to-go 到有限时域动态规划。}
+\plannedsection{MDP}{状态充分性、Markov 性、策略、占用分布和价值函数。}
+\plannedsection{POMDP 与 belief}{观测不等于状态，belief update 与近似规划。}
+\plannedsection{强化学习}{policy/value/model learning 各自替代未知的哪一部分；offline/online 数据边界。}
+\plannedsection{安全与 sim-to-real}{约束、shield、domain randomization、offline validation 和人工接管。}
+
+\begin{failuremode}
+把规则计分直接写成 reward 不保证得到可部署策略。部分奖励会引入 specification gaming；训练分布覆盖不足时，高仿真回报也不能证明真实对抗中的安全和泛化。
+\end{failuremode}
+
+\begin{chaptertransition}
+单机器人 MDP 忽略了队友通信和对手策略。下一章把 assignment、网络信息和博弈结构加入状态与决策，形成雷达站--哨兵--英雄等多机器人协同问题。
+\end{chaptertransition}
+

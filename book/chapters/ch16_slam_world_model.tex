@@ -1,0 +1,22 @@
+\chapter{VO、VIO、SLAM 与统一世界状态}
+\label{ch:slam-world}
+\chapterstatus{结构已定，感知栈收束章}
+
+\begin{learningobjectives}
+理解 SLAM 前端、后端、回环、地图与 gauge freedom；掌握因子图和 IMU 预积分的角色；定义供决策与规划使用的 WorldState。
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置为第~\ref{ch:multiview}--\ref{ch:lidar-fusion}~章。实验在固定 bag 上报告 ATE/RPE、跟踪丢失、资源占用，并故意破坏外参或时间同步分析漂移。推荐参考\cite{barfoot2017state,dellaert2017factor}。
+\end{prerequisites}
+
+\plannedsection{前端与后端}{特征/直接法、里程计约束、非线性图优化和滑动窗口。}
+\plannedsection{IMU 预积分与可观性}{重力、bias、尺度、全局位置/yaw gauge 及传感器组合差异。}
+\plannedsection{回环与地图}{place recognition、几何验证、位姿图、栅格/稀疏/稠密/语义地图。}
+\plannedsection{统一 WorldState}{\texttt{ego pose, tracks, map, covariance, timestamp, validity} 的接口和版本。}
+\plannedsection{评测与失效恢复}{ATE/RPE 之外，重定位时间、地图一致性、CPU/GPU、内存和最坏延迟。}
+
+\begin{chaptertransition}
+感知部分最终输出的不是“框、点云或轨迹各一份”，而是具有共同时间和坐标语义的 WorldState。下一部分从被控对象模型开始，把这一状态变成可执行动作。
+\end{chaptertransition}
+

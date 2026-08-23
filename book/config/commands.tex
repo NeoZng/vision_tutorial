@@ -1,0 +1,70 @@
+\newcommand{\term}[1]{\textbf{#1}}
+\newcommand{\vect}[1]{\bm{#1}}
+\newcommand{\mat}[1]{\bm{#1}}
+\newcommand{\trans}{^{\mathsf T}}
+\newcommand{\inv}{^{-1}}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\SE}{\mathrm{SE}}
+\newcommand{\SO}{\mathrm{SO}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\argmin}{\operatorname*{arg\,min}}
+\newcommand{\argmax}{\operatorname*{arg\,max}}
+
+\newtcolorbox{learningobjectives}{
+  breakable,
+  colback=rmlight,
+  colframe=rmblue,
+  title={本章学习目标},
+  fonttitle=\bfseries
+}
+
+\newtcolorbox{prerequisites}{
+  breakable,
+  colback=white,
+  colframe=rmcyan,
+  title={前置知识与本章产物},
+  fonttitle=\bfseries
+}
+
+\newtcolorbox{failuremode}{
+  breakable,
+  colback=rmred!4,
+  colframe=rmred,
+  title={Failure mode},
+  fonttitle=\bfseries
+}
+
+\newtcolorbox{aiverify}{
+  breakable,
+  colback=rmgold!6,
+  colframe=rmgold,
+  title={AI-assisted, but verified},
+  fonttitle=\bfseries
+}
+
+\newtcolorbox{chaptertransition}{
+  breakable,
+  colback=rmcyan!4,
+  colframe=rmcyan,
+  title={承上启下},
+  fonttitle=\bfseries
+}
+
+\newtcolorbox{engineeringcheck}{
+  breakable,
+  colback=rmblue!3,
+  colframe=rmblue!75,
+  title={工程检查},
+  fonttitle=\bfseries
+}
+
+\newcommand{\chapterstatus}[1]{%
+  \begin{flushright}\small\color{rmgray}内容状态：#1\end{flushright}%
+}
+
+\newcommand{\plannedsection}[2]{%
+  \section{#1}
+  \textcolor{rmgray}{\textbf{写作要点：}#2}
+}
+

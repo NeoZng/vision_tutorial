@@ -1,0 +1,14 @@
+\chapter{符号、单位与接口检查表}
+\label{app:notation}
+
+本附录将在正文稳定后生成完整符号索引。当前提交先固定最容易造成系统性错误的检查项：
+
+\begin{enumerate}
+  \item 每个向量注明坐标系；每个变换明确方向，例如 $\mat{T}_{AB}$ 将 $B$ 系坐标表示到 $A$ 系；
+  \item 角度内部统一使用 rad，距离使用 m，时间使用 s；边界协议若采用 degree/mm/ms 必须显式转换；
+  \item 区分传感器采样时间、消息到达时间、处理结束时间和执行器生效时间；
+  \item 区分真实状态 $\vect{x}$、估计 $\hat{\vect{x}}$、量测 $\vect{y}$、参考 $\vect{r}$ 与控制输入 $\vect{u}$；
+  \item 协方差必须对应明确误差定义和局部参数化，不能跨坐标系直接复制；
+  \item 所有矩阵乘法在实现中用维度、frame type 或单元测试约束。
+\end{enumerate}
+

@@ -1,0 +1,60 @@
+\chapter{概率、统计与不确定性}
+\label{ch:probability}
+\chapterstatus{主干草案}
+
+\begin{learningobjectives}
+\begin{itemize}
+  \item 使用条件概率区分先验、似然和后验；
+  \item 从最大似然与 MAP 推导常见损失，而非把 loss 当作模型清单；
+  \item 区分随机噪声、系统偏差、模型不确定性和未校准 score；
+  \item 为检测、跟踪、SLAM 与决策选择可检验的不确定性指标。
+\end{itemize}
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置为第~\ref{ch:geometry}~章的向量与协方差。本章产物是对一组真实量测残差的分布诊断，而不是先验假设“噪声一定高斯”。
+\end{prerequisites}
+
+\section{Bayes 规则对应信息更新}
+
+对状态 $\vect{x}$ 与量测 $\vect{y}$，Bayes 规则为
+\begin{equation}
+  p(\vect{x}\mid\vect{y})=
+  \frac{p(\vect{y}\mid\vect{x})p(\vect{x})}{p(\vect{y})}.
+\end{equation}
+$p(\vect{x})$ 是观测前的先验，$p(\vect{y}\mid\vect{x})$ 是传感模型给出的似然，后验 $p(\vect{x}\mid\vect{y})$ 是观测后可用于决策的信息。检测网络输出的置信分数只有经过定义与校准，才能被解释为某种概率；它不能直接替代位姿协方差或目标存在概率。
+
+\section{从似然到最小二乘}
+
+若量测模型为
+\begin{equation}
+  \vect{y}=h(\vect{x})+\vect{v},
+  \qquad \vect{v}\sim\mathcal{N}(\vect{0},\mat{R}),
+\end{equation}
+则负对数似然在忽略常数后为
+\begin{equation}
+  -\log p(\vect{y}\mid\vect{x})
+  =\frac{1}{2}\left\|\vect{y}-h(\vect{x})\right\|_{\mat{R}^{-1}}^2.
+\end{equation}
+因此加权最小二乘不是凭经验选择的损失，它来自高斯量测假设；权重 $\mat{R}^{-1}$ 表示量测精度。若残差含严重离群点或多峰结构，单一高斯和二次损失会失效，应使用鲁棒核、混合模型或显式数据关联。
+
+\section{校准与可用的不确定性}
+
+分类模型的 calibration 关心“声称概率为 $q$ 的样本中，真实正确比例是否约为 $q$”；状态估计则可用归一化创新平方 NIS 与归一化估计误差平方 NEES 检查协方差是否与残差尺度一致。它们回答的不是同一个问题。
+
+应至少区分：
+\begin{itemize}
+  \item 传感器随机噪声，可通过重复采样估计；
+  \item bias、外参误差、时钟偏差等系统误差，平均更多数据也不会自动消失；
+  \item 场景外输入和模型失配导致的 epistemic uncertainty；
+  \item 目标行为本身的多模态未来，即 aleatoric uncertainty。
+\end{itemize}
+
+\begin{engineeringcheck}
+采集静止与运动两类数据，分别画出残差直方图、自相关和随温度/曝光/距离变化的条件统计。若残差有偏、重尾或强时间相关，就不要把固定零均值白噪声模型写成事实。
+\end{engineeringcheck}
+
+\begin{chaptertransition}
+概率把误差写成可计算的目标，下一章将这些目标转化为数值优化问题，并引入动力学离散化。它们共同支撑网络训练、几何估计、LQR、MPC 与非线性自瞄。
+\end{chaptertransition}
+

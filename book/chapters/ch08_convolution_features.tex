@@ -1,0 +1,25 @@
+\chapter{卷积、局部结构、特征点与鲁棒匹配}
+\label{ch:features}
+\chapterstatus{结构已定，旧稿重点迁移章}
+
+\begin{learningobjectives}
+从线性移不变算子推导离散卷积；理解梯度、structure tensor、Harris/FAST/ORB；完成描述子匹配与 RANSAC 几何验证。
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置为第~\ref{ch:geometry}、\ref{ch:image-formation}~章。实验产物是“特征检测--匹配--RANSAC 单应/基础矩阵估计”的可回放 pipeline。
+\end{prerequisites}
+
+\plannedsection{线性移不变系统与卷积}{从叠加和位移等变性得到卷积，而非从滤镜清单开始。}
+\plannedsection{梯度与 structure tensor}{解释边、平坦区与角点的局部可辨识性。}
+\plannedsection{Harris、FAST 与 ORB}{比较稳定性、速度和尺度/旋转处理；SIFT/SURF 作为参考而非长篇模型史。}
+\plannedsection{描述子、匹配与几何验证}{KNN ratio、cross-check、RANSAC/USAC 的假设、采样次数和退化。}
+
+\begin{engineeringcheck}
+在视角、曝光、运动模糊和重复纹理四类变化下，分别报告关键点重复率、匹配 precision、inlier ratio 与重投影误差。仅展示一张“匹配连线图”不能证明算法可靠。
+\end{engineeringcheck}
+
+\begin{chaptertransition}
+局部特征提供了人工设计的表示和 correspondences。下一章从经验风险最小化出发，说明表示如何由数据学习，并用图像分类建立最小训练闭环。
+\end{chaptertransition}
+

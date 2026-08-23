@@ -1,0 +1,15 @@
+book/build/
+book/*.aux
+book/*.bbl
+book/*.bcf
+book/*.blg
+book/*.fdb_latexmk
+book/*.fls
+book/*.log
+book/*.out
+book/*.run.xml
+book/*.toc
+book/*.xdv
+output/
+tmp/
+

@@ -1,0 +1,26 @@
+\chapter{递归状态估计、目标跟踪与数据关联}
+\label{ch:state-estimation}
+\chapterstatus{结构已定，必须保留的“滤波”主线}
+
+\begin{learningobjectives}
+从 Bayes filter 推导 KF/EKF 的预测与校正；理解 gating、assignment、漏检和多模型；用 NIS/NEES 检查一致性。
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置为第~\ref{ch:probability}、\ref{ch:optimization-dynamics}、\ref{ch:semantic-perception}、\ref{ch:camera-pnp}~章。实验覆盖直行、转弯、装甲切换和小陀螺等模型失配情形。
+\end{prerequisites}
+
+\plannedsection{Bayes filter}{预测积分与量测更新；区分状态随机性和 belief。}
+\plannedsection{Kalman filter}{线性高斯条件下的最小均方误差估计及 Riccati 递推。}
+\plannedsection{EKF 与局部线性化}{Jacobian、线性化点和一致性问题；UKF/IMM 作为进阶。}
+\plannedsection{数据关联}{Mahalanobis gating、Hungarian、JPDA 的适用范围和身份切换。}
+\plannedsection{预测面向任务}{评价一段 horizon 后的空间误差，而非只追求当前轨迹平滑。}
+
+\begin{failuremode}
+本章的 filter 是动态状态估计器，不应与第~\ref{ch:image-formation}~章中的图像低通滤波混为一谈。把所有平滑方法放入同一“滤波器大全”会掩盖状态、量测和动力学假设。
+\end{failuremode}
+
+\begin{chaptertransition}
+状态估计给出了融合量测的概率框架。下一章加入深度、双目和激光雷达，并处理跨传感器外参、异步采样和点云运动畸变。
+\end{chaptertransition}
+

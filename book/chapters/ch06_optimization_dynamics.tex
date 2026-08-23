@@ -1,0 +1,70 @@
+\chapter{数值优化、动力学与离散化}
+\label{ch:optimization-dynamics}
+\chapterstatus{主干草案}
+
+\begin{learningobjectives}
+\begin{itemize}
+  \item 从残差模型推导 Gauss--Newton 更新；
+  \item 理解约束优化、QP 和 KKT 条件在机器人算法中的位置；
+  \item 区分连续动力学、数值积分器和离散控制模型；
+  \item 检查 Jacobian、条件数、步长和离散化误差。
+\end{itemize}
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置为第~\ref{ch:geometry}--\ref{ch:probability}~章。本章产物是两个可复现实验：非线性重投影最小二乘，以及同一连续系统在不同步长和积分器下的离散响应。
+\end{prerequisites}
+
+\section{非线性最小二乘}
+
+考虑目标函数
+\begin{equation}
+  F(\vect{x})=\frac{1}{2}\sum_i \|\vect{r}_i(\vect{x})\|^2.
+\end{equation}
+在当前点 $\vect{x}$ 对残差一阶展开
+\begin{equation}
+  \vect{r}(\vect{x}+\delta\vect{x})
+  \approx \vect{r}(\vect{x})+\mat{J}\delta\vect{x}.
+\end{equation}
+最小化局部二次模型得到正规方程
+\begin{equation}
+  \mat{J}\trans\mat{J}\,\delta\vect{x}
+  =-\mat{J}\trans\vect{r}.
+\end{equation}
+这就是 Gauss--Newton 步。若 $\mat{J}\trans\mat{J}$ 病态，更新会对噪声极敏感；Levenberg--Marquardt 添加阻尼，但不能凭空恢复不可观测方向。后续 PnP、标定、BA 与非线性弹道求解都应报告初始化、残差尺度与退化条件。
+
+\section{约束与二次规划}
+
+机器人控制常见线性二次规划为
+\begin{align}
+  \min_{\vect{z}}\quad &\frac{1}{2}\vect{z}\trans\mat{H}\vect{z}+\vect{g}\trans\vect{z},\\
+  \text{s.t.}\quad &\mat{A}\vect{z}=\vect{b},\qquad
+  \mat{C}\vect{z}\le \vect{d}.
+\end{align}
+当 $\mat{H}\succeq0$ 时问题是凸的，局部最优即全局最优。LQR、线性 MPC、轨迹平滑和任务分配中的许多子问题都能落入这一形式。约束是否可行、变量是否正确缩放、求解时间是否满足周期，比“调用了哪个 solver”更重要。
+
+\section{连续模型与离散模型}
+
+连续系统
+\begin{equation}
+  \dot{\vect{x}}(t)=f(\vect{x}(t),\vect{u}(t))
+\end{equation}
+需要通过积分器或解析离散化得到数字算法中的 $\vect{x}_{k+1}=f_d(\vect{x}_k,\vect{u}_k)$。对线性时不变系统
+\begin{equation}
+  \dot{\vect{x}}=\mat{A}_c\vect{x}+\mat{B}_c\vect{u},
+\end{equation}
+在零阶保持输入下，精确离散矩阵为
+\begin{align}
+  \mat{A}_d &= \exp(\mat{A}_c\Delta t),\\
+  \mat{B}_d &= \int_0^{\Delta t}\exp(\mat{A}_c\tau)\mat{B}_c\,d\tau.
+\end{align}
+前向 Euler 的 $\mat{A}_d\approx\mat{I}+\mat{A}_c\Delta t$ 只是低阶近似，步长过大时甚至会把稳定连续系统变成不稳定离散系统。后续设计 LQR/MPC 时必须使用与实际控制周期、输入保持和延迟一致的离散模型。
+
+\begin{aiverify}
+要求 agent 同时实现解析 Jacobian、自动微分 Jacobian 与有限差分 Jacobian，并随机生成状态比较三者。有限差分只能作为数值检查；步长过大有截断误差，过小有浮点消减误差，因此不能把一次接近视为解析式已被证明。
+\end{aiverify}
+
+\begin{chaptertransition}
+数学底座完成后，下一部分从传感器产生的二维数字图像出发。卷积将同时作为经典线性算子与现代 CNN 的结构动机，特征点则继续成为多视图几何和 SLAM 的量测来源。
+\end{chaptertransition}
+

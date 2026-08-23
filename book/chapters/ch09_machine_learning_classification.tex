@@ -1,0 +1,26 @@
+\chapter{机器学习基础与图像分类}
+\label{ch:ml-classification}
+\chapterstatus{结构已定，待写实}
+
+\begin{learningobjectives}
+理解训练/验证/测试划分、经验风险、泛化、反向传播、正则化与校准；从局部连接和权值共享理解 CNN，而非背网络名称。
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置为第~\ref{ch:probability}--\ref{ch:features}~章。实验从线性分类器逐步增加到小型 CNN，并保持数据划分和指标不变。
+\end{prerequisites}
+
+\plannedsection{监督学习的问题形式}{定义数据分布、假设空间、损失、经验风险和分布外误差。}
+\plannedsection{梯度、反向传播与优化}{将计算图的链式法则连接到第~\ref{ch:optimization-dynamics}~章的 Jacobian。}
+\plannedsection{CNN 的归纳偏置}{局部连接、共享权重、等变性、感受野与下采样。}
+\plannedsection{泛化、正则化与数据增强}{区分训练技巧和真实不变性假设，避免数据泄漏。}
+\plannedsection{误差分析与概率校准}{confusion matrix、可靠性图和失败样本分层。}
+
+\begin{aiverify}
+让 agent 生成训练脚本后，要求自动检查 train/val/test 是否共享原始视频片段、增强是否污染标签、模型选择是否偷看测试集。训练 loss 下降不是数据管线正确的证据。
+\end{aiverify}
+
+\begin{chaptertransition}
+分类把整幅图像映射为语义标签。下一章引入空间定位和像素级结构，但保持统一视角：检测、语义分割和实例分割只是监督对象与输出空间不同。
+\end{chaptertransition}
+

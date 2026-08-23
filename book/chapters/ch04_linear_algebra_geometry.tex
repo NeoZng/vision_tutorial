@@ -1,0 +1,64 @@
+\chapter{线性代数、坐标系与刚体几何}
+\label{ch:geometry}
+\chapterstatus{主干草案}
+
+\begin{learningobjectives}
+\begin{itemize}
+  \item 区分几何对象与它在特定坐标系中的数值表示；
+  \item 使用 $\SO(3)$、$\SE(3)$ 表示旋转与刚体变换；
+  \item 理解局部扰动、Jacobian 和协方差换系为何是后续估计与优化的共同语言。
+\end{itemize}
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置为基础线性代数。本章产物是一套带 frame 语义的坐标变换测试：复合、求逆和闭环变换应满足数值一致性。
+\end{prerequisites}
+
+\section{对象、基与坐标表示}
+
+物理空间中的向量不因更换坐标系而改变，但其坐标会改变。若 $\vect{p}_B$ 是同一点在 $B$ 系中的坐标，$\mat{R}_{AB}$ 将 $B$ 系向量表示到 $A$ 系，则
+\begin{equation}
+  \vect{p}_A=\mat{R}_{AB}\vect{p}_B,
+  \qquad
+  \mat{R}_{AB}\in\SO(3),
+\end{equation}
+且 $\mat{R}\trans\mat{R}=\mat{I}$、$\det\mat{R}=1$。刚体变换写成
+\begin{equation}
+  \mat{T}_{AB}=
+  \begin{bmatrix}
+    \mat{R}_{AB} & \vect{t}_{AB}\\
+    \vect{0}\trans & 1
+  \end{bmatrix}\in\SE(3),
+\end{equation}
+并满足 $\mat{T}_{AC}=\mat{T}_{AB}\mat{T}_{BC}$。下标顺序一旦含糊，后续标定、PnP、SLAM 和控制都会出现“数值看似合理、方向整体错误”的问题。
+
+\section{局部扰动与 Jacobian}
+
+旋转不构成普通向量空间，不能在全局无条件相加。优化时通常在当前估计附近引入切空间扰动 $\delta\vect{\phi}\in\R^3$：
+\begin{equation}
+  \mat{R}'=\mat{R}\exp(\delta\vect{\phi}^{\wedge}),
+\end{equation}
+其中 $(\cdot)^{\wedge}$ 把三维向量映射为反对称矩阵。若输出 $\vect{z}=g(\vect{x})$，局部一阶扰动为
+\begin{equation}
+  \delta\vect{z}\approx \mat{J}_g\delta\vect{x},
+  \qquad
+  \mat{J}_g=\left.\frac{\partial g}{\partial \vect{x}}\right|_{\bar{\vect{x}}}.
+\end{equation}
+同一 Jacobian 同时用于反向传播、误差传播、EKF、bundle adjustment、系统线性化和优化控制。
+
+\section{协方差的坐标变换}
+
+若小扰动协方差为 $\mat{P}_x$，经过局部线性映射 $g$ 后，输出协方差的一阶近似为
+\begin{equation}
+  \mat{P}_z\approx \mat{J}_g\mat{P}_x\mat{J}_g\trans.
+\end{equation}
+这不是“误差条加减”的经验规则，而是线性变换下二阶矩的直接结果。后续将用它回答：像素定位误差怎样传播到 PnP 位姿、位姿误差怎样影响弹道交会点、地图坐标系中的不确定性怎样进入规划安全边界。
+
+\begin{failuremode}
+Euler 角适合人机界面，但不适合作为所有内部旋转运算的默认变量。它存在参数化奇异和顺序依赖；同时对 Euler 角直接取均值、相减或传播协方差通常没有坐标无关意义。
+\end{failuremode}
+
+\begin{chaptertransition}
+几何给出了状态的结构，却没有说明量测为何不确定。下一章引入概率分布、条件信息和统计估计，使 score、残差与协方差具有可检验的语义。
+\end{chaptertransition}
+

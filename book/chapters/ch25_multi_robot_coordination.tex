@@ -1,0 +1,22 @@
+\chapter{多机器人协同、任务分配与博弈}
+\label{ch:multi-robot}
+\chapterstatus{结构已定，待规则核查后写实}
+
+\begin{learningobjectives}
+理解集中/分布式协同、任务分配、通信图、信息时效、对手建模和基本博弈结构；设计丢包、延迟和错误目标身份下的降级机制。
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置为第~\ref{ch:slam-world}、\ref{ch:behavior}--\ref{ch:dp-rl}~章。实验模拟雷达站、哨兵和其他机器人共享敌方 tracks 与意图，报告任务收益和通信鲁棒性。
+\end{prerequisites}
+
+\plannedsection{任务分配}{二分图 matching、auction、动态 reassignment 与资源约束。}
+\plannedsection{通信图与一致性}{带宽、延迟、丢包、消息过期和去中心化信息。}
+\plannedsection{共享世界状态}{track identity、数据来源、协方差与重复信息，避免 double counting。}
+\plannedsection{对手建模与博弈}{零和/一般和、best response、有限理性与不确定对手。}
+\plannedsection{规则约束}{裁判系统允许的通信和自动化边界按赛季版本维护。}
+
+\begin{chaptertransition}
+多机器人决策空间很大，VLM/LLM 可以帮助解释规则和提出候选高层计划，但其输出没有动力学与安全保证。下一章明确它们只能进入受约束、可验证的混合架构。
+\end{chaptertransition}
+

@@ -1,0 +1,22 @@
+\chapter{轨迹生成、时间参数化与轨迹优化}
+\label{ch:trajectory}
+\chapterstatus{结构已定，待写实}
+
+\begin{learningobjectives}
+区分 path 与 trajectory；使用多项式/样条生成连续参考；理解 direct shooting、multiple shooting、collocation 与约束优化。
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置为第~\ref{ch:optimization-dynamics}、\ref{ch:modeling-feedback}、\ref{ch:path-planning}~章。产物是一条满足速度、加速度、曲率和输入约束的时标轨迹。
+\end{prerequisites}
+
+\plannedsection{平滑与时间参数化}{连续性阶次对应执行器速度/加速度/jerk；不能只对 waypoint 插值。}
+\plannedsection{最小 snap/jerk 与 QP}{从多项式系数和边界条件构造凸二次问题。}
+\plannedsection{Direct shooting}{控制序列作为变量，动力学通过 rollout 满足；梯度敏感性。}
+\plannedsection{Multiple shooting 与 collocation}{增加状态变量换取稀疏结构与更稳定的初值。}
+\plannedsection{动态障碍与不确定性}{chance constraint、tube/robust idea 作为进阶，避免把预测轨迹当真值。}
+
+\begin{chaptertransition}
+轨迹优化能离线或局部生成受约束参考，但模型和环境会变化。下一章采用 receding horizon 在线重复求解，把状态反馈与显式约束统一到 MPC。
+\end{chaptertransition}
+

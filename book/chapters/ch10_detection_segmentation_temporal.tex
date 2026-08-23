@@ -1,0 +1,26 @@
+\chapter{检测、分割与时序感知}
+\label{ch:semantic-perception}
+\chapterstatus{结构已定，目标检测大幅压缩章}
+
+\begin{learningobjectives}
+统一描述分类、目标检测、关键点、语义/实例/panoptic 分割；理解匹配、IoU、NMS 和 tracking-by-detection 接口；能够按任务和硬件选择现代基线。
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置为第~\ref{ch:ml-classification}~章。本章只使用少量代表性结构说明共同原理，不再展开 R-CNN/YOLO 版本史、anchor-free 模型清单或 loss zoo。
+\end{prerequisites}
+
+\plannedsection{输出空间决定任务}{box、keypoint、semantic mask、instance mask 和 track identity 的变量及指标。}
+\plannedsection{定位、匹配与集合预测}{IoU、正负样本/assignment、NMS 与 end-to-end set prediction 的共同问题。}
+\plannedsection{分割与实例表示}{dense prediction、多尺度特征、mask quality 和边界误差。}
+\plannedsection{关键点检测}{装甲板、能量机关和姿态任务中，关键点为何常比通用 box 更适合后续几何。}
+\plannedsection{时序接口}{检测结果必须带采样时间、坐标、类别分布和 measurement uncertainty，再交给第~\ref{ch:state-estimation}~章。}
+
+\begin{failuremode}
+检测 score 高不等于三维位姿准确。下游误差常由角点系统偏移、遮挡下的几何退化、时间延迟和错误关联主导，而 mAP 无法完整反映这些量。
+\end{failuremode}
+
+\begin{chaptertransition}
+模型结构只解决功能的一部分。下一章把数据、指标、部署、尾延迟和失败样本回流组成工程闭环，防止“离线精度最好”成为唯一选型原则。
+\end{chaptertransition}
+

@@ -1,0 +1,26 @@
+\chapter{行为划分：FSM、行为树、Utility 与安全监督}
+\label{ch:behavior}
+\chapterstatus{结构已定，待写实}
+
+\begin{learningobjectives}
+区分有限状态机、层级状态机、行为树、utility selector 和监督器；处理迟滞、抢占、超时、死锁、fallback 与安全状态。
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置为第~\ref{ch:slam-world}、\ref{ch:path-planning}--\ref{ch:auto-aim-method}~章。实验实现巡逻、追击、补给、撤退和故障停车，并支持事件回放。
+\end{prerequisites}
+
+\plannedsection{行为不是分类标签}{“当前模式”必须包含 guard、entry/exit action、超时与恢复语义。}
+\plannedsection{FSM 与层级状态机}{显式转移、状态爆炸、迟滞和测试覆盖。}
+\plannedsection{行为树}{sequence/selector/decorator、reactive tick 与共享 blackboard。}
+\plannedsection{Utility 与仲裁}{多目标打分、尺度、迟滞、资源冲突和可解释性。}
+\plannedsection{安全监督与 fallback}{独立于任务策略的速度、区域、通信和硬件健康约束。}
+
+\begin{failuremode}
+“决策树”通常指监督分类模型，而“行为树”是任务执行结构；二者不能混用。更不能把大量 if-else 自动称为行为树而忽略 tick、抢占与恢复语义。
+\end{failuremode}
+
+\begin{chaptertransition}
+规则/行为结构提供可解释 baseline，但无法自动解决长期收益和部分可观测性。下一章从最短路的 Bellman principle 推到 MDP/POMDP，再讨论强化学习真正改变了哪一步。
+\end{chaptertransition}
+

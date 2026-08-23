@@ -1,0 +1,37 @@
+name: Build handbook PDF
+
+on:
+  pull_request:
+    paths:
+      - "book/**"
+      - "Makefile"
+      - ".github/workflows/build-pdf.yml"
+  push:
+    branches:
+      - main
+      - "refactor/**"
+    paths:
+      - "book/**"
+      - "Makefile"
+      - ".github/workflows/build-pdf.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Compile with XeLaTeX
+        uses: xu-cheng/latex-action@v3
+        with:
+          root_file: main.tex
+          working_directory: book
+          latexmk_use_xelatex: true
+          args: -interaction=nonstopmode -halt-on-error -file-line-error
+
+      - name: Upload PDF
+        uses: actions/upload-artifact@v4
+        with:
+          name: robomaster-algorithm-handbook
+          path: book/main.pdf

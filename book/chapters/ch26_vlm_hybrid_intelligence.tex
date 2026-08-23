@@ -1,0 +1,26 @@
+\chapter{VLM/LLM 启发式规划与混合智能}
+\label{ch:vlm}
+\chapterstatus{结构已定，待写实}
+
+\begin{learningobjectives}
+理解 foundation model 在语义理解、检索与候选计划生成上的价值；使用 schema、工具调用、计划验证、监督器和 fallback 限制其不确定输出。
+\end{learningobjectives}
+
+\begin{prerequisites}
+前置为第~\ref{ch:ai-agent}、\ref{ch:behavior}--\ref{ch:multi-robot}~章。实验要求 VLM 只生成有限高层动作序列，再由规则、行为树和规划器验证。
+\end{prerequisites}
+
+\plannedsection{能力与边界}{语义先验、开放词汇、长时程常识与不可预测 latency/hallucination。}
+\plannedsection{结构化动作空间}{JSON/schema、有限 skill library、前置/后置条件和资源预算。}
+\plannedsection{检索与工具调用}{读取当前 WorldState、规则版本和地图，而非依赖参数记忆。}
+\plannedsection{计划验证与监控}{符号约束、仿真 rollout、MPC 可行性、安全 supervisor 和超时。}
+\plannedsection{评测}{任务成功率之外，幻觉率、非法动作率、超时、恢复和分布漂移。}
+
+\begin{aiverify}
+构造对抗测试：缺失规则、相互矛盾的自然语言提示、过期 WorldState 和工具超时。系统必须拒绝非法动作并回退到可验证策略，而不是让模型用更流畅的语言掩盖缺失信息。
+\end{aiverify}
+
+\begin{chaptertransition}
+到此已经具备感知、控制、规划和高层决策方法。下一章定义这些模块之间的唯一接口、生命周期与验证阶梯，防止每个赛题重新拼接一套无法回放的系统。
+\end{chaptertransition}
+
